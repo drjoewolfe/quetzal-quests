@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -326,5 +327,22 @@ class StringQuestsTest {
         expected = 3;
         result = StringQuests.getCountOfSubstringsThatStartAndEndWithOne(str);
         assertEquals(expected, result);
+    }
+
+    @Test
+    void groupWordsWithSameSetOfCharacters() {
+        String[] words = { "may", "student", "students", "dog",
+                "studentssess", "god", "cat", "act", "tab",
+                "bat", "flow", "wolf", "lambs", "amy", "yam",
+                "balms", "looped", "poodle"};
+        var groups = StringQuests.groupWordsWithSameSetOfCharacters(words);
+        for(var group : groups) {
+            for(var word: group) {
+                System.out.print(word + " ");
+            }
+            System.out.println();
+        }
+
+        assertEquals(8, groups.size());
     }
 }

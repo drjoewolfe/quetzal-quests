@@ -489,4 +489,46 @@ public class StringQuests {
 
         return count * (count - 1) / 2;
     }
+
+    public static List<List<String>> groupWordsWithSameSetOfCharacters(String[] words) {
+        if(words == null) {
+            return null;
+        }
+
+        Map<String, List<String>> map = new HashMap<>();
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            String key = getKey(word);
+
+            if(!map.containsKey(key)) {
+                map.put(key, new LinkedList<>());
+            }
+
+            map.get(key).add(word);
+        }
+
+        List<List<String>> groups = new LinkedList<>();
+        for(var entry : map.entrySet()) {
+            groups.add(entry.getValue());
+        }
+
+        return groups;
+    }
+
+    private static String getKey(String word) {
+        boolean[] keyMap = new boolean[26];
+        Arrays.fill(keyMap, false);
+        for (int i = 0; i < word.length(); i++) {
+            keyMap[word.charAt(i) - 'a'] = true;
+        }
+
+        StringBuilder key = new StringBuilder();
+        for (int i = 0; i < keyMap.length; i++) {
+            if(keyMap[i]) {
+                key.append('a' + i);
+            }
+        }
+
+        return key.toString();
+    }
 }
