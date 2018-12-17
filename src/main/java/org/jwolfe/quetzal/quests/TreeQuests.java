@@ -7,6 +7,46 @@ import java.util.Deque;
 import java.util.Stack;
 
 public class TreeQuests {
+
+    public static BinaryTreeNode convertTreeToDoublyLinkedList(BinaryTreeNode root) {
+        var head = convertNodeToDoublyLinkedList(root);
+        while(head.getLeft() != null) {
+            head = head.getLeft();
+        }
+
+        return head;
+    }
+
+    private static BinaryTreeNode convertNodeToDoublyLinkedList(BinaryTreeNode root) {
+        if(root == null) {
+            return null;
+        }
+
+        if(root.getLeft() != null) {
+            var inOrderPredecessor = convertTreeToDoublyLinkedList(root.getLeft());
+
+            while(inOrderPredecessor.getRight() != null) {
+                inOrderPredecessor = inOrderPredecessor.getRight();
+            }
+
+            inOrderPredecessor.setRight(root);
+            root.setLeft(inOrderPredecessor);
+        }
+
+        if(root.getRight() != null) {
+            var inOrderSuccessor = convertTreeToDoublyLinkedList(root.getRight());
+
+            while(inOrderSuccessor.getLeft() != null) {
+                inOrderSuccessor = inOrderSuccessor.getLeft();
+            }
+
+            inOrderSuccessor.setLeft(root);
+            root.setRight(inOrderSuccessor);
+        }
+
+        return root;
+    }
+
     public static BinaryTreeNode convertTreeToDoublyLinkedListInSpiralFashion(BinaryTreeNode root) {
         if(root == null) {
             return null;
