@@ -7,9 +7,53 @@ import java.util.Deque;
 import java.util.Stack;
 
 public class TreeQuests {
+    private static BinaryTreeNode previous;
 
-    public static BinaryTreeNode convertTreeToDoublyLinkedList(BinaryTreeNode root) {
-        var head = convertNodeToDoublyLinkedList(root);
+    public static BinaryTreeNode convertTreeToDoublyLinkedListA2(BinaryTreeNode root) {
+        if(root == null) {
+            return null;
+        }
+
+        fixPreviousPointer(root);
+        return fixNextPointer(root);
+    }
+
+    private static void fixPreviousPointer(BinaryTreeNode root) {
+        if(root == null) {
+            return;
+        }
+
+        fixPreviousPointer(root.getLeft());
+
+        if(previous != null) {
+            root.setLeft(previous);
+        }
+
+        previous = root;
+
+        fixPreviousPointer(root.getRight());
+    }
+
+    private static BinaryTreeNode fixNextPointer(BinaryTreeNode root) {
+        if(root == null) {
+            return null;
+        }
+
+        while(root.getRight() != null) {
+            root = root.getRight();
+        }
+
+        while(root.getLeft() != null) {
+            var left = root.getLeft();
+            left.setRight(root);
+            root = left;
+        }
+
+        return root;
+    }
+
+    public static BinaryTreeNode convertTreeToDoublyLinkedListA1(BinaryTreeNode root) {
+        var head = convertNodeToDoublyLinkedListA1(root);
         while(head.getLeft() != null) {
             head = head.getLeft();
         }
@@ -17,13 +61,13 @@ public class TreeQuests {
         return head;
     }
 
-    private static BinaryTreeNode convertNodeToDoublyLinkedList(BinaryTreeNode root) {
+    private static BinaryTreeNode convertNodeToDoublyLinkedListA1(BinaryTreeNode root) {
         if(root == null) {
             return null;
         }
 
         if(root.getLeft() != null) {
-            var inOrderPredecessor = convertTreeToDoublyLinkedList(root.getLeft());
+            var inOrderPredecessor = convertTreeToDoublyLinkedListA1(root.getLeft());
 
             while(inOrderPredecessor.getRight() != null) {
                 inOrderPredecessor = inOrderPredecessor.getRight();
@@ -34,7 +78,7 @@ public class TreeQuests {
         }
 
         if(root.getRight() != null) {
-            var inOrderSuccessor = convertTreeToDoublyLinkedList(root.getRight());
+            var inOrderSuccessor = convertTreeToDoublyLinkedListA1(root.getRight());
 
             while(inOrderSuccessor.getLeft() != null) {
                 inOrderSuccessor = inOrderSuccessor.getLeft();
