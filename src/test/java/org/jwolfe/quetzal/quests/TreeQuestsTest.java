@@ -9,6 +9,50 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TreeQuestsTest {
     @Test
+    void convertTreeToDoublyLinkedList() {
+        BinaryTreeNode tree;
+        BinaryTreeNode head;
+        int[] traversal;
+        int[] expectedTraversal;
+
+        tree = Utilities.constructBinaryTree(10, 12, 15, 25, 30, 36);
+        TreeAlgorithms.visitInOrder(tree);
+        head = TreeQuests.convertTreeToDoublyLinkedList(tree);
+
+        System.out.println();
+        expectedTraversal = Utilities.constructArray(25, 12, 30, 10, 36, 15);
+        traversal = Utilities.getLeftToRightTraversal(head);
+        Utilities.printArray(expectedTraversal);
+        Utilities.printArray(traversal);
+        assertArrayEquals(expectedTraversal, traversal);
+
+        expectedTraversal = Utilities.constructArray(15, 36, 10, 30, 12, 25);
+        traversal = Utilities.getRightToLeftTraversal(head);
+        Utilities.printArray(expectedTraversal);
+        Utilities.printArray(traversal);
+        assertArrayEquals(expectedTraversal, traversal);
+
+        System.out.println();
+
+        tree = Utilities.constructBinaryTree(5, 3, 6, 1, 4, null, 8, 0, 2, null, null, null, null, 7, 9);
+        TreeAlgorithms.visitInOrder(tree);
+        head = TreeQuests.convertTreeToDoublyLinkedList(tree);
+
+        System.out.println();
+        expectedTraversal = Utilities.constructArray(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+        traversal = Utilities.getLeftToRightTraversal(head);
+        Utilities.printArray(expectedTraversal);
+        Utilities.printArray(traversal);
+        assertArrayEquals(expectedTraversal, traversal);
+
+        expectedTraversal = Utilities.constructArray(9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
+        traversal = Utilities.getRightToLeftTraversal(head);
+        Utilities.printArray(expectedTraversal);
+        Utilities.printArray(traversal);
+        assertArrayEquals(expectedTraversal, traversal);
+    }
+
+    @Test
     void convertTreeToDoublyLinkedListA3() {
         BinaryTreeNode tree;
         BinaryTreeNode head;

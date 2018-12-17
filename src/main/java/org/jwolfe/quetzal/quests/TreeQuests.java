@@ -10,11 +10,39 @@ public class TreeQuests {
     private static BinaryTreeNode previous;
     private static BinaryTreeNode head;
 
+    public static BinaryTreeNode convertTreeToDoublyLinkedList(BinaryTreeNode root) {
+        if(root == null) {
+            return null;
+        }
+
+        head = null;
+        convertNodeToDoublyLinkedList(root);
+        return head;
+    }
+
+    public static void convertNodeToDoublyLinkedList(BinaryTreeNode root) {
+        if(root == null) {
+            return;
+        }
+
+        convertNodeToDoublyLinkedList(root.getRight());
+
+        root.setRight(head);
+        if(head != null) {
+            head.setLeft(root);
+        }
+
+        head = root;
+        convertNodeToDoublyLinkedList(root.getLeft());
+    }
+
     public static BinaryTreeNode convertTreeToDoublyLinkedListA3(BinaryTreeNode root) {
         if(root == null) {
             return null;
         }
 
+        head = null;
+        previous = null;
         convertNodeToDoublyLinkedListA3(root);
         return head;
     }
@@ -44,6 +72,7 @@ public class TreeQuests {
             return null;
         }
 
+        previous = null;
         fixPreviousPointer(root);
         return fixNextPointer(root);
     }
