@@ -8,6 +8,36 @@ import java.util.Stack;
 
 public class TreeQuests {
     private static BinaryTreeNode previous;
+    private static BinaryTreeNode head;
+
+    public static BinaryTreeNode convertTreeToDoublyLinkedListA3(BinaryTreeNode root) {
+        if(root == null) {
+            return null;
+        }
+
+        convertNodeToDoublyLinkedListA3(root);
+        return head;
+    }
+
+    private static void convertNodeToDoublyLinkedListA3(BinaryTreeNode root) {
+        if(root == null) {
+            return;
+        }
+
+        convertNodeToDoublyLinkedListA3(root.getLeft());
+
+        if(previous == null) {
+            head = root;
+        }
+        else {
+            previous.setRight(root);
+            root.setLeft(previous);
+        }
+
+        previous = root;
+
+        convertNodeToDoublyLinkedListA3(root.getRight());
+    }
 
     public static BinaryTreeNode convertTreeToDoublyLinkedListA2(BinaryTreeNode root) {
         if(root == null) {

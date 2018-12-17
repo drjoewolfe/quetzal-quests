@@ -9,6 +9,31 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TreeQuestsTest {
     @Test
+    void convertTreeToDoublyLinkedListA3() {
+        BinaryTreeNode tree;
+        BinaryTreeNode head;
+        int[] traversal;
+        int[] expectedTraversal;
+
+        tree = Utilities.constructBinaryTree(10, 12, 15, 25, 30, 36);
+        TreeAlgorithms.visitInOrder(tree);
+        head = TreeQuests.convertTreeToDoublyLinkedListA3(tree);
+
+        System.out.println();
+        expectedTraversal = Utilities.constructArray(25, 12, 30, 10, 36, 15);
+        traversal = Utilities.getLeftToRightTraversal(head);
+        Utilities.printArray(expectedTraversal);
+        Utilities.printArray(traversal);
+        assertArrayEquals(expectedTraversal, traversal);
+
+        expectedTraversal = Utilities.constructArray(15, 36, 10, 30, 12, 25);
+        traversal = Utilities.getRightToLeftTraversal(head);
+        Utilities.printArray(expectedTraversal);
+        Utilities.printArray(traversal);
+        assertArrayEquals(expectedTraversal, traversal);
+    }
+
+    @Test
     void convertTreeToDoublyLinkedListA2() {
         BinaryTreeNode tree;
         BinaryTreeNode head;
