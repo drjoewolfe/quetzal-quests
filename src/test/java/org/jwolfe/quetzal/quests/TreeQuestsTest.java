@@ -5,6 +5,8 @@ import org.jwolfe.quetzal.algorithms.TreeAlgorithms;
 import org.jwolfe.quetzal.library.tree.BinaryTreeNode;
 import org.jwolfe.quetzal.library.utilities.Utilities;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TreeQuestsTest {
@@ -179,5 +181,18 @@ class TreeQuestsTest {
 
         deepestLevel = TreeQuests.getDepthOfDeepestOddLevelLeafNodeIterative(tree);
         assertEquals(5, deepestLevel);
+    }
+
+    @Test
+    void getLevelOrderLines() {
+        BinaryTreeNode tree;
+        List<List<Integer>> levelOrderLines;
+
+        tree = Utilities.constructBinaryTree(1, 2, 3, 4, 5);
+        levelOrderLines = TreeQuests.getLevelOrderLines(tree);
+        assertEquals(3, levelOrderLines.size());
+        assertArrayEquals(new int[] {1}, levelOrderLines.get(0).stream().mapToInt(i->i).toArray());
+        assertArrayEquals(new int[] {2, 3}, levelOrderLines.get(1).stream().mapToInt(i->i).toArray());
+        assertArrayEquals(new int[] {4, 5}, levelOrderLines.get(2).stream().mapToInt(i->i).toArray());
     }
 }

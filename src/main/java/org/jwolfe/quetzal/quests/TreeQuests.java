@@ -270,4 +270,42 @@ public class TreeQuests {
 
         return maxDepth;
     }
+
+    public static List<List<Integer>> getLevelOrderLines(BinaryTreeNode root) {
+        List<List<Integer>> levelOrderLines = new LinkedList<>();
+
+        Queue<BinaryTreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        queue.offer(null);
+
+        LinkedList<Integer> line = new LinkedList<>();
+        levelOrderLines.add(line);
+
+        while(!queue.isEmpty()) {
+            var node = queue.poll();
+
+            if(node == null) {
+                if(!queue.isEmpty()) {
+                    line = new LinkedList<>();
+                    levelOrderLines.add(line);
+                    queue.offer(null);
+                }
+
+                continue;
+            }
+
+            line.add(node.getData());
+
+            if(node.getLeft() != null) {
+                queue.offer(node.getLeft());
+            }
+
+            if(node.getRight() != null) {
+                queue.offer(node.getRight());
+            }
+        }
+
+
+        return levelOrderLines;
+    }
 }
