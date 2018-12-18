@@ -209,4 +209,23 @@ class TreeQuestsTest {
         maxPathSum = TreeQuests.maxPathSum(tree);
         assertEquals(42, maxPathSum);
     }
+
+    @Test
+    void sinkOddNodes() {
+        BinaryTreeNode tree;
+        int[] levelOrder;
+        int[] expectedLevelOrder;
+
+        tree = Utilities.constructBinaryTree(1, 2, 3);
+        expectedLevelOrder = Utilities.constructArray(2, 1, 3);
+        TreeQuests.sinkOddNodes(tree);
+        levelOrder = TreeAlgorithms.getLevelOrder(tree);
+        assertArrayEquals(expectedLevelOrder, levelOrder);
+
+        tree = Utilities.constructBinaryTree(1, 5, 8, 2, 4, 9, 10);
+        expectedLevelOrder = Utilities.constructArray(2, 4, 8, 5, 1, 9, 10);
+        TreeQuests.sinkOddNodes(tree);
+        levelOrder = TreeAlgorithms.getLevelOrder(tree);
+        assertArrayEquals(expectedLevelOrder, levelOrder);
+    }
 }

@@ -334,4 +334,50 @@ public class TreeQuests {
         maxSum.set(Math.max(maxSum.intValue(), maxPathSum));
         return maxOnePathSum;
     }
+
+    public static void sinkOddNodes(BinaryTreeNode root) {
+        if(root == null) {
+            return;
+        }
+
+        sinkOddNodes(root.getLeft());
+        sinkOddNodes(root.getRight());
+
+        if(root.getData() % 2 != 0) {
+            // Odd node
+            sinkNode(root);
+        }
+    }
+
+    private static void sinkNode(BinaryTreeNode node) {
+        if(node == null) {
+            return;
+        }
+
+        if(TreeAlgorithms.isLeaf(node)) {
+            return;
+        }
+
+        if(node.getData() % 2 == 0) {
+            return;
+        }
+
+        if(node.getLeft() != null
+            && node.getLeft().getData() % 2 == 0) {
+            int temp = node.getData();
+            node.setData(node.getLeft().getData());
+            node.getLeft().setData(temp);
+
+            sinkNode(node.getLeft());
+
+        }
+        else if(node.getRight() != null
+                && node.getRight().getData() % 2 == 0) {
+            int temp = node.getData();
+            node.setData(node.getRight().getData());
+            node.getRight().setData(temp);
+
+            sinkNode(node.getRight());
+        }
+    }
 }
