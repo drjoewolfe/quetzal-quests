@@ -3,8 +3,10 @@ package org.jwolfe.quetzal.quests;
 import jdk.nashorn.api.tree.Tree;
 import org.jwolfe.quetzal.algorithms.TreeAlgorithms;
 import org.jwolfe.quetzal.library.tree.BinaryTreeNode;
+import org.jwolfe.quetzal.library.utilities.Utilities;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class TreeQuests {
     private static BinaryTreeNode previous;
@@ -305,7 +307,31 @@ public class TreeQuests {
             }
         }
 
-
         return levelOrderLines;
+    }
+
+    public static int maxPathSum(BinaryTreeNode root) {
+        AtomicInteger maxSum = new AtomicInteger(Integer.MIN_VALUE);
+        maxPathSum(root, maxSum);
+        return maxSum.intValue();
+    }
+
+    private static int maxPathSum(BinaryTreeNode root, AtomicInteger maxSum) {
+        if(root == null) {
+            return 0;
+        }
+
+        int maxLeftOnePathSum = maxPathSum(root.getLeft(), maxSum);
+        int maxRightOnePathSum = maxPathSum(root.getRight(), maxSum);
+        int nodeData = root.getData();
+
+        int maxOnePathSum = Math.max(
+                                Math.max(maxLeftOnePathSum, maxRightOnePathSum) + nodeData,
+                                nodeData);
+        int maxTwoPathSum = maxLeftOnePathSum + nodeData + maxRightOnePathSum;
+
+        int maxPathSum = Math.max(maxOnePathSum, maxTwoPathSum);
+        maxSum.set(Math.max(maxSum.intValue(), maxPathSum));
+        return maxOnePathSum;
     }
 }

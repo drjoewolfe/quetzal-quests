@@ -195,4 +195,18 @@ class TreeQuestsTest {
         assertArrayEquals(new int[] {2, 3}, levelOrderLines.get(1).stream().mapToInt(i->i).toArray());
         assertArrayEquals(new int[] {4, 5}, levelOrderLines.get(2).stream().mapToInt(i->i).toArray());
     }
+
+    @Test
+    void maxPathSum() {
+        BinaryTreeNode tree;
+        int maxPathSum;
+
+        tree = Utilities.constructBinaryTree(1, 2, 3);
+        maxPathSum = TreeQuests.maxPathSum(tree);
+        assertEquals(6, maxPathSum);
+
+        tree = Utilities.constructBinaryTree(10, 2, 10, 20, 1, null, -25, null, null, null, null, null, null, 3, 4);
+        maxPathSum = TreeQuests.maxPathSum(tree);
+        assertEquals(42, maxPathSum);
+    }
 }
