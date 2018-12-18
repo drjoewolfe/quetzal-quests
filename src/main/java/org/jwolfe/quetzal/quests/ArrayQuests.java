@@ -1732,4 +1732,29 @@ public class ArrayQuests {
 
         return null;
     }
+
+    public static int[] subArrayWithGivenSum(int[] arr, int sum) {
+        if (arr == null) {
+            return null;
+        }
+
+        int runningSum = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < arr.length; i++) {
+            runningSum += arr[i];
+            int diff = runningSum - sum;
+            if(diff == 0) {
+                return Utilities.extractArray(arr, 0, i);
+            }
+
+            if(map.containsKey(diff)) {
+                int start = map.get(diff) + 1;
+                return Utilities.extractArray(arr, start, i);
+            }
+
+            map.put(runningSum, i);
+        }
+
+        return null;
+    }
 }

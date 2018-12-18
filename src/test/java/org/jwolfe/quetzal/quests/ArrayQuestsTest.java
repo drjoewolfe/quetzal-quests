@@ -1313,4 +1313,26 @@ class ArrayQuestsTest {
         Utilities.printArray(subArray);
         assertArrayEquals(expectedArray, subArray);
     }
+
+    @Test
+    void subArrayWithGivenSum() {
+        int[] arr;
+        int[] subArray;
+        int[] expectedArray;
+
+        arr = Utilities.constructArray(1, 4, 20, 3, 10, 5);
+        expectedArray = Utilities.constructArray(20, 3, 10);
+        subArray = ArrayQuests.subArrayWithGivenSum(arr, 33);
+        assertArrayEquals(expectedArray, subArray);
+
+        arr = Utilities.constructArray(10, 2, -2, -20, 10);
+        expectedArray = Utilities.constructArray(10, 2, -2, -20);
+        subArray = ArrayQuests.subArrayWithGivenSum(arr, -10);
+        assertArrayEquals(expectedArray, subArray);
+
+        arr = Utilities.constructArray(-10, 0, 2, -2, -20, 10);
+        expectedArray = null;
+        subArray = ArrayQuests.subArrayWithGivenSum(arr, 20);
+        assertArrayEquals(expectedArray, subArray);
+    }
 }
