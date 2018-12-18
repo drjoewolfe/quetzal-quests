@@ -380,4 +380,28 @@ public class TreeQuests {
             sinkNode(node.getRight());
         }
     }
+
+    public static int maxPathSumBetweenTwoLeaves(BinaryTreeNode root) {
+        AtomicInteger maxSum = new AtomicInteger(Integer.MIN_VALUE);
+        maxPathSumBetweenTwoLeaves(root, maxSum);
+        return maxSum.intValue();
+    }
+
+    private static int maxPathSumBetweenTwoLeaves(BinaryTreeNode root, AtomicInteger maxSum) {
+        if(root == null) {
+            return 0;
+        }
+
+        int maxLeftOnePathSum = maxPathSumBetweenTwoLeaves(root.getLeft(), maxSum);
+        int maxRightOnePathSum = maxPathSumBetweenTwoLeaves(root.getRight(), maxSum);
+        int nodeData = root.getData();
+
+        int maxOnePathSum = Math.max(maxLeftOnePathSum, maxRightOnePathSum) + nodeData;
+        int maxTwoPathSum = maxLeftOnePathSum + nodeData + maxRightOnePathSum;
+
+        int maxPathSum = Math.max(maxOnePathSum, maxTwoPathSum);
+        maxSum.set(Math.max(maxSum.intValue(), maxPathSum));
+
+        return maxOnePathSum;
+    }
 }

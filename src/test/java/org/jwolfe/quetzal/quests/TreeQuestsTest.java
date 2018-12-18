@@ -228,4 +228,17 @@ class TreeQuestsTest {
         levelOrder = TreeAlgorithms.getLevelOrder(tree);
         assertArrayEquals(expectedLevelOrder, levelOrder);
     }
+
+    @Test
+    void maxPathSumBetweenTwoLeaves() {
+        BinaryTreeNode tree;
+        int maxPathSum;
+
+        tree = Utilities.constructBinaryTree(-15, 5, 6, -8, 1, 3, 9, 2, 6, null, null, null, null, null, 0);
+        tree.getRight().getRight().getRight().setLeft(new BinaryTreeNode(4));
+        tree.getRight().getRight().getRight().setRight(new BinaryTreeNode(-1));
+        tree.getRight().getRight().getRight().getRight().setLeft(new BinaryTreeNode(10));
+        maxPathSum = TreeQuests.maxPathSum(tree);
+        assertEquals(27, maxPathSum);
+    }
 }
