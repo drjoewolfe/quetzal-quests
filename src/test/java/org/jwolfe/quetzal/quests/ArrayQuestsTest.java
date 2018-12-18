@@ -3,6 +3,7 @@ package org.jwolfe.quetzal.quests;
 import org.junit.jupiter.api.Test;
 import org.jwolfe.quetzal.library.general.Pair;
 import org.jwolfe.quetzal.library.general.Point;
+import org.jwolfe.quetzal.library.general.Quadruplet;
 import org.jwolfe.quetzal.library.general.Triplet;
 import org.jwolfe.quetzal.library.utilities.Utilities;
 
@@ -68,6 +69,30 @@ class ArrayQuestsTest {
         findTripletsWithZeroSumBrute();
         findTripletsWithZeroSumHashing();
         findTripletsWithZeroSumSorting();
+    }
+
+    @Test
+    void findQuadrupletForSum() {
+        int[] arr;
+        Quadruplet<Integer, Integer,Integer, Integer> quadruplet;
+        Quadruplet<Integer, Integer,Integer, Integer> expectedQuadruplet;
+
+        arr = Utilities.constructArray(10, 20, 30, 40, 1, 2);
+        expectedQuadruplet = new Quadruplet<>(1, 20, 30, 40);
+        quadruplet = ArrayQuests.findQuadrupletForSum(arr, 91);
+        assertEquals(expectedQuadruplet, quadruplet);
+    }
+
+    @Test
+    void findQuadrupletForSumA2() {
+        int[] arr;
+        Quadruplet<Integer, Integer,Integer, Integer> quadruplet;
+        Quadruplet<Integer, Integer,Integer, Integer> expectedQuadruplet;
+
+        arr = Utilities.constructArray(10, 20, 30, 40, 1, 2);
+        expectedQuadruplet = new Quadruplet<>(20, 1, 30, 40);
+        quadruplet = ArrayQuests.findQuadrupletForSumA2(arr, 91);
+        assertEquals(expectedQuadruplet, quadruplet);
     }
 
     @Test

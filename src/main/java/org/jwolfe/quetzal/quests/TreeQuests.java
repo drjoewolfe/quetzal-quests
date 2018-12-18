@@ -1,10 +1,10 @@
 package org.jwolfe.quetzal.quests;
 
+import jdk.nashorn.api.tree.Tree;
+import org.jwolfe.quetzal.algorithms.TreeAlgorithms;
 import org.jwolfe.quetzal.library.tree.BinaryTreeNode;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.Stack;
+import java.util.*;
 
 public class TreeQuests {
     private static BinaryTreeNode previous;
@@ -211,5 +211,63 @@ public class TreeQuests {
         }
 
         return head;
+    }
+
+    public static int getDepthOfDeepestOddLevelLeafNode(BinaryTreeNode root) {
+        return getDepthOfDeepestOddLevelLeafNode(root, 1);
+    }
+
+    private static int getDepthOfDeepestOddLevelLeafNode(BinaryTreeNode root, int level) {
+        if (root == null) {
+            return 0;
+        }
+
+        if (TreeAlgorithms.isLeaf(root)) {
+            if (level % 2 != 0) {
+                // Odd level
+                return level;
+            }
+
+            return 0;
+        }
+
+        return Math.max(
+                getDepthOfDeepestOddLevelLeafNode(root.getLeft(), level + 1),
+                getDepthOfDeepestOddLevelLeafNode(root.getRight(), level + 1));
+    }
+
+    public static int getDepthOfDeepestOddLevelLeafNodeIterative(BinaryTreeNode root) {
+        if(root == null) {
+            return 0;
+        }
+
+        Queue<BinaryTreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        int level = 1;
+        int maxDepth = 0;
+
+        while(!queue.isEmpty()) {
+            int n = queue.size();
+            for (int i = 0; i < n; i++) {
+                var node = queue.poll();
+
+                if (TreeAlgorithms.isLeaf(node)
+                        && level % 2 != 0) {
+                    maxDepth = Math.max(maxDepth, level);
+                }
+
+                if (node.getLeft() != null) {
+                    queue.offer(node.getLeft());
+                }
+
+                if (node.getRight() != null) {
+                    queue.offer(node.getRight());
+                }
+            }
+
+            level++;
+        }
+
+        return maxDepth;
     }
 }

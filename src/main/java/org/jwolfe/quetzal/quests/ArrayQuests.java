@@ -3,6 +3,7 @@ package org.jwolfe.quetzal.quests;
 import org.jwolfe.quetzal.algorithms.ArrayAlgorithms;
 import org.jwolfe.quetzal.library.general.Pair;
 import org.jwolfe.quetzal.library.general.Point;
+import org.jwolfe.quetzal.library.general.Quadruplet;
 import org.jwolfe.quetzal.library.general.Triplet;
 import org.jwolfe.quetzal.library.tree.AvlTree;
 import org.jwolfe.quetzal.library.utilities.PairFirstSorter;
@@ -725,6 +726,97 @@ public class ArrayQuests {
                 }
             }
         }
+
+        return null;
+    }
+
+    public static Quadruplet<Integer, Integer, Integer, Integer> findQuadrupletForSum(int[] arr, int sum) {
+        if (arr == null
+                || arr.length < 4) {
+            return null;
+        }
+
+        Arrays.sort(arr);
+
+        for (int i = 0; i < arr.length - 3; i++) {
+            for (int j = i+1; j < arr.length -2; j++) {
+                int left = j + 1;
+                int right = arr.length - 1;
+
+                while (left < right) {
+                    int currentSum = arr[i] + arr[j] + arr[left] + arr[right];
+                    if(currentSum == sum) {
+                        Quadruplet<Integer, Integer, Integer, Integer> result = new Quadruplet<>(arr[i], arr[j], arr[left], arr[right]);
+                        return result;
+                    }
+                    else if(currentSum < sum) {
+                        left++;
+                    }
+                    else {
+                        right--;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public static Quadruplet<Integer, Integer, Integer, Integer> findQuadrupletForSumA2(int[] arr, int sum) {
+        if (arr == null
+                || arr.length < 4) {
+            return null;
+        }
+
+        int n = arr.length;
+
+        // Each triplet is of the form (i, j, sum); There will be n * (n-1) / 2 elements in aux.
+        List<Triplet<Integer, Integer, Integer>> aux = new LinkedList<>();
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
+                var pairSum = new Triplet<Integer, Integer, Integer>();
+                pairSum.setFirst(i);
+                pairSum.setSecond(j);
+                pairSum.setThird(arr[i] + arr[j]);
+
+                aux.add(pairSum);
+            }
+        }
+
+        Collections.sort(aux, (x, y) -> x.getThird() - y.getThird());
+
+        int auxSize = n * (n-1) / 2;
+        int left = 0;
+        int right = auxSize - 1;
+
+        while(left < auxSize
+                && right >= 0) {
+            var leftSum = aux.get(left);
+            var rightSum = aux.get(right);
+            int currentSum = leftSum.getThird() + rightSum.getThird();
+
+            boolean commonElementsFound = false;
+            if(leftSum.getFirst() == rightSum.getFirst()
+                    || leftSum.getSecond() == rightSum.getFirst()
+                    || leftSum.getFirst() == rightSum.getSecond()
+                    || leftSum.getSecond() == rightSum.getSecond()) {
+                commonElementsFound = true;
+            }
+
+            if(currentSum == sum && !commonElementsFound) {
+                return new Quadruplet<>(arr[leftSum.getFirst()],
+                                        arr[leftSum.getSecond()],
+                                        arr[rightSum.getFirst()],
+                                        arr[rightSum.getSecond()]);
+            }
+            else if(currentSum < sum) {
+                left++;
+            }
+            else {
+                right++;
+            }
+        }
+
 
         return null;
     }

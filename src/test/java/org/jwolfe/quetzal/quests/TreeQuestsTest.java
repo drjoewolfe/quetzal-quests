@@ -152,4 +152,32 @@ class TreeQuestsTest {
         Utilities.printArray(traversal);
         assertArrayEquals(expectedTraversal, traversal);
     }
+
+    @Test
+    void getDepthOfDeepestOddLevelLeafNode() {
+        BinaryTreeNode tree;
+        int deepestLevel;
+
+        tree = Utilities.constructBinaryTree(1, 2, 3, 4, null, 5, 6, null, null, null, null, null, 7, null, 8);
+        tree.getRight().getLeft().getRight().setLeft(new BinaryTreeNode(9));
+        tree.getRight().getRight().getRight().setRight(new BinaryTreeNode(10));
+        tree.getRight().getRight().getRight().getRight().setLeft(new BinaryTreeNode(11));
+
+        deepestLevel = TreeQuests.getDepthOfDeepestOddLevelLeafNode(tree);
+        assertEquals(5, deepestLevel);
+    }
+
+    @Test
+    void getDepthOfDeepestOddLevelLeafNodeIterative() {
+        BinaryTreeNode tree;
+        int deepestLevel;
+
+        tree = Utilities.constructBinaryTree(1, 2, 3, 4, null, 5, 6, null, null, null, null, null, 7, null, 8);
+        tree.getRight().getLeft().getRight().setLeft(new BinaryTreeNode(9));
+        tree.getRight().getRight().getRight().setRight(new BinaryTreeNode(10));
+        tree.getRight().getRight().getRight().getRight().setLeft(new BinaryTreeNode(11));
+
+        deepestLevel = TreeQuests.getDepthOfDeepestOddLevelLeafNodeIterative(tree);
+        assertEquals(5, deepestLevel);
+    }
 }
