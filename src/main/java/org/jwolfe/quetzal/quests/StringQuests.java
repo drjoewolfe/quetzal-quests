@@ -569,4 +569,26 @@ public class StringQuests {
 
         return result;
     }
+
+    public static String getLexicographicConcatenationOfAllSubStrings(String str) {
+        int n = str.length();
+        int numberOfSubStrings = n * (n + 1) / 2;
+        String[] subStrings = new String[numberOfSubStrings];
+
+        int index = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                subStrings[index++] = str.substring(i, j + 1);
+            }
+        }
+
+        Arrays.sort(subStrings);
+
+        StringBuilder result = new StringBuilder();
+        for (String subStr : subStrings) {
+            result.append(subStr);
+        }
+
+        return result.toString();
+    }
 }

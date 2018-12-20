@@ -353,4 +353,15 @@ class StringQuestsTest {
         result = StringQuests.addBinaryStings("11", "1");
         assertEquals("100", result);
     }
+
+    @Test
+    void getLexicographicConcatenationOfAllSubStrings() {
+        String result;
+
+        result = StringQuests.getLexicographicConcatenationOfAllSubStrings("abc");
+        assertEquals("aababcbbcc", result);
+
+        result = StringQuests.getLexicographicConcatenationOfAllSubStrings("cba");
+        assertEquals("abbaccbcba", result);
+    }
 }
