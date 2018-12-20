@@ -2,11 +2,13 @@ package org.jwolfe.quetzal.quests;
 
 import jdk.nashorn.api.tree.Tree;
 import org.jwolfe.quetzal.algorithms.TreeAlgorithms;
+import org.jwolfe.quetzal.library.tree.BinarySearchTree;
 import org.jwolfe.quetzal.library.tree.BinaryTreeNode;
 import org.jwolfe.quetzal.library.utilities.Utilities;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 public class TreeQuests {
     private static BinaryTreeNode previous;
@@ -403,5 +405,100 @@ public class TreeQuests {
         maxSum.set(Math.max(maxSum.intValue(), maxPathSum));
 
         return maxOnePathSum;
+    }
+
+    public static void alternateLevelOrderTraversalForPerfectTree(BinaryTreeNode root) {
+        alternateLevelOrderTraversalForPerfectTree(root, n -> System.out.println(n.getData() + " "));
+    }
+
+    public static void alternateLevelOrderTraversalForPerfectTree(BinaryTreeNode root, Consumer<BinaryTreeNode> visit) {
+        if(root == null) {
+            return;
+        }
+
+        if(!TreeAlgorithms.isPerfect(root)) {
+            return;
+        }
+
+        if(visit != null) {
+            visit.accept(root);
+        }
+
+        if(root.getLeft() == null) {
+            return;
+        }
+
+        Queue<BinaryTreeNode> queue = new LinkedList<>();
+        queue.offer(root.getLeft());
+        queue.offer(root.getRight());
+
+        while(!queue.isEmpty()) {
+            var left = queue.poll();
+            var right = queue.poll();
+
+            if(visit != null) {
+                visit.accept(left);
+                visit.accept(right);
+            }
+
+            if(left.getLeft() != null) {
+                queue.offer(left.getLeft());
+                queue.offer(right.getRight());
+                queue.offer(left.getRight());
+                queue.offer(right.getLeft());
+            }
+        }
+    }
+
+    public static void alternateBottomsUpLevelOrderTraversalForPerfectTree(BinaryTreeNode root) {
+        alternateBottomsUpLevelOrderTraversalForPerfectTree(root, n -> System.out.println(n.getData() + " "));
+    }
+
+    public static void alternateBottomsUpLevelOrderTraversalForPerfectTree(BinaryTreeNode root, Consumer<BinaryTreeNode> visit) {
+        if(root == null) {
+            return;
+        }
+
+        if(!TreeAlgorithms.isPerfect(root)) {
+            return;
+        }
+
+
+        Stack<BinaryTreeNode> stack = new Stack<>();
+        stack.push(root);
+
+
+        if(root.getLeft() != null) {
+            stack.push(root.getRight());
+            stack.push(root.getLeft());
+
+            Queue<BinaryTreeNode> queue = new LinkedList<>();
+            queue.offer(root.getLeft());
+            queue.offer(root.getRight());
+
+            while (!queue.isEmpty()) {
+                var left = queue.poll();
+                var right = queue.poll();
+
+                if (left.getLeft() != null) {
+                    queue.offer(left.getRight());
+                    queue.offer(right.getLeft());
+                    queue.offer(left.getLeft());
+                    queue.offer(right.getRight());
+
+                    stack.push(right.getLeft());
+                    stack.push(left.getRight());
+                    stack.push(right.getRight());
+                    stack.push(left.getLeft());
+                }
+            }
+        }
+
+        while(!stack.isEmpty()) {
+            var node = stack.pop();
+            if(visit != null) {
+                visit.accept(node);
+            }
+        }
     }
 }

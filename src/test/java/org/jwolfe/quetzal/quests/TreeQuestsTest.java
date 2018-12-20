@@ -5,6 +5,7 @@ import org.jwolfe.quetzal.algorithms.TreeAlgorithms;
 import org.jwolfe.quetzal.library.tree.BinaryTreeNode;
 import org.jwolfe.quetzal.library.utilities.Utilities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -240,5 +241,39 @@ class TreeQuestsTest {
         tree.getRight().getRight().getRight().getRight().setLeft(new BinaryTreeNode(10));
         maxPathSum = TreeQuests.maxPathSum(tree);
         assertEquals(27, maxPathSum);
+    }
+
+    @Test
+    void alternateLevelOrderTraversalForPerfectTree() {
+        BinaryTreeNode tree;
+        List<Integer> traversal;
+        int[] expectedTraversal;
+
+        tree = Utilities.constructBinaryTree(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31);
+        expectedTraversal = Utilities.constructArray(1, 2, 3, 4, 7, 5, 6, 8, 15, 9, 14, 10, 13, 11, 12, 16, 31, 17, 30, 18, 29, 19, 28, 20, 27, 21, 26,  22, 25, 23, 24);
+        traversal = new ArrayList<>();
+        TreeQuests.alternateLevelOrderTraversalForPerfectTree(tree, n->{
+            System.out.print(n.getData() + " ");
+            traversal.add(n.getData());
+        });
+        assertArrayEquals(expectedTraversal, traversal.stream().mapToInt(i->i).toArray());
+        System.out.println();
+    }
+
+    @Test
+    void alternateBottomsUpLevelOrderTraversalForPerfectTree() {
+        BinaryTreeNode tree;
+        List<Integer> traversal;
+        int[] expectedTraversal;
+
+        tree = Utilities.constructBinaryTree(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31);
+        expectedTraversal = Utilities.constructArray(16, 31, 17, 30, 18, 29, 19, 28, 20, 27, 21, 26, 22, 25, 23, 24, 8, 15, 9, 14, 10, 13, 11, 12, 4, 7, 5, 6, 2, 3, 1);
+        traversal = new ArrayList<>();
+        TreeQuests.alternateBottomsUpLevelOrderTraversalForPerfectTree(tree, n->{
+            System.out.print(n.getData() + " ");
+            traversal.add(n.getData());
+        });
+        assertArrayEquals(expectedTraversal, traversal.stream().mapToInt(i->i).toArray());
+        System.out.println();
     }
 }
