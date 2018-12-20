@@ -501,4 +501,36 @@ public class TreeQuests {
             }
         }
     }
+
+    public static List<Integer> getExtremeNodesInAlternateOrder(BinaryTreeNode root) {
+        List<Integer> alternateExtremeNodes = new ArrayList<>();
+
+        Queue<BinaryTreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+
+        boolean rightFlag = true;
+
+        while(!queue.isEmpty()) {
+            var n = queue.size();
+            for (int i = 0; i < n; i++) {
+                var node = queue.poll();
+
+                if(node.getLeft() != null) {
+                    queue.offer(node.getLeft());
+                }
+                if(node.getRight() != null) {
+                    queue.offer(node.getRight());
+                }
+
+                if((!rightFlag && i == 0)
+                    || (rightFlag && i == n-1)) {
+                    alternateExtremeNodes.add(node.getData());
+                }
+            }
+
+            rightFlag = !rightFlag;
+        }
+
+        return alternateExtremeNodes;
+    }
 }

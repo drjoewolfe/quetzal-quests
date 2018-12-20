@@ -276,4 +276,16 @@ class TreeQuestsTest {
         assertArrayEquals(expectedTraversal, traversal.stream().mapToInt(i->i).toArray());
         System.out.println();
     }
+
+    @Test
+    void getExtremeNodesInAlternateOrder() {
+        BinaryTreeNode tree;
+        List<Integer> extremeNodes;
+        int[] expectedExtremeNodes;
+
+        tree = Utilities.constructBinaryTree(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31);
+        expectedExtremeNodes = Utilities.constructArray(1, 2, 7, 8, 31);
+        extremeNodes = TreeQuests.getExtremeNodesInAlternateOrder(tree);
+        assertArrayEquals(expectedExtremeNodes, extremeNodes.stream().mapToInt(i->i).toArray());
+    }
 }
