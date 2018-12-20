@@ -85,4 +85,22 @@ class BinarySearchTreeQuestsTest {
         assertEquals(33, tree.getRight().getData());
         assertEquals(54, tree.getRight().getRight().getData());
     }
+
+    @Test
+    void getKthLargestElement() {
+        BinaryTreeNode tree;
+        int kthLargest;
+
+        tree = Utilities.constructBinaryTree(20, 8, 22, 4, 12, null, null, null, null, 10, 14);
+        kthLargest = BinarySearchTreeQuests.getKthLargestElement(tree, 3);
+        assertEquals(14, kthLargest);
+        kthLargest = BinarySearchTreeQuests.getKthLargestElement(tree, 5);
+        assertEquals(10, kthLargest);
+
+        tree = Utilities.constructBinaryTree(50, 30, 70, 20, 40, 60, 80);
+        for (int i = 1; i < 8; i++) {
+            kthLargest = BinarySearchTreeQuests.getKthLargestElement(tree, i);
+            assertEquals(80 - 10 * (i - 1), kthLargest);
+        }
+    }
 }

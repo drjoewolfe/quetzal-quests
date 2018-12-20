@@ -127,4 +127,30 @@ public class BinarySearchTreeQuests {
 
         convertBSTToTreeWithSumOfSmallerNodes(root.getRight(), runningSum);
     }
+
+    public static int getKthLargestElement(BinaryTreeNode root, int k) {
+        // Approach 1: Inorder traversal & get kth from last
+        // Approach 2: Augment data structure (node) to include the # of elements to its left
+        // Approach 3: This. (Reverse Inorder Traversal
+
+        AtomicInteger kthLargest = new AtomicInteger(Integer.MIN_VALUE);
+        getKthLargestElement(root, k, new AtomicInteger(0), kthLargest);
+        return kthLargest.intValue();
+    }
+
+    private static void getKthLargestElement(BinaryTreeNode root, int k, AtomicInteger currentRank, AtomicInteger kthLargest) {
+        if(root == null
+                || currentRank.intValue() >= k) {
+            return;
+        }
+
+        getKthLargestElement(root.getRight(), k, currentRank, kthLargest);
+
+        if(currentRank.incrementAndGet() == k) {
+            kthLargest.set(root.getData());
+            return;
+        }
+
+        getKthLargestElement(root.getLeft(), k, currentRank, kthLargest);
+    }
 }
