@@ -464,4 +464,25 @@ class LinkedListQuestsTest {
         assertLinkedListEquals(expected, newHead);
         System.out.println();
     }
+
+    @Test
+    void insertIntoSortedCircularLinkedList() {
+        LinkedListNode head;
+
+        head = null;
+        head = LinkedListQuests.insertIntoSortedCircularLinkedList(head, 11);
+        head = LinkedListQuests.insertIntoSortedCircularLinkedList(head, 12);
+        head = LinkedListQuests.insertIntoSortedCircularLinkedList(head, 90);
+        head = LinkedListQuests.insertIntoSortedCircularLinkedList(head, 2);
+        head = LinkedListQuests.insertIntoSortedCircularLinkedList(head, 1);
+        head = LinkedListQuests.insertIntoSortedCircularLinkedList(head, 56);
+
+        assertEquals(1, head.getData());
+        assertEquals(2, head.getNext().getData());
+        assertEquals(11, head.getNext().getNext().getData());
+        assertEquals(12, head.getNext().getNext().getNext().getData());
+        assertEquals(56, head.getNext().getNext().getNext().getNext().getData());
+        assertEquals(90, head.getNext().getNext().getNext().getNext().getNext().getData());
+        assertEquals(1, head.getNext().getNext().getNext().getNext().getNext().getNext().getData());
+    }
 }

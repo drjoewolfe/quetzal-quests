@@ -629,4 +629,38 @@ public class LinkedListQuests {
 
         return head;
     }
+
+    public static LinkedListNode insertIntoSortedCircularLinkedList(LinkedListNode head, int value) {
+        LinkedListNode node = new LinkedListNode(value);
+
+        // Case 1: Head is null
+        if(head == null) {
+            node.setNext(node);
+            return node;
+        }
+
+        // Case 2: Node is to be inserted before Head
+        if(head.getData() > value) {
+            var lastElement = head;
+            while (lastElement.getNext() != head) {
+                lastElement = lastElement.getNext();
+            }
+
+            lastElement.setNext(node);
+            node.setNext(head);
+            return node;
+        }
+
+        // Case 3: Node is to be inserted after head
+        var current = head;
+        while (current.getNext() != head
+                && current.getNext().getData() < value) {
+            current = current.getNext();
+        }
+
+        node.setNext(current.getNext());
+        current.setNext(node);
+
+        return head;
+    }
 }
