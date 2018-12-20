@@ -1,6 +1,7 @@
 package org.jwolfe.quetzal.quests;
 
 import org.junit.jupiter.api.Test;
+import org.jwolfe.quetzal.library.tree.BinaryTreeNode;
 import org.jwolfe.quetzal.library.utilities.Utilities;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -58,5 +59,17 @@ class BinarySearchTreeQuestsTest {
         preorder = Utilities.constructArray(100, 25, 75, 15, 25, 50, 85);
         rv = BinarySearchTreeQuests.checkIfAllInternalNodesHaveExactlyOneChildNaive(preorder);
         assertEquals(false, rv);
+    }
+
+    @Test
+    void largestNumberLessThanOrEqualToNInBST() {
+        BinaryTreeNode tree;
+        int largestNumber;
+
+        tree = Utilities.constructBinaryTree(5 ,2, 12, 1, 3, 9, 21, null, null, null, null, null, null, 19, 25);
+        largestNumber = BinarySearchTreeQuests.largestNumberLessThanOrEqualToNInBST(tree, 24);
+        assertEquals(21, largestNumber);
+        largestNumber = BinarySearchTreeQuests.largestNumberLessThanOrEqualToNInBST(tree, 4);
+        assertEquals(3, largestNumber);
     }
 }

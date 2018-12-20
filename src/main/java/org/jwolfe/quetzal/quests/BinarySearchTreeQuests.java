@@ -1,5 +1,7 @@
 package org.jwolfe.quetzal.quests;
 
+import org.jwolfe.quetzal.library.tree.BinaryTreeNode;
+
 public class BinarySearchTreeQuests {
 
     public static boolean checkIfAllInternalNodesHaveExactlyOneChild(int[] preOrder) {
@@ -83,5 +85,24 @@ public class BinarySearchTreeQuests {
         }
 
         return true;
+    }
+
+    public static int largestNumberLessThanOrEqualToNInBST(BinaryTreeNode node, int n) {
+        if(node == null) {
+            return -1;
+        }
+
+        int largestNumber = -1;
+        while(node != null) {
+            if(node.getData() <= n) {
+                largestNumber = node.getData();
+                node = node.getRight();
+            }
+            else {
+                node = node.getLeft();
+            }
+        }
+
+        return largestNumber;
     }
 }
