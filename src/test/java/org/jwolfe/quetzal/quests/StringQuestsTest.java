@@ -345,4 +345,12 @@ class StringQuestsTest {
 
         assertEquals(8, groups.size());
     }
+
+    @Test
+    void addBinaryStings() {
+        String result;
+
+        result = StringQuests.addBinaryStings("11", "1");
+        assertEquals("100", result);
+    }
 }

@@ -531,4 +531,42 @@ public class StringQuests {
 
         return key.toString();
     }
+
+    public static String addBinaryStings(String str1, String str2) {
+        if(str1 == null) {
+            return str2;
+        }
+
+        if(str2 == null) {
+            return str1;
+        }
+
+
+        int i = str1.length() - 1;
+        int j = str2.length() - 1;
+        int carry = 0;
+
+        String result = "";
+        while(i >=0 || j >=0 || carry > 0) {
+            int sum = 0;
+            if(i >= 0) {
+                sum += str1.charAt(i) - '0';
+            }
+
+            if(j >= 0) {
+                sum += str2.charAt(j) - '0';
+            }
+
+            sum += carry;
+
+            carry = sum / 2;
+            sum = sum % 2;
+            result = sum + result;
+
+            i--;
+            j--;
+        }
+
+        return result;
+    }
 }
