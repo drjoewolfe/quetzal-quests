@@ -1,6 +1,10 @@
 package org.jwolfe.quetzal.quests;
 
+import org.jwolfe.quetzal.algorithms.TreeAlgorithms;
+import org.jwolfe.quetzal.library.tree.BinarySearchTree;
 import org.jwolfe.quetzal.library.tree.BinaryTreeNode;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class BinarySearchTreeQuests {
 
@@ -104,5 +108,23 @@ public class BinarySearchTreeQuests {
         }
 
         return largestNumber;
+    }
+
+    public static void convertBSTToTreeWithSumOfSmallerNodes(BinaryTreeNode root) {
+        AtomicInteger runningSum = new AtomicInteger(0);
+        convertBSTToTreeWithSumOfSmallerNodes(root, runningSum);
+    }
+
+    private static void convertBSTToTreeWithSumOfSmallerNodes(BinaryTreeNode root, AtomicInteger runningSum) {
+        if(root == null) {
+            return;
+        }
+
+        convertBSTToTreeWithSumOfSmallerNodes(root.getLeft(), runningSum);
+
+        runningSum.set(runningSum.intValue() + root.getData());
+        root.setData(runningSum.intValue());
+
+        convertBSTToTreeWithSumOfSmallerNodes(root.getRight(), runningSum);
     }
 }

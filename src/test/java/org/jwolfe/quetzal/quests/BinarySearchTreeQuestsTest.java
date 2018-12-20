@@ -72,4 +72,17 @@ class BinarySearchTreeQuestsTest {
         largestNumber = BinarySearchTreeQuests.largestNumberLessThanOrEqualToNInBST(tree, 4);
         assertEquals(3, largestNumber);
     }
+
+    @Test
+    void convertBSTToTreeWithSumOfSmallerNodes() {
+        BinaryTreeNode tree;
+
+        tree = Utilities.constructBinaryTree(9, 6, 15, 3, null, null, 21);
+        BinarySearchTreeQuests.convertBSTToTreeWithSumOfSmallerNodes(tree);
+        assertEquals(18, tree.getData());
+        assertEquals(9, tree.getLeft().getData());
+        assertEquals(3, tree.getLeft().getLeft().getData());
+        assertEquals(33, tree.getRight().getData());
+        assertEquals(54, tree.getRight().getRight().getData());
+    }
 }
