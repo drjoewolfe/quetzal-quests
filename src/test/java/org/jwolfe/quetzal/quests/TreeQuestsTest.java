@@ -316,6 +316,19 @@ class TreeQuestsTest {
     }
     
     @Test
+    void connectNodesAtSameLevelRecursive() {
+    	ConnectableBinaryTreeNode<Integer> tree;
+
+    	tree = Utilities.constructConnectableBinaryTree(10, 8, 2, 3, null, null, 90);
+    	TreeQuests.connectNodesAtSameLevelRecursive(tree);
+    	assertNull(tree.getConnection());
+    	assertEquals(2, (int) tree.getLeft().getConnection().getData());
+    	assertNull(tree.getRight().getConnection());
+    	assertEquals(90, (int) tree.getLeft().getLeft().getConnection().getData());
+    	assertNull(tree.getRight().getRight().getConnection());    	
+    }
+    
+    @Test
     void connectNodesAtSameLevelIterative() {
     	ConnectableBinaryTreeNode<Integer> tree;
 
@@ -325,7 +338,6 @@ class TreeQuestsTest {
     	assertEquals(2, (int) tree.getLeft().getConnection().getData());
     	assertNull(tree.getRight().getConnection());
     	assertEquals(90, (int) tree.getLeft().getLeft().getConnection().getData());
-    	assertNull(tree.getRight().getRight().getConnection());
-    	
+    	assertNull(tree.getRight().getRight().getConnection());    	
     }
 }

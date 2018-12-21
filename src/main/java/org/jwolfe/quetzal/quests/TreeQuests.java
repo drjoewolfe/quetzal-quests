@@ -556,6 +556,61 @@ public class TreeQuests {
 		return node;
 	}
 	
+	public static void connectNodesAtSameLevelRecursive(ConnectableBinaryTreeNode<Integer> root) {
+		if(root == null) {
+			return;
+		}
+		
+		root.setConnection(null);
+		connectNodesAtSameLevelRecursiveHelper(root);
+	}
+	
+	private static void connectNodesAtSameLevelRecursiveHelper(ConnectableBinaryTreeNode<Integer> node) {
+		if(node == null) {
+			return;
+		}
+		
+		if(node.getConnection() != null) {
+			connectNodesAtSameLevelRecursiveHelper(node.getConnection());
+		}
+		
+		if(node.getLeft() != null) {
+			if(node.getRight() != null) {
+				node.getLeft().setConnection(node.getRight());
+				node.getRight().setConnection(getNextLevelRightConnectable(node));
+			}
+			else {
+				node.getLeft().setConnection(getNextLevelRightConnectable(node));
+			}
+			
+			connectNodesAtSameLevelRecursiveHelper(node.getLeft());
+		}
+		else if(node.getRight() != null) {
+			node.getRight().setConnection(getNextLevelRightConnectable(node));
+			
+			connectNodesAtSameLevelRecursiveHelper(node.getRight());
+		}
+		else {
+			connectNodesAtSameLevelRecursiveHelper( getNextLevelRightConnectable(node));
+		}
+	}
+
+	private static ConnectableBinaryTreeNode<Integer> getNextLevelRightConnectable(ConnectableBinaryTreeNode<Integer> node) {
+		var current = node.getConnection();
+		while(current != null) {
+			if(current.getLeft() != null) {
+				return current.getLeft();
+			}
+			
+			if(current.getRight() != null) {
+				return current.getRight();
+			}
+			current = current.getConnection();
+		}
+		
+		return null;
+	}
+
 	public static void connectNodesAtSameLevelIterative(ConnectableBinaryTreeNode<Integer> root) {
 		if(root == null) {
 			return;
