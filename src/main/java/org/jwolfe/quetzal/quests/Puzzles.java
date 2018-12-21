@@ -95,4 +95,84 @@ public class Puzzles {
 
         return true;
     }
+
+    public static boolean soduku(int[][] board) {
+        if(board == null || board.length != 9) {
+            return false;
+        }
+
+        for (int i = 0; i < 9; i++) {
+            if(board[i].length != 9) {
+                return false;
+            }
+        }
+
+        return solveSoduku(board);
+    }
+
+    private static boolean solveSoduku(int[][] board) {
+        boolean isSolved = true;
+        int row = 0;
+        int column = 0;
+        for (row = 0; row < 9; row++) {
+            for (column = 0; column < 9; column++) {
+                if(board[row][column] == 0) {
+                    isSolved = false;
+                    break;
+                }
+            }
+
+            if(!isSolved) {
+                break;
+            }
+        }
+
+        if(isSolved) {
+            return true;
+        }
+
+        // Not complete. Solve for cell (row, col)
+        for (int num = 1; num <=9 ; num++) {
+            if(isAllowedInSoduku(board, row, column, num)) {
+                board[row][column] = num;
+                isSolved = solveSoduku(board);
+                if(isSolved) {
+                    return true;
+                }
+
+                // Backtrack
+                board[row][column] = 0;
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean isAllowedInSoduku(int[][] board, int row, int column, int number) {
+        // Check row & column for number
+        for (int i = 0; i < 9; i++) {
+            if((i != column && board[row][i] == number)
+                || (i != row) && board[i][column] == number) {
+                return false;
+            }
+        }
+
+        // Check 3x3 grid for number
+        int startRow = row - (row % 3);
+        int startColumn = column - (column % 3);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                int gridRow = startRow + i;
+                int gridColumn = startColumn + j;
+                if(gridRow != row
+                    && gridColumn != column
+                    && board[gridRow][gridColumn] == number) {
+                    return false;
+                }
+
+            }
+        }
+
+        return true;
+    }
 }

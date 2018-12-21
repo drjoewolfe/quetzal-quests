@@ -288,4 +288,29 @@ class TreeQuestsTest {
         extremeNodes = TreeQuests.getExtremeNodesInAlternateOrder(tree);
         assertArrayEquals(expectedExtremeNodes, extremeNodes.stream().mapToInt(i->i).toArray());
     }
+    
+    @Test
+    void constructSpecialBinaryTreeFromInOrder() {
+        BinaryTreeNode tree;
+        int[] inOrder;
+
+        inOrder = Utilities.constructArray(5, 10, 40, 30, 28);
+        tree = TreeQuests.constructSpecialBinaryTreeFromInOrder(inOrder);
+        assertEquals(40, tree.getData());
+        assertEquals(10, tree.getLeft().getData());
+        assertEquals(5, tree.getLeft().getLeft().getData());
+        assertEquals(30, tree.getRight().getData());
+        assertEquals(28, tree.getRight().getRight().getData());
+        
+        inOrder = Utilities.constructArray(1, 5, 10, 40, 30, 15, 28, 20);
+        tree = TreeQuests.constructSpecialBinaryTreeFromInOrder(inOrder);
+        assertEquals(40, tree.getData());
+        assertEquals(10, tree.getLeft().getData());
+        assertEquals(5, tree.getLeft().getLeft().getData());
+        assertEquals(1, tree.getLeft().getLeft().getLeft().getData());
+        assertEquals(30, tree.getRight().getData());
+        assertEquals(28, tree.getRight().getRight().getData());
+        assertEquals(15, tree.getRight().getRight().getLeft().getData());
+        assertEquals(20, tree.getRight().getRight().getRight().getData());
+    }
 }

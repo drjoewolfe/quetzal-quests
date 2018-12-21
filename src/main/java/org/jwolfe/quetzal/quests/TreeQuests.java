@@ -1,8 +1,6 @@
 package org.jwolfe.quetzal.quests;
 
-import jdk.nashorn.api.tree.Tree;
 import org.jwolfe.quetzal.algorithms.TreeAlgorithms;
-import org.jwolfe.quetzal.library.tree.BinarySearchTree;
 import org.jwolfe.quetzal.library.tree.BinaryTreeNode;
 import org.jwolfe.quetzal.library.utilities.Utilities;
 
@@ -533,4 +531,27 @@ public class TreeQuests {
 
         return alternateExtremeNodes;
     }
+    
+	public static BinaryTreeNode constructSpecialBinaryTreeFromInOrder(int[] inOrder) {
+		// In-order traversal represents a Binary Tree where every node is greater than its children
+		
+		if(inOrder == null) {
+			return null;
+		}
+		
+		return constructSpecialBinaryTreeFromInOrder(inOrder, 0, inOrder.length - 1);
+	}
+	
+	public static BinaryTreeNode constructSpecialBinaryTreeFromInOrder(int[] inOrder, int start, int end) {
+		if(start > end) {
+			return null;
+		}
+		
+		int maxIndex = Utilities.maxIndex(inOrder, start, end);
+		BinaryTreeNode node = new BinaryTreeNode(inOrder[maxIndex]);
+		node.setLeft(constructSpecialBinaryTreeFromInOrder(inOrder, start, maxIndex - 1));
+		node.setRight(constructSpecialBinaryTreeFromInOrder(inOrder, maxIndex + 1, end));
+		
+		return node;
+	}
 }
