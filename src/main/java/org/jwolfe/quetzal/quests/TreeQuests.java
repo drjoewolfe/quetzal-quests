@@ -556,6 +556,45 @@ public class TreeQuests {
 		return node;
 	}
 	
+	public static void connectNodesAtSameLevel(ConnectableBinaryTreeNode<Integer> root) {
+		if(root == null) {
+			return;
+		}
+		
+		root.setConnection(null);
+		
+		var node = root;
+		while(node != null) {
+			var current = node;
+			while(current != null) {
+				if(current.getLeft() != null) {
+					if(current.getRight() != null) {
+						current.getLeft().setConnection(current.getRight());
+					}
+					else {
+						current.getLeft().setConnection(getNextLevelRightConnectable(current));
+					}
+				}
+				
+				if(current.getRight() != null) {
+					current.getRight().setConnection(getNextLevelRightConnectable(current));
+				}
+
+				current = current.getConnection();
+			}			
+			
+			if(node.getLeft() != null) {
+				node = node.getLeft();
+			}
+			else if(node.getRight() != null) {
+				node = node.getRight();
+			}
+			else {
+				node = getNextLevelRightConnectable(node);
+			}
+		}
+	}
+	
 	public static void connectNodesAtSameLevelRecursive(ConnectableBinaryTreeNode<Integer> root) {
 		if(root == null) {
 			return;
