@@ -2,6 +2,7 @@ package org.jwolfe.quetzal.quests;
 
 import org.jwolfe.quetzal.algorithms.TreeAlgorithms;
 import org.jwolfe.quetzal.library.tree.BinaryTreeNode;
+import org.jwolfe.quetzal.library.tree.ConnectableBinaryTreeNode;
 import org.jwolfe.quetzal.library.utilities.Utilities;
 
 import java.util.*;
@@ -553,5 +554,37 @@ public class TreeQuests {
 		node.setRight(constructSpecialBinaryTreeFromInOrder(inOrder, maxIndex + 1, end));
 		
 		return node;
+	}
+	
+	public static void connectNodesAtSameLevelIterative(ConnectableBinaryTreeNode<Integer> root) {
+		if(root == null) {
+			return;
+		}
+		
+		Queue<ConnectableBinaryTreeNode<Integer>> queue = new LinkedList<>();
+		queue.offer(root);
+		
+		while(!queue.isEmpty()) {
+			int n = queue.size();
+			for (int i = 0; i < n; i++) {
+				var node = queue.poll();
+				
+				// Connect
+				if(i != n-1) {
+					node.setConnection(queue.peek());
+				}
+				else {
+					node.setConnection(null);
+				}
+				
+				if(node.getLeft() != null) {
+					queue.offer(node.getLeft());
+				}
+				
+				if(node.getRight() != null) {
+					queue.offer(node.getRight());
+				}
+			}
+		}
 	}
 }

@@ -3,6 +3,7 @@ package org.jwolfe.quetzal.quests;
 import org.junit.jupiter.api.Test;
 import org.jwolfe.quetzal.algorithms.TreeAlgorithms;
 import org.jwolfe.quetzal.library.tree.BinaryTreeNode;
+import org.jwolfe.quetzal.library.tree.ConnectableBinaryTreeNode;
 import org.jwolfe.quetzal.library.utilities.Utilities;
 
 import java.util.ArrayList;
@@ -312,5 +313,19 @@ class TreeQuestsTest {
         assertEquals(28, tree.getRight().getRight().getData());
         assertEquals(15, tree.getRight().getRight().getLeft().getData());
         assertEquals(20, tree.getRight().getRight().getRight().getData());
+    }
+    
+    @Test
+    void connectNodesAtSameLevelIterative() {
+    	ConnectableBinaryTreeNode<Integer> tree;
+
+    	tree = Utilities.constructConnectableBinaryTree(10, 8, 2, 3, null, null, 90);
+    	TreeQuests.connectNodesAtSameLevelIterative(tree);
+    	assertNull(tree.getConnection());
+    	assertEquals(2, (int) tree.getLeft().getConnection().getData());
+    	assertNull(tree.getRight().getConnection());
+    	assertEquals(90, (int) tree.getLeft().getLeft().getConnection().getData());
+    	assertNull(tree.getRight().getRight().getConnection());
+    	
     }
 }
