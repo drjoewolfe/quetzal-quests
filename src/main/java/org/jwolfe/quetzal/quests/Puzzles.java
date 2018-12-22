@@ -1,7 +1,10 @@
 package org.jwolfe.quetzal.quests;
 
+import org.jwolfe.quetzal.library.general.Pair;
 import org.jwolfe.quetzal.library.general.Rod;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class Puzzles {
@@ -242,5 +245,37 @@ public class Puzzles {
 		}
 
 		return getWaysToTile2xNBoardWith2x1TilesRecursive(n - 1) + getWaysToTile2xNBoardWith2x1TilesRecursive(n - 2);
+	}
+
+	public static List<Pair<Integer, Integer>> buySellStocksForMaximumProfit(int[] pricesByDay) {
+		if (pricesByDay == null) {
+			return null;
+		}
+
+		List<Pair<Integer, Integer>> buySellPairs = new ArrayList<>();
+		int n = pricesByDay.length;
+		int index = 0;
+		while (index < n) {
+			// Find local minima
+			while (index < n - 1 && pricesByDay[index] > pricesByDay[index + 1]) {
+				index++;
+			}
+
+			if (index == n - 1) {
+				break;
+			}
+
+			int buyOn = index;
+
+			// Find local maxima
+			while (index < n - 1 && pricesByDay[index] < pricesByDay[index + 1]) {
+				index++;
+			}
+
+			int sellOn = index;
+			buySellPairs.add(new Pair<>(buyOn, sellOn));
+		}
+
+		return buySellPairs;
 	}
 }
