@@ -102,4 +102,13 @@ class PuzzlesTest {
 		assertTrue(buySellPairs.contains(new Pair<>(0, 3)));
 		assertTrue(buySellPairs.contains(new Pair<>(4, 6)));
 	}
+
+	@Test
+	void minCostToConvert3x3MatrixToMagicSquare() {
+		int[][] matrix = new int[][] { { 4, 9, 2 }, { 3, 5, 7 }, { 8, 1, 5 } };
+		assertEquals(1, Puzzles.minCostToConvert3x3MatrixToMagicSquare(matrix));
+
+		matrix = new int[][] { { 4, 8, 2 }, { 4, 5, 7 }, { 6, 1, 6 } };
+		assertEquals(4, Puzzles.minCostToConvert3x3MatrixToMagicSquare(matrix));
+	}
 }

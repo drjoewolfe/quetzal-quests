@@ -1,9 +1,14 @@
 package org.jwolfe.quetzal.quests;
 
+import org.jwolfe.quetzal.algorithms.ArrayAlgorithms;
+import org.jwolfe.quetzal.algorithms.ListAlgorithms;
 import org.jwolfe.quetzal.library.general.Pair;
 import org.jwolfe.quetzal.library.general.Rod;
+import org.jwolfe.quetzal.library.matrix.Matrix;
+import org.jwolfe.quetzal.library.utilities.Utilities;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
@@ -277,5 +282,125 @@ public class Puzzles {
 		}
 
 		return buySellPairs;
+	}
+
+	public static int minCostToConvert3x3MatrixToMagicSquare(int[][] matrix) {
+		if (matrix == null) {
+			return Integer.MAX_VALUE;
+		}
+
+		if (matrix.length != 3) {
+			return Integer.MAX_VALUE;
+		}
+
+		for (int i = 0; i < 3; i++) {
+			if (matrix[i].length != 3) {
+				return Integer.MAX_VALUE;
+			}
+		}
+
+		var allMagicSquares = getAllMagicSquares();
+
+		int cost = Integer.MAX_VALUE;
+		for (var square : allMagicSquares) {
+			cost = Math.min(cost, getCostToConvertToSquare(matrix, square));
+		}
+
+		return cost;
+	}
+
+	private static List<List<List<Integer>>> getAllMagicSquares() {
+		List<List<List<Integer>>> allMagicSquares = new ArrayList<>();
+
+		var numbers = Utilities.createArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9);
+		var allPermutations = ListAlgorithms.getAllPermutations(numbers);
+		for (var permutation : allPermutations) {
+			var square = get3x3SquareFromList(permutation);
+			if (isMagicSquare(square)) {
+				allMagicSquares.add(square);
+			}
+		}
+
+		return allMagicSquares;
+	}
+
+	private static List<List<Integer>> get3x3SquareFromList(List<Integer> list) {
+		List<List<Integer>> square = new ArrayList<>();
+
+		for (int i = 0; i < 3; i++) {
+			square.add(new ArrayList<>());
+			for (int j = 0; j < 3; j++) {
+				square.get(i).add(list.get(3 * i + j));
+			}
+		}
+
+		return square;
+	}
+
+	private static boolean isMagicSquare(List<List<Integer>> square) {
+		int length = square.size();
+
+		int magicSum = 0;
+		for (int j = 0; j < length; j++) {
+			magicSum += square.get(0).get(j);
+		}
+
+		// All rows should add up to sum.
+		for (int i = 0; i < length; i++) {
+			int sum = 0;
+			for (int j = 0; j < length; j++) {
+				sum += square.get(i).get(j);
+			}
+
+			if (sum != magicSum) {
+				return false;
+			}
+		}
+
+		// All columns should add up to sum.
+		for (int j = 0; j < length; j++) {
+			int sum = 0;
+			for (int i = 0; i < length; i++) {
+				sum += square.get(i).get(j);
+			}
+
+			if (sum != magicSum) {
+				return false;
+			}
+		}
+
+		// Left diagonal should add up to sum.
+		int sum = 0;
+		for (int i = 0; i < length; i++) {
+			sum += square.get(i).get(i);
+		}
+
+		if (sum != magicSum) {
+			return false;
+		}
+
+		// Right diagonal should add up to sum.
+		sum = 0;
+		for (int i = 0; i < length; i++) {
+			sum += square.get(i).get(length - i - 1);
+		}
+
+		if (sum != magicSum) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private static int getCostToConvertToSquare(int[][] matrix, List<List<Integer>> square) {
+		int cost = 0;
+		int length = matrix.length;
+		for (int i = 0; i < length; i++) {
+			for (int j = 0; j < length; j++) {
+				cost += Math.abs(square.get(i).get(j) - matrix[i][j]);
+			}
+		}
+
+		return cost;
 	}
 }
