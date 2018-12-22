@@ -97,4 +97,16 @@ class PuzzlesTest {
         
         assertEquals(2, Puzzles.celebrityProblem(4, acquaintanceMatrix));
     }
+    
+    @Test
+    void getWaysToTile2xNBoardWith2x1Tiles() {        
+        assertEquals(3, Puzzles.getWaysToTile2xNBoardWith2x1Tiles(3));
+        assertEquals(5, Puzzles.getWaysToTile2xNBoardWith2x1Tiles(4));
+    }
+    
+    @Test
+    void getWaysToTile2xNBoardWith2x1TilesRecursive() {        
+        assertEquals(3, Puzzles.getWaysToTile2xNBoardWith2x1TilesRecursive(3));
+        assertEquals(5, Puzzles.getWaysToTile2xNBoardWith2x1TilesRecursive(4));
+    }
 }
