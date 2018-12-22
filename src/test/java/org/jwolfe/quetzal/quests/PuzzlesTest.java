@@ -86,6 +86,15 @@ class PuzzlesTest {
         Utilities.printArray(board);
         assertTrue(solved);
         assertTwoDimensionalArrayEquals(expectedBoard, board);
-
+    }
+    
+    @Test
+    void celebrityProblem() {
+        int[][] acquaintanceMatrix = {{0, 0, 1, 0}, 
+						                {0, 0, 1, 0}, 
+						                {0, 0, 0, 0}, 
+						                {0, 0, 1, 0}};
+        
+        assertEquals(2, Puzzles.celebrityProblem(4, acquaintanceMatrix));
     }
 }

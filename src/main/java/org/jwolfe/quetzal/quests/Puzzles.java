@@ -175,4 +175,48 @@ public class Puzzles {
 
         return true;
     }
+    
+    public static int celebrityProblem(int n, int[][] acquaintanceMatrix) {
+    	// Alternate ways of solving the celebrity problem
+    	//		1) Create a graph & search for the vertex that has outdegree of 0.
+    	//		2) Push all elements into a stack & pop top 2. push the possible celebrity alone back to the stack & repeat till only one is left.
+    	
+    	int i = 0;
+    	int j = n - 1;
+    	
+    	while(i < j) {
+    		boolean knows = hasAcquaintance(i, j, acquaintanceMatrix);
+    		if(knows) {
+    			// i knows j. i is is not a celebrity
+    			i++;
+    		}
+    		else {
+    			// i does not know j. i could be a celebrity
+    			j--;
+    		}
+    	}
+    	
+    	// Confirm that i is the celebrity
+    	for (int k = 0; k < n; k++) {
+			if(i != k) {
+				if(!hasAcquaintance(k,  i, acquaintanceMatrix) ) {
+					return -1;
+				}
+			}    		
+		}
+    	
+    	return i;
+	}
+    
+    private static boolean hasAcquaintance(int a, int b, int[][] acquaintanceMatrix) {
+		if(acquaintanceMatrix == null) {
+			return false;
+		}
+    	
+		if(acquaintanceMatrix[a][b]!= 0) {
+			return true;
+		}
+		
+    	return false;
+	}
 }
