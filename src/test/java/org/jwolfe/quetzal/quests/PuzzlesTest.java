@@ -111,4 +111,13 @@ class PuzzlesTest {
 		matrix = new int[][] { { 4, 8, 2 }, { 4, 5, 7 }, { 6, 1, 6 } };
 		assertEquals(4, Puzzles.minCostToConvert3x3MatrixToMagicSquare(matrix));
 	}
+	
+	@Test
+	void travellingSalesman() {
+		int[][] citesAndDistances = new int[][] { { 0, 10, 15, 20 }, 
+							            { 10, 0, 35, 25 }, 
+							            { 15, 35, 0, 30 }, 
+							            { 20, 25, 30, 0 } };
+		assertEquals(80, Puzzles.travellingSalesman(citesAndDistances, 0));
+	}
 }

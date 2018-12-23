@@ -403,4 +403,43 @@ public class Puzzles {
 
 		return cost;
 	}
+	
+	public static int travellingSalesman(int[][] citiesAndDistancesesAndDistances, int startCity) {
+		if(citiesAndDistancesesAndDistances == null
+				|| citiesAndDistancesesAndDistances.length == 0) {
+			return 0;
+		}
+		
+		// Get list of all cities to visit
+		int numCities = citiesAndDistancesesAndDistances.length;
+		if(startCity >= numCities) {
+			return 0;
+		}
+		
+		List<Integer> citiesToVisit = new ArrayList<>();
+		for (int i = 0; i < numCities; i++) {
+			if(i != startCity) {
+				citiesToVisit.add(i);
+			}
+		}
+		
+		var allPermutationsOfCitiesToVisit = ListAlgorithms.getAllPermutations(citiesToVisit);
+		int minDistance = Integer.MAX_VALUE;
+		for (var permutation : allPermutationsOfCitiesToVisit) {
+			int distance = 0;
+			int fromCity = startCity;
+			for (int city : permutation) {
+				distance += citiesAndDistancesesAndDistances[fromCity][city];
+				fromCity = city;
+			}
+			
+			distance += citiesAndDistancesesAndDistances[fromCity][startCity];
+			
+			if(minDistance > distance) {
+				minDistance = distance;
+			}
+		}
+		
+		return minDistance;
+	}
 }
