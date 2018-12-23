@@ -403,26 +403,89 @@ public class Puzzles {
 
 		return cost;
 	}
-	
+
 	public static int travellingSalesman(int[][] citiesAndDistancesesAndDistances, int startCity) {
-		if(citiesAndDistancesesAndDistances == null
-				|| citiesAndDistancesesAndDistances.length == 0) {
+		// Recursive solution
+
+		if (citiesAndDistancesesAndDistances == null || citiesAndDistancesesAndDistances.length < 2) {
 			return 0;
 		}
-		
+
 		// Get list of all cities to visit
 		int numCities = citiesAndDistancesesAndDistances.length;
-		if(startCity >= numCities) {
+		if (startCity >= numCities) {
 			return 0;
 		}
-		
+
 		List<Integer> citiesToVisit = new ArrayList<>();
 		for (int i = 0; i < numCities; i++) {
-			if(i != startCity) {
+			if (i != startCity) {
 				citiesToVisit.add(i);
 			}
 		}
-		
+
+		return travellingSalesmanRecursive(citiesAndDistancesesAndDistances, citiesToVisit, startCity);
+	}
+
+	private static int travellingSalesmanRecursive(int[][] citiesAndDistancesesAndDistances,
+			List<Integer> citiesToVisit, int startCity) {
+		int minDistance = Integer.MAX_VALUE;
+		for (int i = 0; i < citiesToVisit.size(); i++) {
+			Integer endCity = citiesToVisit.get(i);
+			citiesToVisit.remove(i);
+
+			int tourDistance = getTravelDistanceToCity(citiesAndDistancesesAndDistances, startCity, citiesToVisit,
+					endCity) + citiesAndDistancesesAndDistances[endCity][startCity];
+
+			citiesToVisit.add(i, endCity);
+			minDistance = Math.min(minDistance, tourDistance);
+		}
+
+		return minDistance;
+	}
+
+	private static int getTravelDistanceToCity(int[][] citiesAndDistancesesAndDistances, int startCity,
+			List<Integer> intermediateCities, int endCity) {
+		if (intermediateCities.size() == 0) {
+			return citiesAndDistancesesAndDistances[startCity][endCity];
+		}
+
+		int minDistance = Integer.MAX_VALUE;
+		for (int i = 0; i < intermediateCities.size(); i++) {
+			Integer city = intermediateCities.get(i);
+			intermediateCities.remove(i);
+
+			int tourDistance = getTravelDistanceToCity(citiesAndDistancesesAndDistances, startCity, intermediateCities,
+					city) + citiesAndDistancesesAndDistances[city][endCity];
+
+			intermediateCities.add(i, city);
+			minDistance = Math.min(minDistance, tourDistance);
+		}
+
+		return minDistance;
+	}
+
+	public static int travellingSalesmanNaive(int[][] citiesAndDistancesesAndDistances, int startCity) {
+		// Naive (Brute) solution
+		// Time complexity: O(n!)
+
+		if (citiesAndDistancesesAndDistances == null || citiesAndDistancesesAndDistances.length < 2) {
+			return 0;
+		}
+
+		// Get list of all cities to visit
+		int numCities = citiesAndDistancesesAndDistances.length;
+		if (startCity >= numCities) {
+			return 0;
+		}
+
+		List<Integer> citiesToVisit = new ArrayList<>();
+		for (int i = 0; i < numCities; i++) {
+			if (i != startCity) {
+				citiesToVisit.add(i);
+			}
+		}
+
 		var allPermutationsOfCitiesToVisit = ListAlgorithms.getAllPermutations(citiesToVisit);
 		int minDistance = Integer.MAX_VALUE;
 		for (var permutation : allPermutationsOfCitiesToVisit) {
@@ -432,14 +495,14 @@ public class Puzzles {
 				distance += citiesAndDistancesesAndDistances[fromCity][city];
 				fromCity = city;
 			}
-			
+
 			distance += citiesAndDistancesesAndDistances[fromCity][startCity];
-			
-			if(minDistance > distance) {
+
+			if (minDistance > distance) {
 				minDistance = distance;
 			}
 		}
-		
+
 		return minDistance;
 	}
 }
