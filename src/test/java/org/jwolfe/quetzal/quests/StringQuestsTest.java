@@ -364,4 +364,12 @@ class StringQuestsTest {
         result = StringQuests.getLexicographicConcatenationOfAllSubStrings("cba");
         assertEquals("abbaccbcba", result);
     }
+    
+    @Test
+    void removeDuplicates() {
+        String result;
+
+        result = StringQuests.removeDuplicates("abcabcabcabcabcd");
+        assertEquals("abcd", result);
+    }
 }
