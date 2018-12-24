@@ -8,9 +8,14 @@ import org.jwolfe.quetzal.library.matrix.Matrix;
 import org.jwolfe.quetzal.library.utilities.Utilities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
+import java.util.Collections;
 
 public class Puzzles {
 
@@ -405,6 +410,119 @@ public class Puzzles {
 	}
 
 	public static int travellingSalesman(int[][] citiesAndDistancesesAndDistances, int startCity) {
+		// Dynamic Programming solution
+		// Held Karp Algorithm
+
+		if (citiesAndDistancesesAndDistances == null || citiesAndDistancesesAndDistances.length < 2) {
+			return 0;
+		}
+
+		// Get list of all cities to visit
+		int numCities = citiesAndDistancesesAndDistances.length;
+		if (startCity >= numCities) {
+			return 0;
+		}
+
+		List<Integer> citiesToVisit = new ArrayList<>();
+		for (int i = 0; i < numCities; i++) {
+			if (i != startCity) {
+				citiesToVisit.add(i);
+			}
+		}
+
+		var citySets = ListAlgorithms.getAllSubsetsSorted(citiesToVisit);
+		Map<CityTour, Integer> tourCosts = new HashMap<>();
+		for (var intermediateCities : citySets) {
+			for (var endCity : citiesToVisit) {
+				if (intermediateCities.contains(endCity)) {
+					continue;
+				}
+
+				var tour = new Puzzles.CityTour(startCity, intermediateCities, endCity);
+				int minTourCost = Integer.MAX_VALUE;
+				if (intermediateCities.size() == 0) {
+					minTourCost = citiesAndDistancesesAndDistances[startCity][endCity];
+				} else {
+					for (var city : intermediateCities) {
+						ArrayList<Integer> subIntermediateCities = new ArrayList<>(intermediateCities);
+						subIntermediateCities.remove(city);
+
+						var subTour = new Puzzles.CityTour(startCity, subIntermediateCities, city);
+						int subTourCost = tourCosts.get(subTour).intValue()
+								+ citiesAndDistancesesAndDistances[city][endCity];
+						minTourCost = Math.min(minTourCost, subTourCost);
+					}
+				}
+
+				tourCosts.put(tour, minTourCost);
+			}
+		}
+
+		// Find cost for source -> {all cities to visit} -> source
+		int minTourCost = Integer.MAX_VALUE;
+		for (var city : citiesToVisit) {
+			ArrayList<Integer> subIntermediateCities = new ArrayList<>(citiesToVisit);
+			subIntermediateCities.remove(city);
+
+			var subTour = new Puzzles.CityTour(startCity, subIntermediateCities, city);
+			int subTourCost = tourCosts.get(subTour).intValue() + citiesAndDistancesesAndDistances[city][startCity];
+			minTourCost = Math.min(minTourCost, subTourCost);
+		}
+
+		return minTourCost;
+	}
+
+	private static class CityTour {
+		int startCity;
+		List<Integer> intermediateCities;
+		int endCity;
+
+		public CityTour(int startCity, List<Integer> intermediateCities, int endCity) {
+			super();
+			this.startCity = startCity;
+			this.intermediateCities = intermediateCities;
+			this.endCity = endCity;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+
+			if (obj == null)
+				return false;
+
+			if (getClass() != obj.getClass())
+				return false;
+
+			CityTour other = (CityTour) obj;
+			if (endCity != other.endCity)
+				return false;
+
+			if (intermediateCities == null) {
+				if (other.intermediateCities != null)
+					return false;
+			} else if (!intermediateCities.equals(other.intermediateCities))
+				return false;
+
+			if (startCity != other.startCity)
+				return false;
+
+			return true;
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + endCity;
+			result = prime * result + ((intermediateCities == null) ? 0 : intermediateCities.hashCode());
+			result = prime * result + startCity;
+			return result;
+		}
+	}
+
+	public static int travellingSalesmanRecursive(int[][] citiesAndDistancesesAndDistances, int startCity) {
 		// Recursive solution
 
 		if (citiesAndDistancesesAndDistances == null || citiesAndDistancesesAndDistances.length < 2) {
