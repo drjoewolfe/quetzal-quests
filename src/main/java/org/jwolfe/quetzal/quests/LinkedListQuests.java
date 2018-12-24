@@ -1,6 +1,7 @@
 package org.jwolfe.quetzal.quests;
 
 import org.jwolfe.quetzal.library.list.LinkedListNode;
+import org.jwolfe.quetzal.library.list.AuxiliaryLinkedListNode;
 import org.jwolfe.quetzal.library.list.RightDownLinkedListNode;
 
 import java.util.HashSet;
@@ -663,4 +664,47 @@ public class LinkedListQuests {
 
         return head;
     }
+    
+    public static AuxiliaryLinkedListNode cloneDoublyLinkedListWithArbitraryPointer(AuxiliaryLinkedListNode head) {
+		// Approach 1: O(n) extra space - store original links in an array
+    	// Approach 2: Clone copies between nodes
+    	// Approach 3: HashMap for original & clone
+    	
+    	// This implementation is for Approach 2
+    	if(head == null) {
+    		return null;
+    	}
+    	
+    	var current = head;
+    	while(current != null) {
+    		var copy = new AuxiliaryLinkedListNode(current.getData());
+    		copy.setNext(current.getNext());
+    		current.setNext(copy);
+    		
+    		current = copy.getNext();
+    	}
+    	
+    	current = head;
+    	while(current != null) {
+    		var copy = current.getNext();
+    		copy.setAuxiliary(current.getAuxiliary().getNext());
+    		
+    		current = copy.getNext();
+    	}
+    	
+    	current = head;
+    	var copyHead = current.getNext();
+    	while(current != null) {
+    		var copy = current.getNext();
+    	
+    		current.setNext(copy.getNext());
+    		if(copy.getNext() != null) {
+    			copy.setNext(copy.getNext().getNext());
+    		}
+    		
+    		current = current.getNext();
+    	}
+    	
+    	return copyHead;
+	}
 }

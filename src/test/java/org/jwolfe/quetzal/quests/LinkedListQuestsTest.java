@@ -2,8 +2,10 @@ package org.jwolfe.quetzal.quests;
 
 import org.junit.jupiter.api.Test;
 import org.jwolfe.quetzal.library.list.LinkedListNode;
+import org.jwolfe.quetzal.library.list.AuxiliaryLinkedListNode;
 import org.jwolfe.quetzal.library.list.RightDownLinkedListNode;
 import org.jwolfe.quetzal.library.utilities.Utilities;
+import org.jwolfe.quetzal.test.QuetzalAssertions;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.jwolfe.quetzal.test.QuetzalAssertions.*;
@@ -484,5 +486,20 @@ class LinkedListQuestsTest {
         assertEquals(56, head.getNext().getNext().getNext().getNext().getData());
         assertEquals(90, head.getNext().getNext().getNext().getNext().getNext().getData());
         assertEquals(1, head.getNext().getNext().getNext().getNext().getNext().getNext().getData());
+    }
+    
+    @Test
+    void cloneDoublyLinkedListWithArbitraryPointer() {
+        AuxiliaryLinkedListNode head;
+        AuxiliaryLinkedListNode clone;
+
+        head = Utilities.createAuxiliaryLinkedList(1, 2, 3, 4);
+        head.setAuxiliary(head.getNext().getNext());
+        head.getNext().setAuxiliary(head.getNext().getNext().getNext());
+        head.getNext().getNext().setAuxiliary(head);
+        head.getNext().getNext().getNext().setAuxiliary(head.getNext());
+        clone = LinkedListQuests.cloneDoublyLinkedListWithArbitraryPointer(head);
+        
+        assertAuxiliaryLinkedListEquals(clone, head);
     }
 }
