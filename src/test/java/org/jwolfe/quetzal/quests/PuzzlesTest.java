@@ -6,6 +6,7 @@ import org.jwolfe.quetzal.library.general.Pair;
 import org.jwolfe.quetzal.library.utilities.Utilities;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -138,4 +139,70 @@ class PuzzlesTest {
 							            { 20, 25, 30, 0 } };
 		assertEquals(80, Puzzles.travellingSalesmanNaive(citesAndDistances, 0));
 	}
+	
+	@Test
+	void knightsTour() {
+		boolean solvable;
+		int[][] tour;
+		int[][] expectedTour;
+		
+	 	tour = new int[3][3];
+		solvable = Puzzles.knightsTour(tour);
+		assertFalse(solvable);
+		Utilities.printArray(tour);
+		System.out.println();
+		
+		tour = new int[4][4];
+		solvable = Puzzles.knightsTour(tour);
+		assertFalse(solvable);
+		Utilities.printArray(tour);
+		System.out.println();
+		
+		tour = new int[5][5];
+		solvable = Puzzles.knightsTour(tour);
+		assertTrue(solvable);
+		Utilities.printArray(tour);
+		System.out.println();
+		
+		tour = new int[6][6];
+		solvable = Puzzles.knightsTour(tour);
+		assertTrue(solvable);
+		Utilities.printArray(tour);
+		System.out.println();
+
+		// The below will run for a very long time. Commenting out.
+		//		expectedTour = new int[][]
+		//					{{0, 59, 38, 33, 30, 17, 8, 63},
+		//				 {37, 34, 31, 60,  9, 62, 29, 16},
+		//				 {58, 1, 36, 39, 32, 27, 18, 7},
+		//				 {35, 48, 41, 26, 61, 10, 15, 28},
+		//				 {42, 57, 2, 49, 40, 23, 6, 19},
+		//				 {47, 50, 45, 54, 25, 20, 11, 14},
+		//				 {56, 43, 52, 3, 22, 13, 24, 5},
+		//				 {51, 46, 55, 44, 53, 4, 21, 12}};
+		//		tour = new int[8][8];
+		//		solvable = Puzzles.knightsTour(tour);
+		//		assertTrue(solvable);
+		//		Utilities.printArray(tour);
+		//		System.out.println();
+		//		assertTwoDimensionalArrayEquals(expectedTour, tour);
+	}
+
+    @Test
+    void colorGraph() {
+        int[][] graph;
+        Map<Integer, Integer> colorMappings;
+
+        graph = new int[][] {{0, 1, 1, 1},
+                {1, 0, 1, 0},
+                {1, 1, 0, 1},
+                {1, 0, 1, 0}};
+        colorMappings = Puzzles.colorGraph(graph, 3);
+        assertNotNull(colorMappings);
+        assertEquals(4, colorMappings.size());
+        assertEquals(1, (int) colorMappings.get(0));
+        assertEquals(2, (int) colorMappings.get(1));
+        assertEquals(3, (int) colorMappings.get(2));
+        assertEquals(2, (int) colorMappings.get(3));
+    }
 }

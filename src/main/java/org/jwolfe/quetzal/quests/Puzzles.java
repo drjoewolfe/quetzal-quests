@@ -2,20 +2,13 @@ package org.jwolfe.quetzal.quests;
 
 import org.jwolfe.quetzal.algorithms.ArrayAlgorithms;
 import org.jwolfe.quetzal.algorithms.ListAlgorithms;
+import org.jwolfe.quetzal.library.general.Coordinate;
 import org.jwolfe.quetzal.library.general.Pair;
 import org.jwolfe.quetzal.library.general.Rod;
 import org.jwolfe.quetzal.library.matrix.Matrix;
 import org.jwolfe.quetzal.library.utilities.Utilities;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
-import java.util.Collections;
+import java.util.*;
 
 public class Puzzles {
 
@@ -622,5 +615,150 @@ public class Puzzles {
 		}
 
 		return minDistance;
+	}
+	
+	public static boolean knightsTour(int[][] board) {
+		if(board == null) {
+			return false;
+		}
+		
+		int boardSize = board.length;
+		for (var row : board) {
+			if(row == null || row.length != boardSize) {
+				return false;
+			}
+		}
+		
+		// Reset the board
+		for (var row : board) {
+			Arrays.fill(row, -1);
+		}
+		
+		// Moves that a knight can make relative to its current position
+		List<Coordinate> validRelativeMoves = new ArrayList<>();
+		validRelativeMoves.add(new Coordinate(2, 1));
+		validRelativeMoves.add(new Coordinate(2, -1));
+		validRelativeMoves.add(new Coordinate(1, 2));
+		validRelativeMoves.add(new Coordinate(1, -2));
+		validRelativeMoves.add(new Coordinate(-1, 2));
+		validRelativeMoves.add(new Coordinate(-1, -2));
+		validRelativeMoves.add(new Coordinate(-2, 1));
+		validRelativeMoves.add(new Coordinate(-2, -1));
+		
+		int moveNumber = 0;
+		board[0][0] = moveNumber;
+		Coordinate currentCoordinate = new Coordinate(0,  0);
+		
+		return knightsTour(board, boardSize, moveNumber, currentCoordinate, validRelativeMoves);
+	}
+
+	// private static int counter = 0;
+	
+	private static boolean knightsTour(int[][] board, int boardSize, int moveNumber, Coordinate currentCoordinate, List<Coordinate> validRelativeMoves) {
+		moveNumber++;
+		
+		if(moveNumber == boardSize * boardSize) {
+			// Solved. All cells have been visited.
+			return true;
+		}
+		
+		for (var relativeCoordinate : validRelativeMoves) {
+			var newCoordinate = new Coordinate(currentCoordinate.getX() + relativeCoordinate.getX(), 
+												currentCoordinate.getY() + relativeCoordinate.getY());
+			
+			if(isValidKnightMoveForTour(board, boardSize, currentCoordinate, newCoordinate)) {
+				// System.out.println(counter++ + " Move #" + moveNumber + ": trying with co-ordinates (" + newCoordinate.getX() + ", " + newCoordinate.getY() + ")");
+				board[newCoordinate.getX()][newCoordinate.getY()] = moveNumber;				
+				if(knightsTour(board, boardSize, moveNumber, newCoordinate, validRelativeMoves)) {
+					return true;
+				}
+				
+				// Didn't work out... Backtrack
+				// System.out.println(counter + " Move # " + moveNumber + ": backtracking from co-ordinates (" + newCoordinate.getX() + ", " + newCoordinate.getY() + ")");
+				board[newCoordinate.getX()][newCoordinate.getY()] = -1;
+			}
+		}
+		
+		return false;
+	}
+
+	private static boolean isValidKnightMoveForTour(int[][] board, int boardSize, Coordinate currentCoordinate,
+			Coordinate newCoordinate) {
+		if(newCoordinate.getX() >= 0
+				&& newCoordinate.getX() < boardSize
+				&& newCoordinate.getY() >=0
+				&& newCoordinate.getY() < boardSize
+				&& board[newCoordinate.getX()][newCoordinate.getY()] == -1) {
+			return true;
+		}
+		
+		return false;
+	}
+
+	public static Map<Integer, Integer> colorGraph(int[][] graph, int numColors) {
+		if(graph == null
+				|| graph.length == 0) {
+			return null;
+		}
+
+		int numVertices = graph.length;
+		for(var list : graph) {
+			if(list == null || list.length != numVertices) {
+				return null;
+			}
+		}
+
+		Map<Integer, Integer> colorMappings = new TreeMap<>();
+		for (int i = 0; i < numVertices; i++) {
+			colorMappings.put(i, -1);
+		}
+
+//		// Set the first color.
+//		colorMappings.put(0, 1);
+		boolean colored = colorGraph(graph, numColors, numVertices, 0, colorMappings);
+		if(!colored) {
+			// Not possible to color the graph with m colors.
+			return null;
+		}
+
+		return colorMappings;
+	}
+
+	private static boolean colorGraph(int[][] graph, int numColors, int numVertices, int currentVertex, Map<Integer,Integer> colorMappings) {
+		if(currentVertex == numVertices) {
+			// All vertices colored
+			return true;
+		}
+
+		for (int color = 1; color <= numColors; color++) {
+			if( isAllowedForGraphColoring(graph, numVertices, currentVertex, color, colorMappings)) {
+				colorMappings.put(currentVertex, color);
+				if(colorGraph(graph, numColors, numVertices, currentVertex + 1, colorMappings)) {
+					return true;
+				}
+
+				// Current color did not work. Backtrack.
+				colorMappings.put(currentVertex, -1);
+			}
+		}
+
+		return false;
+	}
+
+	private static boolean isAllowedForGraphColoring(int[][] graph, int numVertices, int vertex, int color, Map<Integer, Integer> colorMappings) {
+		if(vertex < 0 || vertex >= numVertices) {
+			return false;
+		}
+
+		for (int i = 0; i < numVertices; i++) {
+			if(graph[vertex][i] != 0
+					|| graph[i][vertex] != 0) {
+				if(colorMappings.get(i) == color) {
+					return false;
+				}
+			}
+		}
+
+		return true;
 	}
 }
