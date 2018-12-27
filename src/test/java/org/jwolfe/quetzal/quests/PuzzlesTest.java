@@ -1,6 +1,5 @@
 package org.jwolfe.quetzal.quests;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.jwolfe.quetzal.library.general.Pair;
 import org.jwolfe.quetzal.library.utilities.Utilities;
@@ -241,5 +240,46 @@ class PuzzlesTest {
         assertEquals(2, (int) colorMappings.get(1));
         assertEquals(3, (int) colorMappings.get(2));
         assertEquals(2, (int) colorMappings.get(3));
+    }
+
+	@Test
+	void getMaxGoldFromMine() {
+		int[][] mine;
+		int maxGold;
+
+		mine = new int[][] {{1, 3, 1, 5},
+				{2, 2, 4, 1},
+				{5, 0, 2, 3},
+				{0, 6, 1, 2}};
+		maxGold = Puzzles.getMaxGoldFromMine(mine);
+		assertEquals(16, maxGold);
+	}
+
+    @Test
+    void getMaxGoldFromMineRecursive() {
+		int[][] mine;
+		int maxGold;
+
+		mine = new int[][] {{1, 3, 1, 5},
+				{2, 2, 4, 1},
+				{5, 0, 2, 3},
+				{0, 6, 1, 2}};
+		maxGold = Puzzles.getMaxGoldFromMineRecursive(mine);
+		assertEquals(16, maxGold);
+
+
+		mine = new int[][] {{1, 3, 3},
+				{2, 1, 4},
+				{0, 6, 4}};
+		maxGold = Puzzles.getMaxGoldFromMineRecursive(mine);
+		assertEquals(12, maxGold);
+
+
+		mine = new int[][] {{10, 33, 13, 15},
+				{22, 21, 04, 1},
+				{5, 0, 2, 3},
+				{0, 6, 14, 2}};
+		maxGold = Puzzles.getMaxGoldFromMineRecursive(mine);
+		assertEquals(83, maxGold);
     }
 }

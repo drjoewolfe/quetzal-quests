@@ -1,11 +1,9 @@
 package org.jwolfe.quetzal.quests;
 
-import org.jwolfe.quetzal.algorithms.ArrayAlgorithms;
 import org.jwolfe.quetzal.algorithms.ListAlgorithms;
 import org.jwolfe.quetzal.library.general.Coordinate;
 import org.jwolfe.quetzal.library.general.Pair;
 import org.jwolfe.quetzal.library.general.Rod;
-import org.jwolfe.quetzal.library.matrix.Matrix;
 import org.jwolfe.quetzal.library.utilities.Utilities;
 
 import java.util.*;
@@ -851,5 +849,93 @@ public class Puzzles {
 		}
 
 		return true;
+	}
+
+	public static int getMaxGoldFromMine(int[][] mine) {
+		// The miner starts from any row in the first column
+		// The miner can go right, right-up or right-down
+		// Assumption: All cells have zero or positive values.
+		if (mine == null
+				|| mine.length == 0
+				|| mine[0] == null
+				|| mine[0].length == 0) {
+			return -1;
+		}
+
+		int rows = mine.length;
+		int columns = mine[0].length;
+		for (int i = 1; i < rows; i++) {
+			if (mine[i].length != columns) {
+				return -1;
+			}
+		}
+
+		int[][] goldMined = new int[rows][columns];
+		for (int j = columns - 1; j >= 0; j--) {
+			for (int i = 0; i < rows; i++) {
+				if (j == columns - 1) {
+					goldMined[i][j] = mine[i][j];
+				} else {
+					int rightUpGold = (i != 0 ? goldMined[i - 1][j + 1] : 0);
+					int rightGold = goldMined[i][j + 1];
+					int rightDownGold = (i != rows - 1 ? goldMined[i + 1][j + 1] : 0);
+
+					goldMined[i][j] = mine[i][j]
+							+ Utilities.max(rightUpGold, rightGold, rightDownGold);
+				}
+			}
+		}
+
+		int maxGold = goldMined[0][0];
+		for (int i = 1; i < rows; i++) {
+			maxGold = Math.max(maxGold, goldMined[i][0]);
+		}
+
+		return maxGold;
+	}
+
+	public static int getMaxGoldFromMineRecursive(int[][] mine) {
+		// The miner starts from any row in the first column
+		// The miner can go right, right-up or right-down
+		// Assumption: All cells have zero or positive values.
+		if(mine == null
+			|| mine.length == 0
+			|| mine[0] == null
+			|| mine[0].length == 0) {
+			return -1;
+		}
+
+		int rows = mine.length;
+		int columns = mine[0].length;
+		for (int i = 1; i < rows; i++) {
+			if(mine[i].length != columns) {
+				return -1;
+			}
+		}
+
+		int maxGold = 0;
+		for (int i = 0; i < rows; i++) {
+			int goldAvailable = getMaxGoldFromMineRecursive(mine, rows, columns, i, 0);
+			maxGold = Math.max(maxGold, goldAvailable);
+		}
+
+		return maxGold;
+	}
+
+	private static int getMaxGoldFromMineRecursive(int[][] mine, int rows, int columns, int currentRow, int currentColumn) {
+		if(currentRow == rows || currentColumn == columns) {
+			return 0;
+		}
+
+		if(currentRow < 0) {
+			return 0;
+		}
+
+		return mine[currentRow][currentColumn]
+				+ Utilities.max(
+					getMaxGoldFromMineRecursive(mine, rows, columns, currentRow - 1, currentColumn + 1),
+					getMaxGoldFromMineRecursive(mine, rows, columns, currentRow, currentColumn + 1),
+					getMaxGoldFromMineRecursive(mine, rows, columns, currentRow + 1, currentColumn + 1)
+				);
 	}
 }
