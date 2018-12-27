@@ -170,6 +170,43 @@ class PuzzlesTest {
 		Utilities.printArray(tour);
 		System.out.println();
 
+		tour = new int[8][8];
+		solvable = Puzzles.knightsTour(tour);
+		assertTrue(solvable);
+		Utilities.printArray(tour);
+		System.out.println();
+	}
+	
+	@Test
+	void knightsTourBacktracking() {
+		boolean solvable;
+		int[][] tour;
+		int[][] expectedTour;
+		
+	 	tour = new int[3][3];
+		solvable = Puzzles.knightsTourBacktracking(tour);
+		assertFalse(solvable);
+		Utilities.printArray(tour);
+		System.out.println();
+		
+		tour = new int[4][4];
+		solvable = Puzzles.knightsTourBacktracking(tour);
+		assertFalse(solvable);
+		Utilities.printArray(tour);
+		System.out.println();
+		
+		tour = new int[5][5];
+		solvable = Puzzles.knightsTourBacktracking(tour);
+		assertTrue(solvable);
+		Utilities.printArray(tour);
+		System.out.println();
+		
+		tour = new int[6][6];
+		solvable = Puzzles.knightsTourBacktracking(tour);
+		assertTrue(solvable);
+		Utilities.printArray(tour);
+		System.out.println();
+
 		// The below will run for a very long time. Commenting out.
 		//		expectedTour = new int[][]
 		//					{{0, 59, 38, 33, 30, 17, 8, 63},
