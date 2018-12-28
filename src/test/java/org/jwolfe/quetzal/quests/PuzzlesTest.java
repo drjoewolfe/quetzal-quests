@@ -1,6 +1,7 @@
 package org.jwolfe.quetzal.quests;
 
 import org.junit.jupiter.api.Test;
+import org.jwolfe.quetzal.library.general.IntPair;
 import org.jwolfe.quetzal.library.general.Pair;
 import org.jwolfe.quetzal.library.utilities.Utilities;
 
@@ -332,5 +333,21 @@ class PuzzlesTest {
 		board = Puzzles.solveMagnetPuzzle(boardConfiguration, topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications);
 		assertNotNull(board);
 		assertTwoDimensionalArrayEquals(expectedBoard, board);
+	}
+	
+	@Test
+	void getMaxSurvivalTimeWithAreas() {
+		IntPair startingPowers;
+		IntPair areaX;
+		IntPair areaY;
+		IntPair areaZ;
+		int maxSurvivalTime;
+		
+		startingPowers = new IntPair(20, 8);
+		areaX = new IntPair(3, 2);
+		areaY = new IntPair(-5, -10);
+		areaZ = new IntPair(-20, 5);
+		maxSurvivalTime = Puzzles.getMaxSurvivalTimeWithAreas(startingPowers, areaX, areaY, areaZ);
+		assertEquals(5, maxSurvivalTime);
 	}
 }

@@ -2,11 +2,13 @@ package org.jwolfe.quetzal.quests;
 
 import org.jwolfe.quetzal.algorithms.ListAlgorithms;
 import org.jwolfe.quetzal.library.general.Coordinate;
+import org.jwolfe.quetzal.library.general.IntPair;
 import org.jwolfe.quetzal.library.general.Pair;
 import org.jwolfe.quetzal.library.general.Rod;
 import org.jwolfe.quetzal.library.utilities.Utilities;
 
 import java.util.*;
+
 
 public class Puzzles {
 
@@ -1232,5 +1234,59 @@ public class Puzzles {
 		}
 
 		return true;
+	}
+	
+	public static int getMaxSurvivalTimeWithAreas(IntPair startingPowers, IntPair areaX, IntPair areaY, IntPair areaZ) {
+		// Starting Powers -> (A, B)
+		// 3 areas to choose from at start (X, Y, Z). from then each time interval, choose one of the 2 remaining areas
+		// Upon visiting any area, the powers gets incremented / decremented as denoted by that area's specifications
+		// Game is over once either of the powers (a / b) becomes zero
+		// Find max survival time with the given configuration
+		if(startingPowers == null || areaX == null || areaY == null || areaZ == null) {
+			return -1;
+		}
+		
+		Map<IntPair, Integer> memo = new HashMap<>();
+		
+		return Utilities.max(
+				getMaxSurvivalTimeWithAreas(startingPowers, 0, areaX, areaX, areaY, areaZ, memo),
+				getMaxSurvivalTimeWithAreas(startingPowers, 0, areaY, areaX, areaY, areaZ, memo),
+				getMaxSurvivalTimeWithAreas(startingPowers, 0, areaZ, areaX, areaY, areaZ, memo));
+	}
+
+	private static int getMaxSurvivalTimeWithAreas(IntPair currentPowers, int survivalTime, IntPair newArea, 
+							IntPair areaX, IntPair areaY, IntPair areaZ, Map<IntPair, Integer> memo) {
+		IntPair newPowers = new IntPair(currentPowers.getA() + newArea.getA(), currentPowers.getB() + newArea.getB());
+		
+		if(newPowers.getA() < 0 || newPowers.getB() < 0) {
+			return survivalTime;
+		}
+		
+		if(memo.containsKey(newPowers)) {
+			return memo.get(newPowers);
+		}
+		
+		survivalTime++;
+		
+		int maxSurvivalTime = 0;
+		if(newArea == areaX) {
+			maxSurvivalTime = Math.max(
+					getMaxSurvivalTimeWithAreas(newPowers, survivalTime, areaY, areaX, areaY, areaZ, memo),
+					getMaxSurvivalTimeWithAreas(newPowers, survivalTime, areaZ, areaX, areaY, areaZ, memo));
+		}
+		else if(newArea == areaY) {
+			maxSurvivalTime = Math.max(
+					getMaxSurvivalTimeWithAreas(newPowers, survivalTime, areaX, areaX, areaY, areaZ, memo),
+					getMaxSurvivalTimeWithAreas(newPowers, survivalTime, areaZ, areaX, areaY, areaZ, memo));
+		}
+		else if(newArea == areaZ) {
+			maxSurvivalTime = Math.max(
+					getMaxSurvivalTimeWithAreas(newPowers, survivalTime, areaX, areaX, areaY, areaZ, memo),
+					getMaxSurvivalTimeWithAreas(newPowers, survivalTime, areaY, areaX, areaY, areaZ, memo));
+		}		
+		
+		memo.put(newArea, maxSurvivalTime);
+		
+		return maxSurvivalTime;
 	}
 }
