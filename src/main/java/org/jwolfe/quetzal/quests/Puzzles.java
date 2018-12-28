@@ -537,7 +537,7 @@ public class Puzzles {
 	}
 
 	private static int travellingSalesmanRecursive(int[][] citiesAndDistancesesAndDistances,
-			List<Integer> citiesToVisit, int startCity) {
+												   List<Integer> citiesToVisit, int startCity) {
 		int minDistance = Integer.MAX_VALUE;
 		for (int i = 0; i < citiesToVisit.size(); i++) {
 			Integer endCity = citiesToVisit.get(i);
@@ -554,7 +554,7 @@ public class Puzzles {
 	}
 
 	private static int getTravelDistanceToCity(int[][] citiesAndDistancesesAndDistances, int startCity,
-			List<Integer> intermediateCities, int endCity) {
+											   List<Integer> intermediateCities, int endCity) {
 		if (intermediateCities.size() == 0) {
 			return citiesAndDistancesesAndDistances[startCity][endCity];
 		}
@@ -655,47 +655,47 @@ public class Puzzles {
 	}
 
 	private static boolean moveNextForKnight(int[][] board, int boardSize, int moveNumber, Coordinate currentCoordinate,
-			List<Coordinate> validRelativeMoves) {
+											 List<Coordinate> validRelativeMoves) {
 		if (moveNumber >= boardSize * boardSize) {
 			return false;
 		}
-		
+
 		int minDegreeOfAccessibility = Integer.MAX_VALUE;
 		Coordinate minAccessibilityCoordinate = null;
 		for (var relativeCoordinate : validRelativeMoves) {
 			var newCoordinate = new Coordinate(currentCoordinate.getX() + relativeCoordinate.getX(), currentCoordinate.getY() + relativeCoordinate.getY());
-			
-			if(isValidKnightMoveForTour(board, boardSize, currentCoordinate, newCoordinate)) {
+
+			if (isValidKnightMoveForTour(board, boardSize, currentCoordinate, newCoordinate)) {
 				int degreeOfAccessibility = getDegreeOfAccessibilityForKnightMove(board, boardSize, newCoordinate, validRelativeMoves);
-				if(degreeOfAccessibility < minDegreeOfAccessibility) {
+				if (degreeOfAccessibility < minDegreeOfAccessibility) {
 					minDegreeOfAccessibility = degreeOfAccessibility;
 					minAccessibilityCoordinate = newCoordinate;
 				}
 			}
 		}
 
-		if(minAccessibilityCoordinate == null) {
+		if (minAccessibilityCoordinate == null) {
 			return false;
 		}
-		
+
 		currentCoordinate.set(minAccessibilityCoordinate);
 		board[currentCoordinate.getX()][currentCoordinate.getY()] = moveNumber;
 		return true;
 	}
 
 	private static int getDegreeOfAccessibilityForKnightMove(int[][] board, int boardSize, Coordinate coordinate,
-			List<Coordinate> validRelativeMoves) {
+															 List<Coordinate> validRelativeMoves) {
 		int degree = 0;
-		for(var relativeCoordinate : validRelativeMoves) {
+		for (var relativeCoordinate : validRelativeMoves) {
 			var newCoordinate = new Coordinate(coordinate.getX() + relativeCoordinate.getX(), coordinate.getY() + relativeCoordinate.getY());
-			if(newCoordinate.getX() >= 0 && newCoordinate.getX() <boardSize
+			if (newCoordinate.getX() >= 0 && newCoordinate.getX() < boardSize
 					&& newCoordinate.getY() >= 0 && newCoordinate.getY() < boardSize
 					&& board[newCoordinate.getX()][newCoordinate.getY()] == -1) {
 				// new co-ordinate is accessible from co-ordinate
 				degree++;
 			}
 		}
-		
+
 		return degree;
 	}
 
@@ -729,7 +729,7 @@ public class Puzzles {
 	// private static int counter = 0;
 
 	private static boolean knightsTourBacktracking(int[][] board, int boardSize, int moveNumber,
-			Coordinate currentCoordinate, List<Coordinate> validRelativeMoves) {
+												   Coordinate currentCoordinate, List<Coordinate> validRelativeMoves) {
 		moveNumber++;
 
 		if (moveNumber == boardSize * boardSize) {
@@ -760,7 +760,7 @@ public class Puzzles {
 	}
 
 	private static boolean isValidKnightMoveForTour(int[][] board, int boardSize, Coordinate currentCoordinate,
-			Coordinate newCoordinate) {
+													Coordinate newCoordinate) {
 		if (newCoordinate.getX() >= 0 && newCoordinate.getX() < boardSize && newCoordinate.getY() >= 0
 				&& newCoordinate.getY() < boardSize && board[newCoordinate.getX()][newCoordinate.getY()] == -1) {
 			return true;
@@ -813,7 +813,7 @@ public class Puzzles {
 	}
 
 	private static boolean colorGraph(int[][] graph, int numColors, int numVertices, int currentVertex,
-			Map<Integer, Integer> colorMappings) {
+									  Map<Integer, Integer> colorMappings) {
 		if (currentVertex == numVertices) {
 			// All vertices colored
 			return true;
@@ -835,7 +835,7 @@ public class Puzzles {
 	}
 
 	private static boolean isAllowedForGraphColoring(int[][] graph, int numVertices, int vertex, int color,
-			Map<Integer, Integer> colorMappings) {
+													 Map<Integer, Integer> colorMappings) {
 		if (vertex < 0 || vertex >= numVertices) {
 			return false;
 		}
@@ -898,17 +898,17 @@ public class Puzzles {
 		// The miner starts from any row in the first column
 		// The miner can go right, right-up or right-down
 		// Assumption: All cells have zero or positive values.
-		if(mine == null
-			|| mine.length == 0
-			|| mine[0] == null
-			|| mine[0].length == 0) {
+		if (mine == null
+				|| mine.length == 0
+				|| mine[0] == null
+				|| mine[0].length == 0) {
 			return -1;
 		}
 
 		int rows = mine.length;
 		int columns = mine[0].length;
 		for (int i = 1; i < rows; i++) {
-			if(mine[i].length != columns) {
+			if (mine[i].length != columns) {
 				return -1;
 			}
 		}
@@ -923,19 +923,314 @@ public class Puzzles {
 	}
 
 	private static int getMaxGoldFromMineRecursive(int[][] mine, int rows, int columns, int currentRow, int currentColumn) {
-		if(currentRow == rows || currentColumn == columns) {
+		if (currentRow == rows || currentColumn == columns) {
 			return 0;
 		}
 
-		if(currentRow < 0) {
+		if (currentRow < 0) {
 			return 0;
 		}
 
 		return mine[currentRow][currentColumn]
 				+ Utilities.max(
-					getMaxGoldFromMineRecursive(mine, rows, columns, currentRow - 1, currentColumn + 1),
-					getMaxGoldFromMineRecursive(mine, rows, columns, currentRow, currentColumn + 1),
-					getMaxGoldFromMineRecursive(mine, rows, columns, currentRow + 1, currentColumn + 1)
-				);
+				getMaxGoldFromMineRecursive(mine, rows, columns, currentRow - 1, currentColumn + 1),
+				getMaxGoldFromMineRecursive(mine, rows, columns, currentRow, currentColumn + 1),
+				getMaxGoldFromMineRecursive(mine, rows, columns, currentRow + 1, currentColumn + 1)
+		);
+	}
+
+	public static char[][] solveMagnetPuzzle(char[][] boardConfiguration, int[] topSpecifications, int[] leftSpecifications, int[] bottomSpecifications, int[] rightSpecifications) {
+		if (boardConfiguration == null || boardConfiguration.length == 0
+				|| topSpecifications == null
+				|| leftSpecifications == null
+				|| bottomSpecifications == null
+				|| rightSpecifications == null) {
+			return null;
+		}
+
+		int rows = boardConfiguration.length;
+		int columns = boardConfiguration[0].length;
+
+		for (var record : boardConfiguration) {
+			if (record == null || record.length != columns) {
+				return null;
+			}
+		}
+
+		if (topSpecifications.length != columns
+				|| leftSpecifications.length != rows
+				|| bottomSpecifications.length != columns
+				|| rightSpecifications.length != rows) {
+			return null;
+		}
+
+		// Validate Board Configuration
+		boolean boardConfigurationValid = true;
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+				char cell = boardConfiguration[i][j];
+				if (cell == 'L'
+						&& j != columns - 1
+						&& boardConfiguration[i][j + 1] != 'R') {
+					boardConfigurationValid = false;
+					break;
+				}
+
+				if (cell == 'T'
+						&& i != rows - 1
+						&& boardConfiguration[i + 1][j] != 'B') {
+					boardConfigurationValid = false;
+					break;
+				}
+			}
+		}
+
+		if (!boardConfigurationValid) {
+			return null;
+		}
+
+		char[][] board = new char[rows][columns];
+		Utilities.fillArray(board, 'X');
+
+		boolean solved = solveMagnetPuzzle(board,
+				boardConfiguration,
+				rows, columns,
+				0, 0,
+				topSpecifications, leftSpecifications,
+				bottomSpecifications, rightSpecifications);
+
+		if (solved) {
+			return board;
+		}
+
+		return null;
+	}
+
+	private static boolean solveMagnetPuzzle(char[][] board,
+											 char[][] boardConfiguration,
+											 int rows, int columns,
+											 int currentRow, int currentColumn,
+											 int[] topSpecifications, int[] leftSpecifications,
+											 int[] bottomSpecifications, int[] rightSpecifications) {
+		if (currentRow >= rows - 1 && currentColumn >= columns) {
+			// Finished the board. Validate.
+			if (isMagnetPuzzleCompleteForBoard(board, boardConfiguration,
+					rows, columns,
+					topSpecifications, leftSpecifications,
+					bottomSpecifications, rightSpecifications)) {
+				return true;
+			}
+
+			return false;
+		}
+
+		if (currentColumn >= columns) {
+			// Proceed with the next row
+			currentRow++;
+			currentColumn = 0;
+		}
+
+		char cell = boardConfiguration[currentRow][currentColumn];
+//		if(cell == 'R' || cell == 'B') {
+//			// Right or Bottom of a previous cell with Left or Top. Continue with next.
+//			return solveMagnetPuzzle(board,
+//					boardConfiguration,
+//					rows, columns,
+//					currentRow, currentColumn + 1,
+//					topSpecifications, leftSpecifications,
+//					bottomSpecifications, rightSpecifications);
+//		}
+
+		if (cell == 'L') {
+			// Try (+, -), Left to Right
+			if (isValidPoleForMagnetPuzzleCell(board, rows, columns, currentRow, currentColumn, '+',
+					topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)
+					&& isValidPoleForMagnetPuzzleCell(board, rows, columns, currentRow, currentColumn + 1, '-',
+					topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)) {
+				board[currentRow][currentColumn] = '+';
+				board[currentRow][currentColumn + 1] = '-';
+				if (solveMagnetPuzzle(board,
+						boardConfiguration,
+						rows, columns,
+						currentRow, currentColumn + 2,
+						topSpecifications, leftSpecifications,
+						bottomSpecifications, rightSpecifications)) {
+					return true;
+				}
+
+				// Backtrack.
+				board[currentRow][currentColumn] = 'X';
+				board[currentRow][currentColumn + 1] = 'X';
+			}
+
+			// Try (-, +), Left to Right
+			if (isValidPoleForMagnetPuzzleCell(board, rows, columns, currentRow, currentColumn, '-',
+					topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)
+					&& isValidPoleForMagnetPuzzleCell(board, rows, columns, currentRow, currentColumn + 1, '+',
+					topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)) {
+				board[currentRow][currentColumn] = '-';
+				board[currentRow][currentColumn + 1] = '+';
+				if (solveMagnetPuzzle(board,
+						boardConfiguration,
+						rows, columns,
+						currentRow, currentColumn + 2,
+						topSpecifications, leftSpecifications,
+						bottomSpecifications, rightSpecifications)) {
+					return true;
+				}
+
+				// Backtrack.
+				board[currentRow][currentColumn] = 'X';
+				board[currentRow][currentColumn + 1] = 'X';
+			}
+		}
+
+		if (cell == 'T') {
+			// Try (+, -), Top to Bottom
+			if (isValidPoleForMagnetPuzzleCell(board, rows, columns, currentRow, currentColumn, '+',
+					topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)
+					&& isValidPoleForMagnetPuzzleCell(board, rows, columns, currentRow + 1, currentColumn, '-',
+					topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)) {
+				board[currentRow][currentColumn] = '+';
+				board[currentRow + 1][currentColumn] = '-';
+				if (solveMagnetPuzzle(board,
+						boardConfiguration,
+						rows, columns,
+						currentRow, currentColumn + 1,
+						topSpecifications, leftSpecifications,
+						bottomSpecifications, rightSpecifications)) {
+					return true;
+				}
+
+				// Backtrack.
+				board[currentRow][currentColumn] = 'X';
+				board[currentRow + 1][currentColumn] = 'X';
+			}
+
+			// Try (-, +), Top to Bottom
+			if (isValidPoleForMagnetPuzzleCell(board, rows, columns, currentRow, currentColumn, '-',
+					topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)
+					&& isValidPoleForMagnetPuzzleCell(board, rows, columns, currentRow + 1, currentColumn, '+',
+					topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)) {
+				board[currentRow][currentColumn] = '-';
+				board[currentRow + 1][currentColumn] = '+';
+				if (solveMagnetPuzzle(board,
+						boardConfiguration,
+						rows, columns,
+						currentRow, currentColumn + 1,
+						topSpecifications, leftSpecifications,
+						bottomSpecifications, rightSpecifications)) {
+					return true;
+				}
+
+				// Backtrack.
+				board[currentRow][currentColumn] = 'X';
+				board[currentRow + 1][currentColumn] = 'X';
+			}
+		}
+
+		// Ignore current cell & proceed
+		if (solveMagnetPuzzle(board,
+				boardConfiguration,
+				rows, columns,
+				currentRow, currentColumn + 1,
+				topSpecifications, leftSpecifications,
+				bottomSpecifications, rightSpecifications)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private static boolean isValidPoleForMagnetPuzzleCell(char[][] board,
+														  int rows, int columns,
+														  int currentRow, int currentColumn, char pole,
+														  int[] topSpecifications, int[] leftSpecifications,
+														  int[] bottomSpecifications, int[] rightSpecifications) {
+
+		// If any adjacent cells (Top, Left, Bottom or Right) contains the same pole, placement is invalid
+		if ((currentRow > 0 && board[currentRow - 1][currentColumn] == pole)
+				|| (currentColumn > 0 && board[currentRow][currentColumn - 1] == pole)
+				|| (currentRow < rows - 1 && board[currentRow + 1][currentColumn] == pole)
+				|| (currentColumn < columns - 1 && board[currentRow][currentColumn + 1] == pole)) {
+			return false;
+		}
+
+		int poleCountInRow = 0;
+		int poleCountInColumn = 0;
+
+		for (int j = 0; j < columns; j++) {
+			if (board[currentRow][j] == pole) {
+				poleCountInRow++;
+			}
+		}
+
+		for (int i = 0; i < rows; i++) {
+			if (board[i][currentColumn] == pole) {
+				poleCountInColumn++;
+			}
+		}
+
+		if (pole == '+') {
+			if ((topSpecifications[currentColumn] >= 0 && poleCountInColumn >= topSpecifications[currentColumn])
+					|| (leftSpecifications[currentRow] >= 0 && poleCountInRow >= leftSpecifications[currentRow])) {
+				return false;
+			}
+		} else {
+			if ((bottomSpecifications[currentColumn] >= 0 && poleCountInColumn >= bottomSpecifications[currentColumn])
+					|| (rightSpecifications[currentRow] >= 0 && poleCountInRow >= rightSpecifications[currentRow])) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private static boolean isMagnetPuzzleCompleteForBoard(char[][] board, char[][] boardConfiguration,
+														  int rows, int columns,
+														  int[] topSpecifications, int[] leftSpecifications,
+														  int[] bottomSpecifications, int[] rightSpecifications) {
+
+		// Check left & right specifications
+		for (int i = 0; i < rows; i++) {
+			int numPositives = 0;
+			int numNegatives = 0;
+
+			for (int j = 0; j < columns; j++) {
+				char cell = board[i][j];
+				if (cell == '+') {
+					numPositives++;
+				} else if (cell == '-') {
+					numNegatives++;
+				}
+			}
+
+			if ((leftSpecifications[i] >= 0 && numPositives != leftSpecifications[i])
+					|| (rightSpecifications[i] >= 0 && numNegatives != rightSpecifications[i])) {
+				return false;
+			}
+		}
+
+		// Check top & bottom specifications
+		for (int j = 0; j < columns; j++) {
+			int numPositives = 0;
+			int numNegatives = 0;
+
+			for (int i = 0; i < rows; i++) {
+				char cell = board[i][j];
+				if (cell == '+') {
+					numPositives++;
+				} else if (cell == '-') {
+					numNegatives++;
+				}
+			}
+
+			if ((topSpecifications[j] >= 0 && numPositives != topSpecifications[j])
+					|| (bottomSpecifications[j] >= 0 && numNegatives != bottomSpecifications[j])) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 }
