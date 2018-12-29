@@ -7,6 +7,7 @@ import org.jwolfe.quetzal.library.utilities.Utilities;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -334,7 +335,7 @@ class PuzzlesTest {
 		assertNotNull(board);
 		assertTwoDimensionalArrayEquals(expectedBoard, board);
 	}
-	
+
 	@Test
 	void getMaxSurvivalTimeWithAreas() {
 		IntPair startingPowers;
@@ -342,12 +343,36 @@ class PuzzlesTest {
 		IntPair areaY;
 		IntPair areaZ;
 		int maxSurvivalTime;
-		
+
 		startingPowers = new IntPair(20, 8);
 		areaX = new IntPair(3, 2);
 		areaY = new IntPair(-5, -10);
 		areaZ = new IntPair(-20, 5);
 		maxSurvivalTime = Puzzles.getMaxSurvivalTimeWithAreas(startingPowers, areaX, areaY, areaZ);
 		assertEquals(5, maxSurvivalTime);
+	}
+
+	@Test
+	void tugOfWar() {
+		int[] participantStrengths;
+		Pair<List<Integer>, List<Integer>> teams;
+		List<Integer> team1;
+		List<Integer> team2;
+
+		participantStrengths = Utilities.constructArray(3, 4, 5, -3, 100, 1, 89, 54, 23, 20);
+		team1 = Utilities.constructList(3, 5, -3, 89, 54);
+		team2 = Utilities.constructList(4, 100, 1, 23, 20);
+		teams = Puzzles.tugOfWar(participantStrengths);
+		assertNotNull(teams);
+		assertListEquals(team1, teams.getFirst());
+		assertListEquals(team2, teams.getSecond());
+
+		participantStrengths = Utilities.constructArray(23, 45, -34, 12, 0, 98, -99, 4, 189, -1, 4);
+		team1 = Utilities.constructList(45, -34, 12, 98, 0);
+		team2 = Utilities.constructList(23, -1, -99, 4, 189, 4);
+		teams = Puzzles.tugOfWar(participantStrengths);
+		assertNotNull(teams);
+		assertListEquals(team1, teams.getFirst());
+		assertListEquals(team2, teams.getSecond());
 	}
 }

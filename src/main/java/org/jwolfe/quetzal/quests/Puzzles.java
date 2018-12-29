@@ -8,6 +8,7 @@ import org.jwolfe.quetzal.library.general.Rod;
 import org.jwolfe.quetzal.library.utilities.Utilities;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Puzzles {
@@ -1235,58 +1236,130 @@ public class Puzzles {
 
 		return true;
 	}
-	
+
 	public static int getMaxSurvivalTimeWithAreas(IntPair startingPowers, IntPair areaX, IntPair areaY, IntPair areaZ) {
 		// Starting Powers -> (A, B)
 		// 3 areas to choose from at start (X, Y, Z). from then each time interval, choose one of the 2 remaining areas
 		// Upon visiting any area, the powers gets incremented / decremented as denoted by that area's specifications
 		// Game is over once either of the powers (a / b) becomes zero
 		// Find max survival time with the given configuration
-		if(startingPowers == null || areaX == null || areaY == null || areaZ == null) {
+		if (startingPowers == null || areaX == null || areaY == null || areaZ == null) {
 			return -1;
 		}
-		
+
 		Map<IntPair, Integer> memo = new HashMap<>();
-		
+
 		return Utilities.max(
 				getMaxSurvivalTimeWithAreas(startingPowers, 0, areaX, areaX, areaY, areaZ, memo),
 				getMaxSurvivalTimeWithAreas(startingPowers, 0, areaY, areaX, areaY, areaZ, memo),
 				getMaxSurvivalTimeWithAreas(startingPowers, 0, areaZ, areaX, areaY, areaZ, memo));
 	}
 
-	private static int getMaxSurvivalTimeWithAreas(IntPair currentPowers, int survivalTime, IntPair newArea, 
-							IntPair areaX, IntPair areaY, IntPair areaZ, Map<IntPair, Integer> memo) {
+	private static int getMaxSurvivalTimeWithAreas(IntPair currentPowers, int survivalTime, IntPair newArea,
+												   IntPair areaX, IntPair areaY, IntPair areaZ, Map<IntPair, Integer> memo) {
 		IntPair newPowers = new IntPair(currentPowers.getA() + newArea.getA(), currentPowers.getB() + newArea.getB());
-		
-		if(newPowers.getA() < 0 || newPowers.getB() < 0) {
+
+		if (newPowers.getA() < 0 || newPowers.getB() < 0) {
 			return survivalTime;
 		}
-		
-		if(memo.containsKey(newPowers)) {
+
+		if (memo.containsKey(newPowers)) {
 			return memo.get(newPowers);
 		}
-		
+
 		survivalTime++;
-		
+
 		int maxSurvivalTime = 0;
-		if(newArea == areaX) {
+		if (newArea == areaX) {
 			maxSurvivalTime = Math.max(
 					getMaxSurvivalTimeWithAreas(newPowers, survivalTime, areaY, areaX, areaY, areaZ, memo),
 					getMaxSurvivalTimeWithAreas(newPowers, survivalTime, areaZ, areaX, areaY, areaZ, memo));
-		}
-		else if(newArea == areaY) {
+		} else if (newArea == areaY) {
 			maxSurvivalTime = Math.max(
 					getMaxSurvivalTimeWithAreas(newPowers, survivalTime, areaX, areaX, areaY, areaZ, memo),
 					getMaxSurvivalTimeWithAreas(newPowers, survivalTime, areaZ, areaX, areaY, areaZ, memo));
-		}
-		else if(newArea == areaZ) {
+		} else if (newArea == areaZ) {
 			maxSurvivalTime = Math.max(
 					getMaxSurvivalTimeWithAreas(newPowers, survivalTime, areaX, areaX, areaY, areaZ, memo),
 					getMaxSurvivalTimeWithAreas(newPowers, survivalTime, areaY, areaX, areaY, areaZ, memo));
-		}		
-		
+		}
+
 		memo.put(newArea, maxSurvivalTime);
-		
+
 		return maxSurvivalTime;
+	}
+
+	public static Pair<List<Integer>, List<Integer>> tugOfWar(int[] participantStrengths) {
+		// Tug of war - divide participants into 2 teams, difference of strengths of which is minimum
+		// If # participants are odd, one team is of (n-1)/2 size & the other (n+1)/2 size
+		// If # participants are even, both teams are of size n/2
+
+		if (participantStrengths == null || participantStrengths.length == 0) {
+			return null;
+		}
+
+		int numParticipants = participantStrengths.length;
+		int totalStrength = 0;
+		for (int strength : participantStrengths) {
+			totalStrength += strength;
+		}
+
+		AtomicInteger minStrengthDifference = new AtomicInteger(Integer.MAX_VALUE);
+		Set<Integer> selectedTeam1Participants = new HashSet<>();
+
+		tugOfwar(participantStrengths, numParticipants, totalStrength,
+				0, new HashSet<>(),
+				minStrengthDifference, selectedTeam1Participants);
+
+		List<Integer> team1Strengths = new ArrayList<>();
+		List<Integer> team2Strengths = new ArrayList<>();
+		var teams = new Pair(team1Strengths, team2Strengths);
+
+		for (int i = 0; i < numParticipants; i++) {
+			if (selectedTeam1Participants.contains(i)) {
+				team1Strengths.add(participantStrengths[i]);
+			} else {
+				team2Strengths.add(participantStrengths[i]);
+			}
+		}
+
+		return teams;
+	}
+
+	private static void tugOfwar(int[] participantStrengths, int numParticipants, int totalStrength,
+								 int currentIndex, Set<Integer> team1Participants,
+								 AtomicInteger minStrengthDifference, Set<Integer> selectedTeam1Participants) {
+		if (currentIndex >= numParticipants) {
+			return;
+		}
+
+		if (team1Participants.size() >= numParticipants / 2) {
+			int team1Strength = 0;
+			for (int p : team1Participants) {
+				team1Strength += participantStrengths[p];
+			}
+			int team2Strength = totalStrength - team1Strength;
+			int strengthDifference = Math.abs(team1Strength - team2Strength);
+
+			if (strengthDifference < minStrengthDifference.intValue()) {
+				minStrengthDifference.set(strengthDifference);
+				selectedTeam1Participants.clear();
+				selectedTeam1Participants.addAll(team1Participants);
+			}
+
+			return;
+		}
+
+		// Choice 1: add current participant
+		team1Participants.add(currentIndex);
+		tugOfwar(participantStrengths, numParticipants, totalStrength,
+				currentIndex + 1, team1Participants,
+				minStrengthDifference, selectedTeam1Participants);
+
+		// Choice 2: do not add current participant
+		team1Participants.remove(currentIndex);
+		tugOfwar(participantStrengths, numParticipants, totalStrength,
+				currentIndex + 1, team1Participants,
+				minStrengthDifference, selectedTeam1Participants);
 	}
 }
