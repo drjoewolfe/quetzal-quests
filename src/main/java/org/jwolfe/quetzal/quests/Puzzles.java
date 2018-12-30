@@ -10,7 +10,6 @@ import org.jwolfe.quetzal.library.utilities.Utilities;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
 public class Puzzles {
 
 	public static void towersOfHanoi(Stack<Integer> from, Stack<Integer> to, Stack<Integer> aux) {
@@ -540,7 +539,7 @@ public class Puzzles {
 	}
 
 	private static int travellingSalesmanRecursive(int[][] citiesAndDistancesesAndDistances,
-												   List<Integer> citiesToVisit, int startCity) {
+			List<Integer> citiesToVisit, int startCity) {
 		int minDistance = Integer.MAX_VALUE;
 		for (int i = 0; i < citiesToVisit.size(); i++) {
 			Integer endCity = citiesToVisit.get(i);
@@ -557,7 +556,7 @@ public class Puzzles {
 	}
 
 	private static int getTravelDistanceToCity(int[][] citiesAndDistancesesAndDistances, int startCity,
-											   List<Integer> intermediateCities, int endCity) {
+			List<Integer> intermediateCities, int endCity) {
 		if (intermediateCities.size() == 0) {
 			return citiesAndDistancesesAndDistances[startCity][endCity];
 		}
@@ -658,7 +657,7 @@ public class Puzzles {
 	}
 
 	private static boolean moveNextForKnight(int[][] board, int boardSize, int moveNumber, Coordinate currentCoordinate,
-											 List<Coordinate> validRelativeMoves) {
+			List<Coordinate> validRelativeMoves) {
 		if (moveNumber >= boardSize * boardSize) {
 			return false;
 		}
@@ -666,10 +665,12 @@ public class Puzzles {
 		int minDegreeOfAccessibility = Integer.MAX_VALUE;
 		Coordinate minAccessibilityCoordinate = null;
 		for (var relativeCoordinate : validRelativeMoves) {
-			var newCoordinate = new Coordinate(currentCoordinate.getX() + relativeCoordinate.getX(), currentCoordinate.getY() + relativeCoordinate.getY());
+			var newCoordinate = new Coordinate(currentCoordinate.getX() + relativeCoordinate.getX(),
+					currentCoordinate.getY() + relativeCoordinate.getY());
 
 			if (isValidKnightMoveForTour(board, boardSize, currentCoordinate, newCoordinate)) {
-				int degreeOfAccessibility = getDegreeOfAccessibilityForKnightMove(board, boardSize, newCoordinate, validRelativeMoves);
+				int degreeOfAccessibility = getDegreeOfAccessibilityForKnightMove(board, boardSize, newCoordinate,
+						validRelativeMoves);
 				if (degreeOfAccessibility < minDegreeOfAccessibility) {
 					minDegreeOfAccessibility = degreeOfAccessibility;
 					minAccessibilityCoordinate = newCoordinate;
@@ -687,13 +688,13 @@ public class Puzzles {
 	}
 
 	private static int getDegreeOfAccessibilityForKnightMove(int[][] board, int boardSize, Coordinate coordinate,
-															 List<Coordinate> validRelativeMoves) {
+			List<Coordinate> validRelativeMoves) {
 		int degree = 0;
 		for (var relativeCoordinate : validRelativeMoves) {
-			var newCoordinate = new Coordinate(coordinate.getX() + relativeCoordinate.getX(), coordinate.getY() + relativeCoordinate.getY());
-			if (newCoordinate.getX() >= 0 && newCoordinate.getX() < boardSize
-					&& newCoordinate.getY() >= 0 && newCoordinate.getY() < boardSize
-					&& board[newCoordinate.getX()][newCoordinate.getY()] == -1) {
+			var newCoordinate = new Coordinate(coordinate.getX() + relativeCoordinate.getX(),
+					coordinate.getY() + relativeCoordinate.getY());
+			if (newCoordinate.getX() >= 0 && newCoordinate.getX() < boardSize && newCoordinate.getY() >= 0
+					&& newCoordinate.getY() < boardSize && board[newCoordinate.getX()][newCoordinate.getY()] == -1) {
 				// new co-ordinate is accessible from co-ordinate
 				degree++;
 			}
@@ -732,7 +733,7 @@ public class Puzzles {
 	// private static int counter = 0;
 
 	private static boolean knightsTourBacktracking(int[][] board, int boardSize, int moveNumber,
-												   Coordinate currentCoordinate, List<Coordinate> validRelativeMoves) {
+			Coordinate currentCoordinate, List<Coordinate> validRelativeMoves) {
 		moveNumber++;
 
 		if (moveNumber == boardSize * boardSize) {
@@ -763,7 +764,7 @@ public class Puzzles {
 	}
 
 	private static boolean isValidKnightMoveForTour(int[][] board, int boardSize, Coordinate currentCoordinate,
-													Coordinate newCoordinate) {
+			Coordinate newCoordinate) {
 		if (newCoordinate.getX() >= 0 && newCoordinate.getX() < boardSize && newCoordinate.getY() >= 0
 				&& newCoordinate.getY() < boardSize && board[newCoordinate.getX()][newCoordinate.getY()] == -1) {
 			return true;
@@ -816,7 +817,7 @@ public class Puzzles {
 	}
 
 	private static boolean colorGraph(int[][] graph, int numColors, int numVertices, int currentVertex,
-									  Map<Integer, Integer> colorMappings) {
+			Map<Integer, Integer> colorMappings) {
 		if (currentVertex == numVertices) {
 			// All vertices colored
 			return true;
@@ -838,7 +839,7 @@ public class Puzzles {
 	}
 
 	private static boolean isAllowedForGraphColoring(int[][] graph, int numVertices, int vertex, int color,
-													 Map<Integer, Integer> colorMappings) {
+			Map<Integer, Integer> colorMappings) {
 		if (vertex < 0 || vertex >= numVertices) {
 			return false;
 		}
@@ -858,10 +859,7 @@ public class Puzzles {
 		// The miner starts from any row in the first column
 		// The miner can go right, right-up or right-down
 		// Assumption: All cells have zero or positive values.
-		if (mine == null
-				|| mine.length == 0
-				|| mine[0] == null
-				|| mine[0].length == 0) {
+		if (mine == null || mine.length == 0 || mine[0] == null || mine[0].length == 0) {
 			return -1;
 		}
 
@@ -883,8 +881,7 @@ public class Puzzles {
 					int rightGold = goldMined[i][j + 1];
 					int rightDownGold = (i != rows - 1 ? goldMined[i + 1][j + 1] : 0);
 
-					goldMined[i][j] = mine[i][j]
-							+ Utilities.max(rightUpGold, rightGold, rightDownGold);
+					goldMined[i][j] = mine[i][j] + Utilities.max(rightUpGold, rightGold, rightDownGold);
 				}
 			}
 		}
@@ -901,10 +898,7 @@ public class Puzzles {
 		// The miner starts from any row in the first column
 		// The miner can go right, right-up or right-down
 		// Assumption: All cells have zero or positive values.
-		if (mine == null
-				|| mine.length == 0
-				|| mine[0] == null
-				|| mine[0].length == 0) {
+		if (mine == null || mine.length == 0 || mine[0] == null || mine[0].length == 0) {
 			return -1;
 		}
 
@@ -925,7 +919,8 @@ public class Puzzles {
 		return maxGold;
 	}
 
-	private static int getMaxGoldFromMineRecursive(int[][] mine, int rows, int columns, int currentRow, int currentColumn) {
+	private static int getMaxGoldFromMineRecursive(int[][] mine, int rows, int columns, int currentRow,
+			int currentColumn) {
 		if (currentRow == rows || currentColumn == columns) {
 			return 0;
 		}
@@ -935,19 +930,15 @@ public class Puzzles {
 		}
 
 		return mine[currentRow][currentColumn]
-				+ Utilities.max(
-				getMaxGoldFromMineRecursive(mine, rows, columns, currentRow - 1, currentColumn + 1),
-				getMaxGoldFromMineRecursive(mine, rows, columns, currentRow, currentColumn + 1),
-				getMaxGoldFromMineRecursive(mine, rows, columns, currentRow + 1, currentColumn + 1)
-		);
+				+ Utilities.max(getMaxGoldFromMineRecursive(mine, rows, columns, currentRow - 1, currentColumn + 1),
+						getMaxGoldFromMineRecursive(mine, rows, columns, currentRow, currentColumn + 1),
+						getMaxGoldFromMineRecursive(mine, rows, columns, currentRow + 1, currentColumn + 1));
 	}
 
-	public static char[][] solveMagnetPuzzle(char[][] boardConfiguration, int[] topSpecifications, int[] leftSpecifications, int[] bottomSpecifications, int[] rightSpecifications) {
-		if (boardConfiguration == null || boardConfiguration.length == 0
-				|| topSpecifications == null
-				|| leftSpecifications == null
-				|| bottomSpecifications == null
-				|| rightSpecifications == null) {
+	public static char[][] solveMagnetPuzzle(char[][] boardConfiguration, int[] topSpecifications,
+			int[] leftSpecifications, int[] bottomSpecifications, int[] rightSpecifications) {
+		if (boardConfiguration == null || boardConfiguration.length == 0 || topSpecifications == null
+				|| leftSpecifications == null || bottomSpecifications == null || rightSpecifications == null) {
 			return null;
 		}
 
@@ -960,10 +951,8 @@ public class Puzzles {
 			}
 		}
 
-		if (topSpecifications.length != columns
-				|| leftSpecifications.length != rows
-				|| bottomSpecifications.length != columns
-				|| rightSpecifications.length != rows) {
+		if (topSpecifications.length != columns || leftSpecifications.length != rows
+				|| bottomSpecifications.length != columns || rightSpecifications.length != rows) {
 			return null;
 		}
 
@@ -972,16 +961,12 @@ public class Puzzles {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
 				char cell = boardConfiguration[i][j];
-				if (cell == 'L'
-						&& j != columns - 1
-						&& boardConfiguration[i][j + 1] != 'R') {
+				if (cell == 'L' && j != columns - 1 && boardConfiguration[i][j + 1] != 'R') {
 					boardConfigurationValid = false;
 					break;
 				}
 
-				if (cell == 'T'
-						&& i != rows - 1
-						&& boardConfiguration[i + 1][j] != 'B') {
+				if (cell == 'T' && i != rows - 1 && boardConfiguration[i + 1][j] != 'B') {
 					boardConfigurationValid = false;
 					break;
 				}
@@ -995,12 +980,8 @@ public class Puzzles {
 		char[][] board = new char[rows][columns];
 		Utilities.fillArray(board, 'X');
 
-		boolean solved = solveMagnetPuzzle(board,
-				boardConfiguration,
-				rows, columns,
-				0, 0,
-				topSpecifications, leftSpecifications,
-				bottomSpecifications, rightSpecifications);
+		boolean solved = solveMagnetPuzzle(board, boardConfiguration, rows, columns, 0, 0, topSpecifications,
+				leftSpecifications, bottomSpecifications, rightSpecifications);
 
 		if (solved) {
 			return board;
@@ -1009,18 +990,13 @@ public class Puzzles {
 		return null;
 	}
 
-	private static boolean solveMagnetPuzzle(char[][] board,
-											 char[][] boardConfiguration,
-											 int rows, int columns,
-											 int currentRow, int currentColumn,
-											 int[] topSpecifications, int[] leftSpecifications,
-											 int[] bottomSpecifications, int[] rightSpecifications) {
+	private static boolean solveMagnetPuzzle(char[][] board, char[][] boardConfiguration, int rows, int columns,
+			int currentRow, int currentColumn, int[] topSpecifications, int[] leftSpecifications,
+			int[] bottomSpecifications, int[] rightSpecifications) {
 		if (currentRow >= rows - 1 && currentColumn >= columns) {
 			// Finished the board. Validate.
-			if (isMagnetPuzzleCompleteForBoard(board, boardConfiguration,
-					rows, columns,
-					topSpecifications, leftSpecifications,
-					bottomSpecifications, rightSpecifications)) {
+			if (isMagnetPuzzleCompleteForBoard(board, boardConfiguration, rows, columns, topSpecifications,
+					leftSpecifications, bottomSpecifications, rightSpecifications)) {
 				return true;
 			}
 
@@ -1046,18 +1022,14 @@ public class Puzzles {
 
 		if (cell == 'L') {
 			// Try (+, -), Left to Right
-			if (isValidPoleForMagnetPuzzleCell(board, rows, columns, currentRow, currentColumn, '+',
-					topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)
+			if (isValidPoleForMagnetPuzzleCell(board, rows, columns, currentRow, currentColumn, '+', topSpecifications,
+					leftSpecifications, bottomSpecifications, rightSpecifications)
 					&& isValidPoleForMagnetPuzzleCell(board, rows, columns, currentRow, currentColumn + 1, '-',
-					topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)) {
+							topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)) {
 				board[currentRow][currentColumn] = '+';
 				board[currentRow][currentColumn + 1] = '-';
-				if (solveMagnetPuzzle(board,
-						boardConfiguration,
-						rows, columns,
-						currentRow, currentColumn + 2,
-						topSpecifications, leftSpecifications,
-						bottomSpecifications, rightSpecifications)) {
+				if (solveMagnetPuzzle(board, boardConfiguration, rows, columns, currentRow, currentColumn + 2,
+						topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)) {
 					return true;
 				}
 
@@ -1067,18 +1039,14 @@ public class Puzzles {
 			}
 
 			// Try (-, +), Left to Right
-			if (isValidPoleForMagnetPuzzleCell(board, rows, columns, currentRow, currentColumn, '-',
-					topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)
+			if (isValidPoleForMagnetPuzzleCell(board, rows, columns, currentRow, currentColumn, '-', topSpecifications,
+					leftSpecifications, bottomSpecifications, rightSpecifications)
 					&& isValidPoleForMagnetPuzzleCell(board, rows, columns, currentRow, currentColumn + 1, '+',
-					topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)) {
+							topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)) {
 				board[currentRow][currentColumn] = '-';
 				board[currentRow][currentColumn + 1] = '+';
-				if (solveMagnetPuzzle(board,
-						boardConfiguration,
-						rows, columns,
-						currentRow, currentColumn + 2,
-						topSpecifications, leftSpecifications,
-						bottomSpecifications, rightSpecifications)) {
+				if (solveMagnetPuzzle(board, boardConfiguration, rows, columns, currentRow, currentColumn + 2,
+						topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)) {
 					return true;
 				}
 
@@ -1090,18 +1058,14 @@ public class Puzzles {
 
 		if (cell == 'T') {
 			// Try (+, -), Top to Bottom
-			if (isValidPoleForMagnetPuzzleCell(board, rows, columns, currentRow, currentColumn, '+',
-					topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)
+			if (isValidPoleForMagnetPuzzleCell(board, rows, columns, currentRow, currentColumn, '+', topSpecifications,
+					leftSpecifications, bottomSpecifications, rightSpecifications)
 					&& isValidPoleForMagnetPuzzleCell(board, rows, columns, currentRow + 1, currentColumn, '-',
-					topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)) {
+							topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)) {
 				board[currentRow][currentColumn] = '+';
 				board[currentRow + 1][currentColumn] = '-';
-				if (solveMagnetPuzzle(board,
-						boardConfiguration,
-						rows, columns,
-						currentRow, currentColumn + 1,
-						topSpecifications, leftSpecifications,
-						bottomSpecifications, rightSpecifications)) {
+				if (solveMagnetPuzzle(board, boardConfiguration, rows, columns, currentRow, currentColumn + 1,
+						topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)) {
 					return true;
 				}
 
@@ -1111,18 +1075,14 @@ public class Puzzles {
 			}
 
 			// Try (-, +), Top to Bottom
-			if (isValidPoleForMagnetPuzzleCell(board, rows, columns, currentRow, currentColumn, '-',
-					topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)
+			if (isValidPoleForMagnetPuzzleCell(board, rows, columns, currentRow, currentColumn, '-', topSpecifications,
+					leftSpecifications, bottomSpecifications, rightSpecifications)
 					&& isValidPoleForMagnetPuzzleCell(board, rows, columns, currentRow + 1, currentColumn, '+',
-					topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)) {
+							topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)) {
 				board[currentRow][currentColumn] = '-';
 				board[currentRow + 1][currentColumn] = '+';
-				if (solveMagnetPuzzle(board,
-						boardConfiguration,
-						rows, columns,
-						currentRow, currentColumn + 1,
-						topSpecifications, leftSpecifications,
-						bottomSpecifications, rightSpecifications)) {
+				if (solveMagnetPuzzle(board, boardConfiguration, rows, columns, currentRow, currentColumn + 1,
+						topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)) {
 					return true;
 				}
 
@@ -1133,25 +1093,20 @@ public class Puzzles {
 		}
 
 		// Ignore current cell & proceed
-		if (solveMagnetPuzzle(board,
-				boardConfiguration,
-				rows, columns,
-				currentRow, currentColumn + 1,
-				topSpecifications, leftSpecifications,
-				bottomSpecifications, rightSpecifications)) {
+		if (solveMagnetPuzzle(board, boardConfiguration, rows, columns, currentRow, currentColumn + 1,
+				topSpecifications, leftSpecifications, bottomSpecifications, rightSpecifications)) {
 			return true;
 		}
 
 		return false;
 	}
 
-	private static boolean isValidPoleForMagnetPuzzleCell(char[][] board,
-														  int rows, int columns,
-														  int currentRow, int currentColumn, char pole,
-														  int[] topSpecifications, int[] leftSpecifications,
-														  int[] bottomSpecifications, int[] rightSpecifications) {
+	private static boolean isValidPoleForMagnetPuzzleCell(char[][] board, int rows, int columns, int currentRow,
+			int currentColumn, char pole, int[] topSpecifications, int[] leftSpecifications, int[] bottomSpecifications,
+			int[] rightSpecifications) {
 
-		// If any adjacent cells (Top, Left, Bottom or Right) contains the same pole, placement is invalid
+		// If any adjacent cells (Top, Left, Bottom or Right) contains the same pole,
+		// placement is invalid
 		if ((currentRow > 0 && board[currentRow - 1][currentColumn] == pole)
 				|| (currentColumn > 0 && board[currentRow][currentColumn - 1] == pole)
 				|| (currentRow < rows - 1 && board[currentRow + 1][currentColumn] == pole)
@@ -1189,10 +1144,9 @@ public class Puzzles {
 		return true;
 	}
 
-	private static boolean isMagnetPuzzleCompleteForBoard(char[][] board, char[][] boardConfiguration,
-														  int rows, int columns,
-														  int[] topSpecifications, int[] leftSpecifications,
-														  int[] bottomSpecifications, int[] rightSpecifications) {
+	private static boolean isMagnetPuzzleCompleteForBoard(char[][] board, char[][] boardConfiguration, int rows,
+			int columns, int[] topSpecifications, int[] leftSpecifications, int[] bottomSpecifications,
+			int[] rightSpecifications) {
 
 		// Check left & right specifications
 		for (int i = 0; i < rows; i++) {
@@ -1239,8 +1193,10 @@ public class Puzzles {
 
 	public static int getMaxSurvivalTimeWithAreas(IntPair startingPowers, IntPair areaX, IntPair areaY, IntPair areaZ) {
 		// Starting Powers -> (A, B)
-		// 3 areas to choose from at start (X, Y, Z). from then each time interval, choose one of the 2 remaining areas
-		// Upon visiting any area, the powers gets incremented / decremented as denoted by that area's specifications
+		// 3 areas to choose from at start (X, Y, Z). from then each time interval,
+		// choose one of the 2 remaining areas
+		// Upon visiting any area, the powers gets incremented / decremented as denoted
+		// by that area's specifications
 		// Game is over once either of the powers (a / b) becomes zero
 		// Find max survival time with the given configuration
 		if (startingPowers == null || areaX == null || areaY == null || areaZ == null) {
@@ -1249,14 +1205,13 @@ public class Puzzles {
 
 		Map<IntPair, Integer> memo = new HashMap<>();
 
-		return Utilities.max(
-				getMaxSurvivalTimeWithAreas(startingPowers, 0, areaX, areaX, areaY, areaZ, memo),
+		return Utilities.max(getMaxSurvivalTimeWithAreas(startingPowers, 0, areaX, areaX, areaY, areaZ, memo),
 				getMaxSurvivalTimeWithAreas(startingPowers, 0, areaY, areaX, areaY, areaZ, memo),
 				getMaxSurvivalTimeWithAreas(startingPowers, 0, areaZ, areaX, areaY, areaZ, memo));
 	}
 
 	private static int getMaxSurvivalTimeWithAreas(IntPair currentPowers, int survivalTime, IntPair newArea,
-												   IntPair areaX, IntPair areaY, IntPair areaZ, Map<IntPair, Integer> memo) {
+			IntPair areaX, IntPair areaY, IntPair areaZ, Map<IntPair, Integer> memo) {
 		IntPair newPowers = new IntPair(currentPowers.getA() + newArea.getA(), currentPowers.getB() + newArea.getB());
 
 		if (newPowers.getA() < 0 || newPowers.getB() < 0) {
@@ -1290,9 +1245,13 @@ public class Puzzles {
 	}
 
 	public static Pair<List<Integer>, List<Integer>> tugOfWar(int[] participantStrengths) {
-		// Tug of war - divide participants into 2 teams, difference of strengths of which is minimum
-		// If # participants are odd, one team is of (n-1)/2 size & the other (n+1)/2 size
+		// Tug of war - divide participants into 2 teams, difference of strengths of
+		// which is minimum
+		// If # participants are odd, one team is of (n-1)/2 size & the other (n+1)/2
+		// size
 		// If # participants are even, both teams are of size n/2
+		// Backtracking implementation
+		// Alternate approach: use a boolean array to mark inclusion in team 1
 
 		if (participantStrengths == null || participantStrengths.length == 0) {
 			return null;
@@ -1307,9 +1266,8 @@ public class Puzzles {
 		AtomicInteger minStrengthDifference = new AtomicInteger(Integer.MAX_VALUE);
 		Set<Integer> selectedTeam1Participants = new HashSet<>();
 
-		tugOfwar(participantStrengths, numParticipants, totalStrength,
-				0, new HashSet<>(),
-				minStrengthDifference, selectedTeam1Participants);
+		tugOfwar(participantStrengths, numParticipants, totalStrength, 0, new HashSet<>(), minStrengthDifference,
+				selectedTeam1Participants);
 
 		List<Integer> team1Strengths = new ArrayList<>();
 		List<Integer> team2Strengths = new ArrayList<>();
@@ -1326,9 +1284,9 @@ public class Puzzles {
 		return teams;
 	}
 
-	private static void tugOfwar(int[] participantStrengths, int numParticipants, int totalStrength,
-								 int currentIndex, Set<Integer> team1Participants,
-								 AtomicInteger minStrengthDifference, Set<Integer> selectedTeam1Participants) {
+	private static void tugOfwar(int[] participantStrengths, int numParticipants, int totalStrength, int currentIndex,
+			Set<Integer> team1Participants, AtomicInteger minStrengthDifference,
+			Set<Integer> selectedTeam1Participants) {
 		if (currentIndex >= numParticipants) {
 			return;
 		}
@@ -1352,14 +1310,114 @@ public class Puzzles {
 
 		// Choice 1: add current participant
 		team1Participants.add(currentIndex);
-		tugOfwar(participantStrengths, numParticipants, totalStrength,
-				currentIndex + 1, team1Participants,
+		tugOfwar(participantStrengths, numParticipants, totalStrength, currentIndex + 1, team1Participants,
 				minStrengthDifference, selectedTeam1Participants);
 
 		// Choice 2: do not add current participant
 		team1Participants.remove(currentIndex);
-		tugOfwar(participantStrengths, numParticipants, totalStrength,
-				currentIndex + 1, team1Participants,
+		tugOfwar(participantStrengths, numParticipants, totalStrength, currentIndex + 1, team1Participants,
 				minStrengthDifference, selectedTeam1Participants);
+	}
+
+	public static Map<Character, Integer> solveCryptarithmeticSumPuzzle(String first, String second, String sum) {
+		if (first == null || first.length() == 0 || second == null || second.length() == 0 || sum == null
+				|| sum.length() == 0) {
+			return null;
+		}
+
+		int[] counts = new int[26];
+		Arrays.fill(counts, 0);
+		for (int i = 0; i < first.length(); i++) {
+			counts[first.charAt(i) - 'A']++;
+		}
+
+		for (int i = 0; i < second.length(); i++) {
+			counts[second.charAt(i) - 'A']++;
+		}
+
+		for (int i = 0; i < sum.length(); i++) {
+			counts[sum.charAt(i) - 'A']++;
+		}
+
+		int uniqueCharacterCount = 0;
+		List<Character> uniqueCharacters = new ArrayList<>();
+		for (int i = 0; i < counts.length; i++) {
+			if (counts[i] > 0) {
+				uniqueCharacterCount++;
+				uniqueCharacters.add((char) ('A' + i));
+			}
+		}
+
+		if (uniqueCharacterCount > 10) {
+			// No solution possible as there are more characters than digits
+			return null;
+		}
+
+		Map<Character, Integer> solution = new HashMap<>();
+		if (solveCryptarithmeticSumPuzzle(first, second, sum, uniqueCharacters, uniqueCharacterCount, 0, solution)) {
+			return solution;
+		}
+
+		return null;
+	}
+
+	private static boolean solveCryptarithmeticSumPuzzle(String first, String second, String sum,
+			List<Character> uniqueCharacters, int uniqueCharacterCount, int currentIndex,
+			Map<Character, Integer> solution) {
+		if(currentIndex == uniqueCharacterCount) {
+			// Check if current solution satisfies the puzzle.
+			if(isCryptarithmeticSumPuzzleSolved(first, second, sum, solution)) {
+				return true;
+			}
+			
+			return false;
+		}
+				
+		Character character = uniqueCharacters.get(currentIndex);
+		for (int digit = 0; digit < 10; digit++) {
+			if(solution.containsValue(digit)) {
+				// Digit already assigned.
+				continue;
+			}
+			
+			solution.put(character, digit);
+			if (solveCryptarithmeticSumPuzzle(first, second, sum, 
+					uniqueCharacters, uniqueCharacterCount, currentIndex + 1,
+					solution)) {
+				return true;
+			}
+
+			// Backtrack
+			solution.remove(character);
+		}
+
+		return false;
+	}
+	
+	private static boolean isCryptarithmeticSumPuzzleSolved(String first, String second, String sum,
+															Map<Character, Integer> solution) {
+		int firstNumber = 0;
+		int secondNumber = 0;
+		int sumNumber = 0;
+		
+		for (int i = 0; i < first.length(); i++) {
+			char c = first.charAt(i);
+			int num = solution.get(c);
+			firstNumber = (firstNumber * 10) + num;
+		}
+		
+		for (int i = 0; i < second.length(); i++) {
+			char c = second.charAt(i);
+			int num = solution.get(c);
+			secondNumber = (secondNumber * 10) + num;
+		}
+		
+		for (int i = 0; i < sum.length(); i++) {
+			char c = sum.charAt(i);
+			int num = solution.get(c);
+			sumNumber = (sumNumber * 10) + num;
+		}
+		
+		return (firstNumber + secondNumber) == sumNumber;
 	}
 }

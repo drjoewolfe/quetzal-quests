@@ -4,7 +4,9 @@ import org.junit.jupiter.api.Test;
 import org.jwolfe.quetzal.library.general.IntPair;
 import org.jwolfe.quetzal.library.general.Pair;
 import org.jwolfe.quetzal.library.utilities.Utilities;
+import org.jwolfe.quetzal.test.QuetzalAssertions;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -374,5 +376,36 @@ class PuzzlesTest {
 		assertNotNull(teams);
 		assertListEquals(team1, teams.getFirst());
 		assertListEquals(team2, teams.getSecond());
+	}
+	
+	@Test
+	void solveCryptarithmeticSumPuzzle() {
+		String first;
+		String second;
+		String sum;
+		Map<Character, Integer> solution;
+		Map<Character, Integer> expectedSolution;
+		
+		first = "SEND";
+		second = "MORE";
+		sum = "MONEY";
+		expectedSolution = new HashMap<>();
+		expectedSolution.put('D', 1);
+		expectedSolution.put('E', 5);
+		expectedSolution.put('M', 0);
+		expectedSolution.put('N', 3);
+		expectedSolution.put('O', 8);
+		expectedSolution.put('R', 2);
+		expectedSolution.put('S', 7);
+		expectedSolution.put('Y', 6);
+		solution = Puzzles.solveCryptarithmeticSumPuzzle(first, second, sum);
+		assertNotNull(solution);
+		QuetzalAssertions.assertMapEquals(expectedSolution, solution);
+		
+		first = "SENDWAY";
+		second = "MOREANDMORE";
+		sum = "MONEYANDCASH";
+		solution = Puzzles.solveCryptarithmeticSumPuzzle(first, second, sum);
+		assertNull(solution);
 	}
 }
