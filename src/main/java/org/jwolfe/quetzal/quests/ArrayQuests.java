@@ -1849,4 +1849,38 @@ public class ArrayQuests {
 
         return null;
     }
+    
+    public static int getMaxArraySumAfterKNegations(int[] arr, int k) {
+		// For each of the k iterations, find the lowest number in the array & negate it.
+    	
+    	if(arr == null || arr.length == 0) {
+    		return Integer.MIN_VALUE;
+    	}
+    	
+    	for (int iteration = 0; iteration < k; iteration++) {
+			int minIndex = -1;
+			int minValue = Integer.MAX_VALUE;
+			for (int i = 0; i < arr.length; i++) {
+				int value = arr[i];
+				if(value < minValue) {
+					minValue = value;
+					minIndex = i;
+				}
+			}
+			
+			// Special case. If zero, then further iterations will not change the solution
+			if(minValue == 0) {
+				break;
+			}
+			
+			arr[minIndex] = minValue * -1;
+		}
+    	
+    	int sum = 0;
+    	for (int i = 0; i < arr.length; i++) {
+			sum += arr[i];
+		}
+    	    	
+    	return sum;
+	}
 }
