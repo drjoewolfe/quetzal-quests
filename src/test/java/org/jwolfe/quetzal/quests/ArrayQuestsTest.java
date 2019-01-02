@@ -1371,4 +1371,15 @@ class ArrayQuestsTest {
         arr = Utilities.constructArray(9, 8, 8, 5);
         assertEquals(20, ArrayQuests.getMaxArraySumAfterKNegations(arr, 3));
     }
+    
+    @Test
+    void getMaxArraySumAfterKNegationsA2() {
+        int[] arr;
+
+        arr = Utilities.constructArray(-2, 0, 5, -1, 2);
+        assertEquals(10, ArrayQuests.getMaxArraySumAfterKNegationsA2(arr, 4));
+        
+        arr = Utilities.constructArray(9, 8, 8, 5);
+        assertEquals(20, ArrayQuests.getMaxArraySumAfterKNegationsA2(arr, 3));
+    }
 }

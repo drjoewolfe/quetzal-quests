@@ -5,6 +5,7 @@ import org.jwolfe.quetzal.library.general.Pair;
 import org.jwolfe.quetzal.library.general.Point;
 import org.jwolfe.quetzal.library.general.Quadruplet;
 import org.jwolfe.quetzal.library.general.Triplet;
+import org.jwolfe.quetzal.library.heap.MinHeap;
 import org.jwolfe.quetzal.library.tree.AvlTree;
 import org.jwolfe.quetzal.library.utilities.PairFirstSorter;
 import org.jwolfe.quetzal.library.utilities.Utilities;
@@ -1851,6 +1852,38 @@ public class ArrayQuests {
     }
     
     public static int getMaxArraySumAfterKNegations(int[] arr, int k) {
+		// For each of the k iterations, find the lowest number in the array & negate it.
+    	// Optimized implementation using a min heap
+    	
+    	if(arr == null || arr.length == 0) {
+    		return Integer.MIN_VALUE;
+    	}
+    	
+    	// Java's PriorityQueue also will be fine here.
+    	int length = arr.length;
+    	int sum = 0;
+    	MinHeap heap = new MinHeap(length);
+    	for(int key : arr) {
+    		sum += key;
+    		heap.insert(key);
+    	}
+    	
+    	for (int iteration = 0; iteration < k; iteration++) {
+			int minValue = heap.extractMin();
+			if(minValue == 0) {
+				break;
+			}
+			
+			int negatedMinValue = minValue * -1;
+			sum -= minValue;
+			sum += negatedMinValue;
+			heap.insert(negatedMinValue);
+		}
+    	
+    	return sum;
+	}
+    
+    public static int getMaxArraySumAfterKNegationsA2(int[] arr, int k) {
 		// For each of the k iterations, find the lowest number in the array & negate it.
     	
     	if(arr == null || arr.length == 0) {
