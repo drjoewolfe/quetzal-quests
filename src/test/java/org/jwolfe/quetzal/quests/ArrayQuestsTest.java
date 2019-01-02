@@ -1395,4 +1395,12 @@ class ArrayQuestsTest {
             {9, 5, 1, 8}};
     	assertEquals(18, ArrayQuests.getMaxSumOfIncreasingOrderSingleElementsFromNArrays(arrays));
     }
+    
+    @Test
+    void getMaxSumOfAbsoluteDifferencesBetweenElements() {
+        int[] arr;
+        
+        arr = Utilities.constructArray(1, 2, 4, 8);
+        assertEquals(18, ArrayQuests.getMaxSumOfAbsoluteDifferencesBetweenElements(arr));
+    }
 }

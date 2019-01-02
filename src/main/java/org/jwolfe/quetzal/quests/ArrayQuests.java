@@ -1925,4 +1925,35 @@ public class ArrayQuests {
 
 		return sum;
 	}
+	
+	public static int getMaxSumOfAbsoluteDifferencesBetweenElements(int[] arr) {
+		// For getting the maximum absolute differences, we need to have the sequence with smallest & largest interweaved
+		if (arr == null || arr.length == 0) {
+			return Integer.MIN_VALUE;
+		}
+
+		int length = arr.length;
+		
+		Arrays.sort(arr);
+		int[] interweaved = new int[length];
+		
+		int left = 0;
+		int right = length - 1;
+		int index = 0;
+		while(left < right) {
+			interweaved[index++] = arr[left++];
+			interweaved[index++] = arr[right--];
+		}
+		
+		int sum = 0;
+		for (int i = 0; i < length - 1; i++) {
+			sum += Math.abs(interweaved[i]- interweaved[i+1]);
+		}
+		
+		if(length > 1) {
+			sum += Math.abs(interweaved[0] - interweaved[interweaved.length - 1]);
+		}		
+		
+		return sum;
+	}
 }
