@@ -1382,4 +1382,17 @@ class ArrayQuestsTest {
         arr = Utilities.constructArray(9, 8, 8, 5);
         assertEquals(20, ArrayQuests.getMaxArraySumAfterKNegationsA2(arr, 3));
     }
+    
+    @Test
+    void getMaxSumOfIncreasingOrderSingleElementsFromNArrays() {
+        int[][] arrays = new int[][] {{9, 8, 7},
+						            {6, 5, 4},
+						            {3, 2, 1}};
+        assertEquals(0, ArrayQuests.getMaxSumOfIncreasingOrderSingleElementsFromNArrays(arrays));
+        
+        arrays = new int[][] {{1, 7, 3, 4},
+            {4, 2, 5, 1},
+            {9, 5, 1, 8}};
+    	assertEquals(18, ArrayQuests.getMaxSumOfIncreasingOrderSingleElementsFromNArrays(arrays));
+    }
 }
