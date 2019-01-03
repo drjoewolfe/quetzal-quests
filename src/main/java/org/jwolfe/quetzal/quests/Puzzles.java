@@ -1364,26 +1364,25 @@ public class Puzzles {
 	private static boolean solveCryptarithmeticSumPuzzle(String first, String second, String sum,
 			List<Character> uniqueCharacters, int uniqueCharacterCount, int currentIndex,
 			Map<Character, Integer> solution) {
-		if(currentIndex == uniqueCharacterCount) {
+		if (currentIndex == uniqueCharacterCount) {
 			// Check if current solution satisfies the puzzle.
-			if(isCryptarithmeticSumPuzzleSolved(first, second, sum, solution)) {
+			if (isCryptarithmeticSumPuzzleSolved(first, second, sum, solution)) {
 				return true;
 			}
-			
+
 			return false;
 		}
-				
+
 		Character character = uniqueCharacters.get(currentIndex);
 		for (int digit = 0; digit < 10; digit++) {
-			if(solution.containsValue(digit)) {
+			if (solution.containsValue(digit)) {
 				// Digit already assigned.
 				continue;
 			}
-			
+
 			solution.put(character, digit);
-			if (solveCryptarithmeticSumPuzzle(first, second, sum, 
-					uniqueCharacters, uniqueCharacterCount, currentIndex + 1,
-					solution)) {
+			if (solveCryptarithmeticSumPuzzle(first, second, sum, uniqueCharacters, uniqueCharacterCount,
+					currentIndex + 1, solution)) {
 				return true;
 			}
 
@@ -1393,31 +1392,98 @@ public class Puzzles {
 
 		return false;
 	}
-	
+
 	private static boolean isCryptarithmeticSumPuzzleSolved(String first, String second, String sum,
-															Map<Character, Integer> solution) {
+			Map<Character, Integer> solution) {
 		int firstNumber = 0;
 		int secondNumber = 0;
 		int sumNumber = 0;
-		
+
 		for (int i = 0; i < first.length(); i++) {
 			char c = first.charAt(i);
 			int num = solution.get(c);
 			firstNumber = (firstNumber * 10) + num;
 		}
-		
+
 		for (int i = 0; i < second.length(); i++) {
 			char c = second.charAt(i);
 			int num = solution.get(c);
 			secondNumber = (secondNumber * 10) + num;
 		}
-		
+
 		for (int i = 0; i < sum.length(); i++) {
 			char c = sum.charAt(i);
 			int num = solution.get(c);
 			sumNumber = (sumNumber * 10) + num;
 		}
-		
+
 		return (firstNumber + secondNumber) == sumNumber;
+	}
+
+	public static Set<String> boggle(char[][] board, Set<String> dictionary) {
+		// Search for words from the dictionary in the board & return the words found.
+		// From any cell, all 8 adjacent cells are accessible for search.
+
+		// Do DFS from each cell to its adjacent 9 cells & construct words.
+		// Check if each of those words is in the dictionary
+
+		if (board == null || board.length == 0 || board[0].length == 0 || dictionary == null
+				|| dictionary.size() == 0) {
+			return null;
+		}
+
+		int rows = board.length;
+		int columns = board[0].length;
+		for (int i = 1; i < rows; i++) {
+			if (board[i] == null || board[i].length != columns) {
+				return null;
+			}
+		}
+
+		Set<IntPair> visitedCells = new HashSet<>();
+		Set<String> wordsInBoard = new HashSet<>();
+		StringBuilder currentWord = new StringBuilder();
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+				visitedCells.clear();
+				boggle(board, dictionary, rows, columns, i, j, visitedCells, currentWord, wordsInBoard);
+			}
+		}
+
+		return wordsInBoard;
+	}
+
+	private static void boggle(char[][] board, Set<String> dictionary, int rows, int columns, 
+			int currentRow, int currentColumn, Set<IntPair> visitedCells,
+			StringBuilder currentWord, Set<String> wordsInBoard) {
+		if (currentRow < 0 || currentRow >= rows || currentColumn < 0 || currentColumn >= columns) {
+			return;
+		}
+		
+		IntPair cell = new IntPair(currentRow, currentColumn);
+		if(visitedCells.contains(cell)) {
+			return;
+		}
+		
+		visitedCells.add(cell);
+		
+		Character c = board[currentRow][currentColumn];
+		currentWord.append(c);
+		String word = currentWord.toString();
+		if(dictionary.contains(word)) {
+			wordsInBoard.add(word);
+		}
+		
+		for (int i = currentRow - 1; i <= currentRow + 1; i++) {
+			for (int j = currentColumn - 1; j <= currentColumn + 1; j++) {
+				if(!(i == currentRow && j == currentColumn)) {
+					boggle(board, dictionary, rows, columns, i, j, visitedCells, currentWord, wordsInBoard);
+				}
+			}
+		}
+		
+		// Backtrack
+		visitedCells.remove(cell);
+		currentWord.deleteCharAt(currentWord.length() - 1);
 	}
 }

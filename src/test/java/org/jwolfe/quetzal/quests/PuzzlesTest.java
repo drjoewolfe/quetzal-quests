@@ -408,4 +408,47 @@ class PuzzlesTest {
 		solution = Puzzles.solveCryptarithmeticSumPuzzle(first, second, sum);
 		assertNull(solution);
 	}
+	
+	@Test
+	void boggle() {
+		char[][] board;
+		Set<String> dictionary; 
+		Set<String> solution;
+		Set<String> expectedSolution;
+		
+		board = new char[][] {{'I','S','T'}};
+		dictionary = Utilities.constructSet("BLOGS", "TIP", "DEAL", "IS");
+		expectedSolution = Utilities.constructSet("IS");
+		solution = Puzzles.boggle(board, dictionary);
+		assertSetEquals(expectedSolution, solution);
+
+		board = new char[][] {{'I'},
+								{'S'}};
+		dictionary = Utilities.constructSet("BLOGS", "TIP", "DEAL", "IS");
+		expectedSolution = Utilities.constructSet("IS");
+		solution = Puzzles.boggle(board, dictionary);
+		assertSetEquals(expectedSolution, solution);
+				
+		board = new char[][] {{'I','G'},
+								{'S','K'}};
+		dictionary = Utilities.constructSet("BLOGS", "TIP", "DEAL", "IS");
+		expectedSolution = Utilities.constructSet("IS");
+		solution = Puzzles.boggle(board, dictionary);
+		assertSetEquals(expectedSolution, solution);
+		
+		board = new char[][] {{'I','G'},
+								{'K','S'}};
+		dictionary = Utilities.constructSet("BLOGS", "TIP", "DEAL", "IS");
+		expectedSolution = Utilities.constructSet("IS");
+		solution = Puzzles.boggle(board, dictionary);
+		assertSetEquals(expectedSolution, solution);
+		
+		board = new char[][] {{'B','A','L'},
+				            {'E','L','G'},
+				            {'D','S','O'}};
+		dictionary = Utilities.constructSet("BLOGS", "TIP", "DEAL", "AS");
+		expectedSolution = Utilities.constructSet("BLOGS", "DEAL");
+		solution = Puzzles.boggle(board, dictionary);
+		assertSetEquals(expectedSolution, solution);
+	}
 }
