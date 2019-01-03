@@ -377,7 +377,7 @@ class PuzzlesTest {
 		assertListEquals(team1, teams.getFirst());
 		assertListEquals(team2, teams.getSecond());
 	}
-	
+
 	@Test
 	void solveCryptarithmeticSumPuzzle() {
 		String first;
@@ -385,7 +385,7 @@ class PuzzlesTest {
 		String sum;
 		Map<Character, Integer> solution;
 		Map<Character, Integer> expectedSolution;
-		
+
 		first = "SEND";
 		second = "MORE";
 		sum = "MONEY";
@@ -401,97 +401,123 @@ class PuzzlesTest {
 		solution = Puzzles.solveCryptarithmeticSumPuzzle(first, second, sum);
 		assertNotNull(solution);
 		QuetzalAssertions.assertMapEquals(expectedSolution, solution);
-		
+
 		first = "SENDWAY";
 		second = "MOREANDMORE";
 		sum = "MONEYANDCASH";
 		solution = Puzzles.solveCryptarithmeticSumPuzzle(first, second, sum);
 		assertNull(solution);
 	}
-	
+
 	@Test
 	void boggle() {
 		char[][] board;
-		Set<String> dictionary; 
+		Set<String> dictionary;
 		Set<String> solution;
 		Set<String> expectedSolution;
-		
-		board = new char[][] {{'I','S','T'}};
+
+		board = new char[][]{{'I', 'S', 'T'}};
 		dictionary = Utilities.constructSet("BLOGS", "TIP", "DEAL", "IS");
 		expectedSolution = Utilities.constructSet("IS");
 		solution = Puzzles.boggle(board, dictionary);
 		assertSetEquals(expectedSolution, solution);
 
-		board = new char[][] {{'I'},
-								{'S'}};
+		board = new char[][]{{'I'},
+				{'S'}};
 		dictionary = Utilities.constructSet("BLOGS", "TIP", "DEAL", "IS");
 		expectedSolution = Utilities.constructSet("IS");
 		solution = Puzzles.boggle(board, dictionary);
 		assertSetEquals(expectedSolution, solution);
-				
-		board = new char[][] {{'I','G'},
-								{'S','K'}};
+
+		board = new char[][]{{'I', 'G'},
+				{'S', 'K'}};
 		dictionary = Utilities.constructSet("BLOGS", "TIP", "DEAL", "IS");
 		expectedSolution = Utilities.constructSet("IS");
 		solution = Puzzles.boggle(board, dictionary);
 		assertSetEquals(expectedSolution, solution);
-		
-		board = new char[][] {{'I','G'},
-								{'K','S'}};
+
+		board = new char[][]{{'I', 'G'},
+				{'K', 'S'}};
 		dictionary = Utilities.constructSet("BLOGS", "TIP", "DEAL", "IS");
 		expectedSolution = Utilities.constructSet("IS");
 		solution = Puzzles.boggle(board, dictionary);
 		assertSetEquals(expectedSolution, solution);
-		
-		board = new char[][] {{'B','A','L'},
-				            {'E','L','G'},
-				            {'D','S','O'}};
+
+		board = new char[][]{{'B', 'A', 'L'},
+				{'E', 'L', 'G'},
+				{'D', 'S', 'O'}};
 		dictionary = Utilities.constructSet("BLOGS", "TIP", "DEAL", "AS");
 		expectedSolution = Utilities.constructSet("BLOGS", "DEAL");
 		solution = Puzzles.boggle(board, dictionary);
 		assertSetEquals(expectedSolution, solution);
 	}
-	
+
 	@Test
 	void boggleNaive() {
 		char[][] board;
-		Set<String> dictionary; 
+		Set<String> dictionary;
 		Set<String> solution;
 		Set<String> expectedSolution;
-		
-		board = new char[][] {{'I','S','T'}};
+
+		board = new char[][]{{'I', 'S', 'T'}};
 		dictionary = Utilities.constructSet("BLOGS", "TIP", "DEAL", "IS");
 		expectedSolution = Utilities.constructSet("IS");
 		solution = Puzzles.boggleNaive(board, dictionary);
 		assertSetEquals(expectedSolution, solution);
 
-		board = new char[][] {{'I'},
-								{'S'}};
+		board = new char[][]{{'I'},
+				{'S'}};
 		dictionary = Utilities.constructSet("BLOGS", "TIP", "DEAL", "IS");
 		expectedSolution = Utilities.constructSet("IS");
 		solution = Puzzles.boggleNaive(board, dictionary);
 		assertSetEquals(expectedSolution, solution);
-				
-		board = new char[][] {{'I','G'},
-								{'S','K'}};
+
+		board = new char[][]{{'I', 'G'},
+				{'S', 'K'}};
 		dictionary = Utilities.constructSet("BLOGS", "TIP", "DEAL", "IS");
 		expectedSolution = Utilities.constructSet("IS");
 		solution = Puzzles.boggleNaive(board, dictionary);
 		assertSetEquals(expectedSolution, solution);
-		
-		board = new char[][] {{'I','G'},
-								{'K','S'}};
+
+		board = new char[][]{{'I', 'G'},
+				{'K', 'S'}};
 		dictionary = Utilities.constructSet("BLOGS", "TIP", "DEAL", "IS");
 		expectedSolution = Utilities.constructSet("IS");
 		solution = Puzzles.boggleNaive(board, dictionary);
 		assertSetEquals(expectedSolution, solution);
-		
-		board = new char[][] {{'B','A','L'},
-				            {'E','L','G'},
-				            {'D','S','O'}};
+
+		board = new char[][]{{'B', 'A', 'L'},
+				{'E', 'L', 'G'},
+				{'D', 'S', 'O'}};
 		dictionary = Utilities.constructSet("BLOGS", "TIP", "DEAL", "AS");
 		expectedSolution = Utilities.constructSet("BLOGS", "DEAL");
 		solution = Puzzles.boggleNaive(board, dictionary);
 		assertSetEquals(expectedSolution, solution);
+	}
+
+	@Test
+	void ratInAMaze() {
+		int[][] maze;
+		int[][] solution;
+		int[][] expectedSolution;
+
+		maze = new int[][]{{1, 0, 0, 0},
+				{1, 1, 0, 1},
+				{0, 1, 0, 0},
+				{1, 1, 1, 1}};
+		expectedSolution = new int[][]{
+				{1, 0, 0, 0},
+				{1, 1, 0, 0},
+				{0, 1, 0, 0},
+				{0, 1, 1, 1}};
+		solution = Puzzles.ratInAMaze(maze);
+		assertArrayEquals(expectedSolution, solution);
+
+		maze = new int[][]{{1, 0, 0, 0},
+				{1, 1, 0, 1},
+				{0, 0, 0, 0},
+				{1, 1, 1, 1}};
+		solution = Puzzles.ratInAMaze(maze);
+		assertNull(solution);
 	}
 }
