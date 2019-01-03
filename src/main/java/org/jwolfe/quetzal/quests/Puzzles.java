@@ -5,6 +5,8 @@ import org.jwolfe.quetzal.library.general.Coordinate;
 import org.jwolfe.quetzal.library.general.IntPair;
 import org.jwolfe.quetzal.library.general.Pair;
 import org.jwolfe.quetzal.library.general.Rod;
+import org.jwolfe.quetzal.library.trie.Trie;
+import org.jwolfe.quetzal.library.trie.TrieNode;
 import org.jwolfe.quetzal.library.utilities.Utilities;
 
 import java.util.*;
@@ -1440,48 +1442,120 @@ public class Puzzles {
 			}
 		}
 
-		Set<IntPair> visitedCells = new HashSet<>();
-		Set<String> wordsInBoard = new HashSet<>();
+		Trie trie = new Trie();
+		for (var word : dictionary) {
+			trie.insert(word);
+		}
+
+		boolean[][] visited = new boolean[rows][columns];
+		TrieNode root = trie.getRoot();
 		StringBuilder currentWord = new StringBuilder();
+		Set<String> wordsInBoard = new HashSet<>();
+
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
-				visitedCells.clear();
-				boggle(board, dictionary, rows, columns, i, j, visitedCells, currentWord, wordsInBoard);
+				Utilities.fillArray(visited, false);
+				searchWordsForBoggle(board, rows, columns, i, j, root, visited, currentWord, wordsInBoard);
 			}
 		}
 
 		return wordsInBoard;
 	}
 
-	private static void boggle(char[][] board, Set<String> dictionary, int rows, int columns, 
-			int currentRow, int currentColumn, Set<IntPair> visitedCells,
-			StringBuilder currentWord, Set<String> wordsInBoard) {
-		if (currentRow < 0 || currentRow >= rows || currentColumn < 0 || currentColumn >= columns) {
+	private static void searchWordsForBoggle(char[][] board, int rows, int columns, int currentRow, int currentColumn,
+			TrieNode node, boolean[][] visited, StringBuilder currentWord, Set<String> wordsInBoard) {
+		if (currentRow < 0 || currentRow >= rows || currentColumn < 0 || currentColumn >= columns
+				|| visited[currentRow][currentColumn]) {
 			return;
 		}
-		
-		IntPair cell = new IntPair(currentRow, currentColumn);
-		if(visitedCells.contains(cell)) {
+
+		char c = board[currentRow][currentColumn];
+		if (!node.getChildren().containsKey(c)) {
 			return;
 		}
-		
-		visitedCells.add(cell);
-		
-		Character c = board[currentRow][currentColumn];
+
 		currentWord.append(c);
-		String word = currentWord.toString();
-		if(dictionary.contains(word)) {
-			wordsInBoard.add(word);
+		visited[currentRow][currentColumn] = true;
+
+		var childNode = node.getChildren().get(c);
+		if (childNode.isEndOfWord()) {
+			wordsInBoard.add(currentWord.toString());
 		}
-		
+
 		for (int i = currentRow - 1; i <= currentRow + 1; i++) {
 			for (int j = currentColumn - 1; j <= currentColumn + 1; j++) {
-				if(!(i == currentRow && j == currentColumn)) {
-					boggle(board, dictionary, rows, columns, i, j, visitedCells, currentWord, wordsInBoard);
+				if (!(currentRow == i && currentColumn == j)) {
+					searchWordsForBoggle(board, rows, columns, i, j, childNode, visited, currentWord, wordsInBoard);
 				}
 			}
 		}
-		
+
+		// Backtrack
+		visited[currentRow][currentColumn] = false;
+		currentWord.deleteCharAt(currentWord.length() - 1);
+	}
+
+	public static Set<String> boggleNaive(char[][] board, Set<String> dictionary) {
+		// Search for words from the dictionary in the board & return the words found.
+		// From any cell, all 8 adjacent cells are accessible for search.
+
+		// Do DFS from each cell to its adjacent 9 cells & construct words.
+		// Check if each of those words is in the dictionary
+
+		if (board == null || board.length == 0 || board[0].length == 0 || dictionary == null
+				|| dictionary.size() == 0) {
+			return null;
+		}
+
+		int rows = board.length;
+		int columns = board[0].length;
+		for (int i = 1; i < rows; i++) {
+			if (board[i] == null || board[i].length != columns) {
+				return null;
+			}
+		}
+
+		Set<IntPair> visitedCells = new HashSet<>();
+		Set<String> wordsInBoard = new HashSet<>();
+		StringBuilder currentWord = new StringBuilder();
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+				visitedCells.clear();
+				boggleNaive(board, dictionary, rows, columns, i, j, visitedCells, currentWord, wordsInBoard);
+			}
+		}
+
+		return wordsInBoard;
+	}
+
+	private static void boggleNaive(char[][] board, Set<String> dictionary, int rows, int columns, int currentRow,
+			int currentColumn, Set<IntPair> visitedCells, StringBuilder currentWord, Set<String> wordsInBoard) {
+		if (currentRow < 0 || currentRow >= rows || currentColumn < 0 || currentColumn >= columns) {
+			return;
+		}
+
+		IntPair cell = new IntPair(currentRow, currentColumn);
+		if (visitedCells.contains(cell)) {
+			return;
+		}
+
+		visitedCells.add(cell);
+
+		Character c = board[currentRow][currentColumn];
+		currentWord.append(c);
+		String word = currentWord.toString();
+		if (dictionary.contains(word)) {
+			wordsInBoard.add(word);
+		}
+
+		for (int i = currentRow - 1; i <= currentRow + 1; i++) {
+			for (int j = currentColumn - 1; j <= currentColumn + 1; j++) {
+				if (!(i == currentRow && j == currentColumn)) {
+					boggleNaive(board, dictionary, rows, columns, i, j, visitedCells, currentWord, wordsInBoard);
+				}
+			}
+		}
+
 		// Backtrack
 		visitedCells.remove(cell);
 		currentWord.deleteCharAt(currentWord.length() - 1);
