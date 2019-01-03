@@ -1617,4 +1617,68 @@ public class Puzzles {
 		solution[currentRow][currentColumn] = 0;
 		return false;
 	}
+
+	public static int[][] ratInAMazeWithMultipleJumpsAllowed(int[][] maze) {
+		// The rat can move right or down in the maze. The rat has to start from (0,0) & reach (n-1, n-1) in the maze.
+		// In the maze, a non-zero value implies that the path is accessible; zero implies a wall.
+		// The numeric value in the cell indicate the number of jumps in a single direction that the rat can make.
+
+		if (maze == null || maze.length == 0 || maze[0].length == 0) {
+			return null;
+		}
+
+		int rows = maze.length;
+		int columns = maze[0].length;
+		for (int i = 1; i < rows; i++) {
+			if (maze[i] == null || maze[i].length != columns) {
+				return null;
+			}
+		}
+
+		int[][] solution = new int[rows][columns];
+		Utilities.fillArray(solution, 0);
+
+		if (ratInAMazeWithMultipleJumpsAllowed(maze, rows, columns, 0, 0, solution)) {
+			return solution;
+		}
+
+		return null;
+	}
+
+	public static boolean ratInAMazeWithMultipleJumpsAllowed(int[][] maze, int rows, int columns,
+															 int currentRow, int currentColumn, int[][] solution) {
+		if (currentRow < 0 || currentRow >= rows || currentColumn < 0 || currentColumn >= columns) {
+			return false;
+		}
+
+		if (maze[currentRow][currentColumn] == 0) {
+			return false;
+		}
+
+		solution[currentRow][currentColumn] = 1;
+
+		// Reached destination ?
+		if (currentRow == rows - 1 && currentColumn == columns - 1) {
+			return true;
+		}
+
+		int maxSteps = maze[currentRow][currentColumn];
+
+		// Try Right
+		for (int i = 1; i <= maxSteps; i++) {
+			if (ratInAMazeWithMultipleJumpsAllowed(maze, rows, columns, currentRow, currentColumn + i, solution)) {
+				return true;
+			}
+		}
+
+		// Try Down
+		for (int j = 1; j <= maxSteps; j++) {
+			if (ratInAMazeWithMultipleJumpsAllowed(maze, rows, columns, currentRow + j, currentColumn, solution)) {
+				return true;
+			}
+		}
+
+		solution[currentRow][currentColumn] = 0;
+		return false;
+	}
 }

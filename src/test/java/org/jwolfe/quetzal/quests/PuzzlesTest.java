@@ -520,4 +520,61 @@ class PuzzlesTest {
 		solution = Puzzles.ratInAMaze(maze);
 		assertNull(solution);
 	}
+
+	@Test
+	void ratInAMazeWithMultipleJumpsAllowed() {
+		int[][] maze;
+		int[][] solution;
+		int[][] expectedSolution;
+
+		maze = new int[][]{{1, 0, 0, 0},
+				{1, 1, 0, 1},
+				{0, 1, 0, 0},
+				{1, 1, 1, 1}};
+		expectedSolution = new int[][]{
+				{1, 0, 0, 0},
+				{1, 1, 0, 0},
+				{0, 1, 0, 0},
+				{0, 1, 1, 1}};
+		solution = Puzzles.ratInAMazeWithMultipleJumpsAllowed(maze);
+		assertArrayEquals(expectedSolution, solution);
+
+		maze = new int[][]{{1, 0, 0, 0},
+				{1, 1, 0, 1},
+				{0, 0, 0, 0},
+				{1, 1, 1, 1}};
+		solution = Puzzles.ratInAMazeWithMultipleJumpsAllowed(maze);
+		assertNull(solution);
+
+		maze = new int[][]{{2, 1, 0, 0},
+				{3, 0, 0, 1},
+				{0, 1, 0, 1},
+				{0, 0, 0, 1}};
+		expectedSolution = new int[][]{{1, 0, 0, 0},
+				{1, 0, 0, 1},
+				{0, 0, 0, 1},
+				{0, 0, 0, 1}};
+		solution = Puzzles.ratInAMazeWithMultipleJumpsAllowed(maze);
+		assertArrayEquals(expectedSolution, solution);
+
+		maze = new int[][]{{2, 1, 0, 0},
+				{2, 0, 0, 1},
+				{0, 1, 0, 1},
+				{0, 0, 0, 1}};
+		solution = Puzzles.ratInAMazeWithMultipleJumpsAllowed(maze);
+		assertNull(solution);
+
+		maze = new int[][]{
+				{3, 0, 1, 0},
+				{0, 0, 1, 0},
+				{0, 0, 1, 1},
+				{0, 0, 0, 1}};
+		expectedSolution = new int[][]{
+				{1, 0, 1, 0},
+				{0, 0, 1, 0},
+				{0, 0, 1, 1},
+				{0, 0, 0, 1}};
+		solution = Puzzles.ratInAMazeWithMultipleJumpsAllowed(maze);
+		assertArrayEquals(expectedSolution, solution);
+	}
 }
