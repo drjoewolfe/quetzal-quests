@@ -43,6 +43,77 @@ public class Puzzles {
 		towersOfHanoi(auxRod, toRod, fromRod, numDisks - 1);
 	}
 
+    public static boolean nQueeens(int[][] board) {
+        if (board == null || board.length == 0 || board[0].length == 0) {
+            return false;
+        }
+
+        int n = board.length;
+        for (int i = 0; i < n; i++) {
+            if (board[i].length != n) {
+                return false;
+            }
+        }
+
+        Utilities.fillArray(board, 0);
+
+        // Lookup indicating the row (value) & column (index) for queen placements
+        int[] rowPlacements = new int[n];
+        Arrays.fill(rowPlacements, -1);
+
+        return nQueeens(board, n, 0, rowPlacements);
+    }
+
+    public static boolean nQueeens(int[][] board, int n, int column, int[] rowPlacements) {
+        if (column >= n) {
+            return true;
+        }
+
+        for (int row = 0; row < n; row++) {
+            if (isSafeForQueen(board, n, row, column, rowPlacements)) {
+                board[row][column] = 1;
+                rowPlacements[column] = row;
+                if (nQueeens(board, n, column + 1, rowPlacements)) {
+                    return true;
+                }
+
+                // Didn't work out. Backtrack.
+                board[row][column] = 0;
+                rowPlacements[column] = -1;
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean isSafeForQueen(int[][] board, int n, int row, int column,
+                                           int[] rowPlacements) {
+        if (row < 0 || row >= n || column < 0 || column >= n) {
+            return false;
+        }
+
+        for (int j = 0; j < column; j++) {
+            int i = rowPlacements[j];
+
+            if (i == row) {
+                // Another queen in the same row.
+                return false;
+            }
+
+            if (i + j == row + column) {
+                // Another queen in the same forward diagonal
+                return false;
+            }
+
+            if (i - j == row - column) {
+                // Another queen in the same backward diagonal
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 	public static boolean nQueeensWithBranchAndBound(int[][] board) {
 		if (board == null || board.length == 0 || board[0].length == 0) {
 			return false;
