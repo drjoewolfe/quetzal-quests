@@ -50,10 +50,79 @@ class PuzzlesTest {
 	}
 
 	@Test
-	void nQueeens() {
+	void nQueeensWithBranchAndBound() {
 		int[][] board = {{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}};
+		int[][] expectedBoard = {{0, 0, 1, 0}, {1, 0, 0, 0}, {0, 0, 0, 1}, {0, 1, 0, 0}};
 
-		boolean solved = Puzzles.nQueeens(board);
+		boolean solved = Puzzles.nQueeensWithBranchAndBound(board);
+		assertEquals(true, solved);
+		assertTwoDimensionalArrayEquals(expectedBoard, board);
+		Utilities.printArray(board);
+
+		System.out.println();
+		board = new int[5][5];
+		Utilities.fillArray(board, 0);
+		solved = Puzzles.nQueeensWithBranchAndBound(board);
+		assertEquals(true, solved);
+		Utilities.printArray(board);
+
+		System.out.println();
+		board = new int[6][6];
+		Utilities.fillArray(board, 0);
+		solved = Puzzles.nQueeensWithBranchAndBound(board);
+		assertEquals(true, solved);
+		Utilities.printArray(board);
+
+		System.out.println();
+		board = new int[7][7];
+		Utilities.fillArray(board, 0);
+		solved = Puzzles.nQueeensWithBranchAndBound(board);
+		assertEquals(true, solved);
+		Utilities.printArray(board);
+
+		System.out.println();
+		board = new int[8][8];
+		Utilities.fillArray(board, 0);
+		solved = Puzzles.nQueeensWithBranchAndBound(board);
+		assertEquals(true, solved);
+		Utilities.printArray(board);
+	}
+
+	@Test
+	void nQueeensWithBacktracking() {
+		int[][] board = {{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}};
+		int[][] expectedBoard = {{0, 0, 1, 0}, {1, 0, 0, 0}, {0, 0, 0, 1}, {0, 1, 0, 0}};
+
+		boolean solved = Puzzles.nQueeensWithBacktracking(board);
+		assertEquals(true, solved);
+		assertTwoDimensionalArrayEquals(expectedBoard, board);
+		Utilities.printArray(board);
+
+		System.out.println();
+		board = new int[5][5];
+		Utilities.fillArray(board, 0);
+		solved = Puzzles.nQueeensWithBacktracking(board);
+		assertEquals(true, solved);
+		Utilities.printArray(board);
+
+		System.out.println();
+		board = new int[6][6];
+		Utilities.fillArray(board, 0);
+		solved = Puzzles.nQueeensWithBacktracking(board);
+		assertEquals(true, solved);
+		Utilities.printArray(board);
+
+		System.out.println();
+		board = new int[7][7];
+		Utilities.fillArray(board, 0);
+		solved = Puzzles.nQueeensWithBacktracking(board);
+		assertEquals(true, solved);
+		Utilities.printArray(board);
+
+		System.out.println();
+		board = new int[8][8];
+		Utilities.fillArray(board, 0);
+		solved = Puzzles.nQueeensWithBacktracking(board);
 		assertEquals(true, solved);
 		Utilities.printArray(board);
 	}

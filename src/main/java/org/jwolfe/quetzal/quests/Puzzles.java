@@ -43,7 +43,89 @@ public class Puzzles {
 		towersOfHanoi(auxRod, toRod, fromRod, numDisks - 1);
 	}
 
-	public static boolean nQueeens(int[][] board) {
+	public static boolean nQueeensWithBranchAndBound(int[][] board) {
+		if (board == null || board.length == 0 || board[0].length == 0) {
+			return false;
+		}
+
+		int n = board.length;
+		for (int i = 0; i < n; i++) {
+			if (board[i].length != n) {
+				return false;
+			}
+		}
+
+		Utilities.fillArray(board, 0);
+
+		int[][] forwardDiagonalCodes = new int[n][n];
+		int[][] backwardDiagonalCodes = new int[n][n];
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				forwardDiagonalCodes[i][j] = i + j;
+				backwardDiagonalCodes[i][j] = (i - j) + (n - 1);
+			}
+		}
+
+		boolean[] rowLookup = new boolean[n];
+		boolean[] forwardDiagonalLookup = new boolean[2*n - 1];
+		boolean[] backwardDiagonalLookup = new boolean[2*n - 1];
+
+		return nQueeensWithBranchAndBound(board, n, 0,
+										rowLookup, forwardDiagonalLookup, backwardDiagonalLookup,
+										forwardDiagonalCodes, backwardDiagonalCodes);
+	}
+
+	private static boolean nQueeensWithBranchAndBound(int[][] board, int n, int column,
+													boolean[] rowLookup, boolean[] forwardDiagonalLookup, boolean[] backwardDiagonalLookup,
+												  	int[][] forwardDiagonalCodes, int[][] backwardDiagonalCodes) {
+
+		if(column >= n) {
+			return true;
+		}
+
+		for (int row = 0; row < n; row++) {
+			if(isSafeForQueenWithBranchAndBound(board, n, row, column,
+												rowLookup, forwardDiagonalLookup, backwardDiagonalLookup,
+												forwardDiagonalCodes, backwardDiagonalCodes)) {
+				board[row][column] = 1;
+				rowLookup[row] = true;
+				forwardDiagonalLookup[forwardDiagonalCodes[row][column]] = true;
+				backwardDiagonalLookup[backwardDiagonalCodes[row][column]] = true;
+				if(nQueeensWithBranchAndBound(board, n, column + 1,
+												rowLookup, forwardDiagonalLookup, backwardDiagonalLookup,
+												forwardDiagonalCodes, backwardDiagonalCodes)) {
+					return true;
+				}
+
+				// Didn't work out. Backtrack.
+				board[row][column] = 0;
+				rowLookup[row] = false;
+				forwardDiagonalLookup[forwardDiagonalCodes[row][column]] = false;
+				backwardDiagonalLookup[backwardDiagonalCodes[row][column]] = false;
+			}
+		}
+
+		return false;
+	}
+
+	private static boolean isSafeForQueenWithBranchAndBound(int[][] board, int n, int row, int column,
+															boolean[] rowLookup, boolean[] forwardDiagonalLookup, boolean[] backwardDiagonalLookup,
+															int[][] forwardDiagonalCodes, int[][] backwardDiagonalCodes) {
+		if(row < 0 || row >= n || column < 0 || column >= n) {
+			return false;
+		}
+
+		if(rowLookup[row]
+			|| forwardDiagonalLookup[forwardDiagonalCodes[row][column]]
+			|| backwardDiagonalLookup[backwardDiagonalCodes[row][column]]) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public static boolean nQueeensWithBacktracking(int[][] board) {
 		if (board == null) {
 			return false;
 		}
@@ -55,19 +137,19 @@ public class Puzzles {
 			}
 		}
 
-		return nQueeens(board, 0);
+		return nQueeensWithBacktracking(board, 0);
 	}
 
-	private static boolean nQueeens(int[][] board, int column) {
+	private static boolean nQueeensWithBacktracking(int[][] board, int column) {
 		int n = board.length;
 		if (column >= board.length) {
 			return true;
 		}
 
 		for (int i = 0; i < n; i++) {
-			if (isSafeForQueen(board, i, column)) {
+			if (isSafeForQueenWithBacktracking(board, i, column)) {
 				board[i][column] = 1;
-				if (nQueeens(board, column + 1)) {
+				if (nQueeensWithBacktracking(board, column + 1)) {
 					return true;
 				}
 				board[i][column] = 0;
@@ -77,7 +159,7 @@ public class Puzzles {
 		return false;
 	}
 
-	private static boolean isSafeForQueen(int[][] board, int row, int column) {
+	private static boolean isSafeForQueenWithBacktracking(int[][] board, int row, int column) {
 		int n = board.length;
 
 		// Vertical & Horizontal
