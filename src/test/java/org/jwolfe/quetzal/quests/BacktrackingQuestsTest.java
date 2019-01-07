@@ -6,6 +6,8 @@ import org.jwolfe.quetzal.test.QuetzalAssertions;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class BacktrackingQuestsTest {
 
     @Test
@@ -28,5 +30,11 @@ class BacktrackingQuestsTest {
         expectedValidStrings = Utilities.constructList("(z)", "()z");
         validStrings = BacktrackingQuests.getBalancedStringsByRemovingMinimumInvalidParanthesis(str);
         QuetzalAssertions.assertListEquals(expectedValidStrings, validStrings);
+    }
+
+    @Test
+    void getMinimizedCountOfUniqueCharactersAmongStringsPostSwapping() {
+        assertEquals(1, BacktrackingQuests.getMinimizedCountOfUniqueCharactersAmongStringsPostSwapping("ababa", "babab"));
+        assertEquals(2, BacktrackingQuests.getMinimizedCountOfUniqueCharactersAmongStringsPostSwapping("abaaa", "bbabb"));
     }
 }
