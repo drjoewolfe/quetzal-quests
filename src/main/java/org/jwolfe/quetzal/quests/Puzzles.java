@@ -43,76 +43,76 @@ public class Puzzles {
 		towersOfHanoi(auxRod, toRod, fromRod, numDisks - 1);
 	}
 
-    public static boolean nQueeens(int[][] board) {
-        if (board == null || board.length == 0 || board[0].length == 0) {
-            return false;
-        }
+	public static boolean nQueeens(int[][] board) {
+		if (board == null || board.length == 0 || board[0].length == 0) {
+			return false;
+		}
 
-        int n = board.length;
-        for (int i = 0; i < n; i++) {
-            if (board[i].length != n) {
-                return false;
-            }
-        }
+		int n = board.length;
+		for (int i = 0; i < n; i++) {
+			if (board[i].length != n) {
+				return false;
+			}
+		}
 
-        Utilities.fillArray(board, 0);
+		Utilities.fillArray(board, 0);
 
-        // Lookup indicating the row (value) & column (index) for queen placements
-        int[] rowPlacements = new int[n];
-        Arrays.fill(rowPlacements, -1);
+		// Lookup indicating the row (value) & column (index) for queen placements
+		int[] rowPlacements = new int[n];
+		Arrays.fill(rowPlacements, -1);
 
-        return nQueeens(board, n, 0, rowPlacements);
-    }
+		return nQueeens(board, n, 0, rowPlacements);
+	}
 
-    public static boolean nQueeens(int[][] board, int n, int column, int[] rowPlacements) {
-        if (column >= n) {
-            return true;
-        }
+	public static boolean nQueeens(int[][] board, int n, int column, int[] rowPlacements) {
+		if (column >= n) {
+			return true;
+		}
 
-        for (int row = 0; row < n; row++) {
-            if (isSafeForQueen(board, n, row, column, rowPlacements)) {
-                board[row][column] = 1;
-                rowPlacements[column] = row;
-                if (nQueeens(board, n, column + 1, rowPlacements)) {
-                    return true;
-                }
+		for (int row = 0; row < n; row++) {
+			if (isSafeForQueen(board, n, row, column, rowPlacements)) {
+				board[row][column] = 1;
+				rowPlacements[column] = row;
+				if (nQueeens(board, n, column + 1, rowPlacements)) {
+					return true;
+				}
 
-                // Didn't work out. Backtrack.
-                board[row][column] = 0;
-                rowPlacements[column] = -1;
-            }
-        }
+				// Didn't work out. Backtrack.
+				board[row][column] = 0;
+				rowPlacements[column] = -1;
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    private static boolean isSafeForQueen(int[][] board, int n, int row, int column,
-                                           int[] rowPlacements) {
-        if (row < 0 || row >= n || column < 0 || column >= n) {
-            return false;
-        }
+	private static boolean isSafeForQueen(int[][] board, int n, int row, int column,
+										  int[] rowPlacements) {
+		if (row < 0 || row >= n || column < 0 || column >= n) {
+			return false;
+		}
 
-        for (int j = 0; j < column; j++) {
-            int i = rowPlacements[j];
+		for (int j = 0; j < column; j++) {
+			int i = rowPlacements[j];
 
-            if (i == row) {
-                // Another queen in the same row.
-                return false;
-            }
+			if (i == row) {
+				// Another queen in the same row.
+				return false;
+			}
 
-            if (i + j == row + column) {
-                // Another queen in the same forward diagonal
-                return false;
-            }
+			if (i + j == row + column) {
+				// Another queen in the same forward diagonal
+				return false;
+			}
 
-            if (i - j == row - column) {
-                // Another queen in the same backward diagonal
-                return false;
-            }
-        }
+			if (i - j == row - column) {
+				// Another queen in the same backward diagonal
+				return false;
+			}
+		}
 
-        return true;
-    }
+		return true;
+	}
 
 	public static boolean nQueeensWithBranchAndBound(int[][] board) {
 		if (board == null || board.length == 0 || board[0].length == 0) {
@@ -139,33 +139,33 @@ public class Puzzles {
 		}
 
 		boolean[] rowLookup = new boolean[n];
-		boolean[] forwardDiagonalLookup = new boolean[2*n - 1];
-		boolean[] backwardDiagonalLookup = new boolean[2*n - 1];
+		boolean[] forwardDiagonalLookup = new boolean[2 * n - 1];
+		boolean[] backwardDiagonalLookup = new boolean[2 * n - 1];
 
 		return nQueeensWithBranchAndBound(board, n, 0,
-										rowLookup, forwardDiagonalLookup, backwardDiagonalLookup,
-										forwardDiagonalCodes, backwardDiagonalCodes);
+				rowLookup, forwardDiagonalLookup, backwardDiagonalLookup,
+				forwardDiagonalCodes, backwardDiagonalCodes);
 	}
 
 	private static boolean nQueeensWithBranchAndBound(int[][] board, int n, int column,
-													boolean[] rowLookup, boolean[] forwardDiagonalLookup, boolean[] backwardDiagonalLookup,
-												  	int[][] forwardDiagonalCodes, int[][] backwardDiagonalCodes) {
+													  boolean[] rowLookup, boolean[] forwardDiagonalLookup, boolean[] backwardDiagonalLookup,
+													  int[][] forwardDiagonalCodes, int[][] backwardDiagonalCodes) {
 
-		if(column >= n) {
+		if (column >= n) {
 			return true;
 		}
 
 		for (int row = 0; row < n; row++) {
-			if(isSafeForQueenWithBranchAndBound(board, n, row, column,
-												rowLookup, forwardDiagonalLookup, backwardDiagonalLookup,
-												forwardDiagonalCodes, backwardDiagonalCodes)) {
+			if (isSafeForQueenWithBranchAndBound(board, n, row, column,
+					rowLookup, forwardDiagonalLookup, backwardDiagonalLookup,
+					forwardDiagonalCodes, backwardDiagonalCodes)) {
 				board[row][column] = 1;
 				rowLookup[row] = true;
 				forwardDiagonalLookup[forwardDiagonalCodes[row][column]] = true;
 				backwardDiagonalLookup[backwardDiagonalCodes[row][column]] = true;
-				if(nQueeensWithBranchAndBound(board, n, column + 1,
-												rowLookup, forwardDiagonalLookup, backwardDiagonalLookup,
-												forwardDiagonalCodes, backwardDiagonalCodes)) {
+				if (nQueeensWithBranchAndBound(board, n, column + 1,
+						rowLookup, forwardDiagonalLookup, backwardDiagonalLookup,
+						forwardDiagonalCodes, backwardDiagonalCodes)) {
 					return true;
 				}
 
@@ -183,13 +183,13 @@ public class Puzzles {
 	private static boolean isSafeForQueenWithBranchAndBound(int[][] board, int n, int row, int column,
 															boolean[] rowLookup, boolean[] forwardDiagonalLookup, boolean[] backwardDiagonalLookup,
 															int[][] forwardDiagonalCodes, int[][] backwardDiagonalCodes) {
-		if(row < 0 || row >= n || column < 0 || column >= n) {
+		if (row < 0 || row >= n || column < 0 || column >= n) {
 			return false;
 		}
 
-		if(rowLookup[row]
-			|| forwardDiagonalLookup[forwardDiagonalCodes[row][column]]
-			|| backwardDiagonalLookup[backwardDiagonalCodes[row][column]]) {
+		if (rowLookup[row]
+				|| forwardDiagonalLookup[forwardDiagonalCodes[row][column]]
+				|| backwardDiagonalLookup[backwardDiagonalCodes[row][column]]) {
 			return false;
 		}
 
@@ -1833,5 +1833,76 @@ public class Puzzles {
 
 		solution[currentRow][currentColumn] = 0;
 		return false;
+	}
+
+	public static List<List<IntPair>> getPathsFromAnyCornerToMiddleCellInMaze(int[][] maze) {
+		if (maze == null || maze.length == 0 || maze[0].length == 0) {
+			return null;
+		}
+
+		int rowLength = maze.length;
+		int columnLength = maze[0].length;
+		for (var row : maze) {
+			if (row.length != columnLength) {
+				return null;
+			}
+		}
+
+		List<IntPair> corners = new ArrayList<>();
+		corners.add(new IntPair(0, 0));
+		corners.add(new IntPair(0, columnLength - 1));
+		corners.add(new IntPair(rowLength - 1, 0));
+		corners.add(new IntPair(rowLength - 1, columnLength - 1));
+
+		List<List<IntPair>> solutionPaths = new ArrayList<>();
+		List<IntPair> currentPath = new ArrayList<>();
+		for (int i = 0; i < corners.size(); i++) {
+			var cell = corners.get(i);
+			generatePathsToMiddleCellInMaze(maze, rowLength, columnLength, cell, currentPath, solutionPaths);
+		}
+
+		return solutionPaths;
+	}
+
+	private static void generatePathsToMiddleCellInMaze(int[][] maze, int rowLength, int columnLength,
+														IntPair cell, List<IntPair> currentPath, List<List<IntPair>> solutionPaths) {
+		int x = cell.getA();
+		int y = cell.getB();
+		if (x < 0 || x >= rowLength || y < 0 || y >= columnLength) {
+			// Outside the maze
+			return;
+		}
+
+		if (currentPath.contains(cell)) {
+			// Visited this path before
+			return;
+		}
+
+		currentPath.add(cell);
+
+		if (x == rowLength / 2 && y == columnLength / 2) {
+			// Reached center of the maze.
+			solutionPaths.add(new ArrayList<>(currentPath));
+			currentPath.remove(cell);
+			return;
+		}
+
+		int allowedJumps = maze[x][y];
+
+		// Try the four cells possible from the allowed jumps.
+
+		// Try North
+		generatePathsToMiddleCellInMaze(maze, rowLength, columnLength, new IntPair(x - allowedJumps, y), currentPath, solutionPaths);
+
+		// Try East
+		generatePathsToMiddleCellInMaze(maze, rowLength, columnLength, new IntPair(x, y + allowedJumps), currentPath, solutionPaths);
+
+		// Try South
+		generatePathsToMiddleCellInMaze(maze, rowLength, columnLength, new IntPair(x + allowedJumps, y), currentPath, solutionPaths);
+
+		// Try West
+		generatePathsToMiddleCellInMaze(maze, rowLength, columnLength, new IntPair(x, y - allowedJumps), currentPath, solutionPaths);
+
+		currentPath.remove(cell);
 	}
 }

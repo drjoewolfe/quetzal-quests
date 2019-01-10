@@ -6,11 +6,7 @@ import org.jwolfe.quetzal.library.general.Pair;
 import org.jwolfe.quetzal.library.utilities.Utilities;
 import org.jwolfe.quetzal.test.QuetzalAssertions;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.jwolfe.quetzal.test.QuetzalAssertions.*;
@@ -685,4 +681,30 @@ class PuzzlesTest {
 		solution = Puzzles.ratInAMazeWithMultipleJumpsAllowed(maze);
 		assertArrayEquals(expectedSolution, solution);
 	}
+
+    @Test
+    void getPathsFromAnyCornerToMiddleCellInMaze() {
+		int[][] maze;
+		List<List<IntPair>> paths;
+		List<List<IntPair>> expectedPaths;
+
+		maze = new int[][] {
+				{ 3, 5, 4, 4, 7, 3, 4, 6, 3 },
+				{ 6, 7, 5, 6, 6, 2, 6, 6, 2 },
+				{ 3, 3, 4, 3, 2, 5, 4, 7, 2 },
+				{ 6, 5, 5, 1, 2, 3, 6, 5, 6 },
+				{ 3, 3, 4, 3, 0, 1, 4, 3, 4 },
+				{ 3, 5, 4, 3, 2, 2, 3, 3, 5 },
+				{ 3, 5, 4, 3, 2, 6, 4, 4, 3 },
+				{ 3, 5, 1, 3, 7, 5, 3, 6, 4 },
+				{ 6, 2, 4, 3, 4, 5, 4, 5, 1 }
+		};
+		var solutionPath = Utilities.constructList(new IntPair(0, 0), new IntPair(0, 3), new IntPair(0, 7), new IntPair(6, 7), new IntPair(6, 3), new IntPair(3, 3),
+										new IntPair(3, 4), new IntPair(5, 4), new IntPair(5, 2), new IntPair(1, 2), new IntPair(1, 7), new IntPair(7, 7),
+										new IntPair(7, 1), new IntPair(2, 1), new IntPair(2, 4), new IntPair(4, 4));
+		expectedPaths = new ArrayList<>();
+		expectedPaths.add(solutionPath);
+		paths = Puzzles.getPathsFromAnyCornerToMiddleCellInMaze(maze);
+		QuetzalAssertions.assertListOfListEquals(expectedPaths, paths);
+    }
 }
