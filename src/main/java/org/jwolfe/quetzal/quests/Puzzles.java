@@ -1905,4 +1905,96 @@ public class Puzzles {
 
 		currentPath.remove(cell);
 	}
+
+	public static List<Coordinate> getShortestSafeRouteFromFirstToLastColumnInAMazeWithLandmines(int[][] maze) {
+		// In the maze, 0 indicates landmines. We can start from any row in the first column & finish at any row in the last column
+		// Note: the adjacent cells (top, left, right, bottom) of a landmine also has to be avoided
+		// If the input maze is not to be modified, we can create a copy of it, or calculate safety dynamically (current implementation)
+		// If maze can be modified, we can mark all adjacent cells as zero as well.
+
+		if (maze == null || maze.length == 0 || maze[0].length == 0) {
+			return null;
+		}
+
+		int rowLength = maze.length;
+		int columnLength = maze[0].length;
+		for (var row : maze) {
+			if (row.length != columnLength) {
+				return null;
+			}
+		}
+
+		List<Coordinate> deltaCoordinates = new ArrayList<>();
+		// Left
+		deltaCoordinates.add(new Coordinate(0, -1));
+		// Right
+		deltaCoordinates.add(new Coordinate(0, 1));
+		// Top
+		deltaCoordinates.add(new Coordinate(-1, 0));
+		// Bottom
+		deltaCoordinates.add(new Coordinate(1, 0));
+
+		List<Coordinate> shortestPath = new ArrayList<>();
+		List<Coordinate> currentPath = new ArrayList<>();
+
+		// Try with all rows in the first column
+		for (int i = 0; i < rowLength; i++) {
+			var current = new Coordinate(i, 0);
+			currentPath.clear();
+
+			generateShortestSafeRouteFromFirstToLastColumnInAMazeWithLandmines(maze, rowLength, columnLength, deltaCoordinates, current, currentPath, shortestPath);
+		}
+
+		if (shortestPath.size() == 0) {
+			return null;
+		}
+
+		return shortestPath;
+	}
+
+	private static void generateShortestSafeRouteFromFirstToLastColumnInAMazeWithLandmines(int[][] maze, int rowLength, int columnLength, List<Coordinate> deltaCoordinates,
+																						   Coordinate current, List<Coordinate> currentPath, List<Coordinate> shortestPath) {
+		int x = current.getX();
+		int y = current.getY();
+
+		if (x < 0 || x >= rowLength || y < 0 || y >= columnLength) {
+			// Out of bounds
+			return;
+		}
+
+		if (currentPath.contains(current)) {
+			// Already visited
+			return;
+		}
+
+		if (maze[x][y] == 0
+				|| (x > 0 && maze[x - 1][y] == 0)
+				|| (x < rowLength - 1 && maze[x + 1][y] == 0)
+				|| (y > 0 && maze[x][y - 1] == 0)
+				|| (y < columnLength - 1 && maze[x][y + 1] == 0)) {
+			// Unsafe. Cell either has a mine, or its adjacent cell has a mine.
+			return;
+		}
+
+		currentPath.add(current);
+
+		if (y == columnLength - 1) {
+			// Reached the last column
+			if (shortestPath.size() == 0
+					|| currentPath.size() < shortestPath.size()) {
+				shortestPath.clear();
+				shortestPath.addAll(currentPath);
+			}
+
+			currentPath.remove(current);
+			return;
+		}
+
+		for (var delta : deltaCoordinates) {
+			var next = current.buildNew(delta);
+			generateShortestSafeRouteFromFirstToLastColumnInAMazeWithLandmines(maze, rowLength, columnLength, deltaCoordinates, next, currentPath, shortestPath);
+		}
+
+		currentPath.remove(current);
+	}
 }
