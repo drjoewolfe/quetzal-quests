@@ -1,6 +1,7 @@
 package org.jwolfe.quetzal.quests;
 
 import org.junit.jupiter.api.Test;
+import org.jwolfe.quetzal.library.general.Board;
 import org.jwolfe.quetzal.library.general.Coordinate;
 import org.jwolfe.quetzal.library.general.IntPair;
 import org.jwolfe.quetzal.library.general.Pair;
@@ -161,6 +162,38 @@ class PuzzlesTest {
 		solved = Puzzles.nQueeensWithBacktracking(board);
 		assertEquals(true, solved);
 		Utilities.printArray(board);
+	}
+
+	@Test
+	void getAllSolutionsForNQueens() {
+		int[][] board;
+		List<Board> solutions;
+		List<Board> expectedSolutions;
+		int[][] tempBoard;
+
+		board = new int[4][4];
+		Utilities.fillArray(board, 0);
+		solutions = Puzzles.getAllSolutionsForNQueens(board);
+
+		expectedSolutions = new ArrayList<>();
+
+		Board b1 = new Board(4);
+		tempBoard = b1.getBoard();
+		tempBoard[0][2] = 1;
+		tempBoard[1][0] = 1;
+		tempBoard[2][3] = 1;
+		tempBoard[3][1] = 1;
+		expectedSolutions.add(b1);
+
+		Board b2 = new Board(4);
+		tempBoard = b2.getBoard();
+		tempBoard[0][1] = 1;
+		tempBoard[1][3] = 1;
+		tempBoard[2][0] = 1;
+		tempBoard[3][2] = 1;
+		expectedSolutions.add(b2);
+
+		assertListEquals(expectedSolutions, solutions);
 	}
 
 	@Test
