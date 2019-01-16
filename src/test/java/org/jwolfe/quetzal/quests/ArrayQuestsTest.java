@@ -804,17 +804,17 @@ class ArrayQuestsTest {
     }
 
     @Test
-    void convertToZigZagApproach2() {
+    void convertToZigZag() {
         int[] arr;
 
         arr = Utilities.constructArray(4, 3, 7, 8, 6, 2, 1);
         System.out.println(Arrays.toString(arr));
-        ArrayQuests.convertToZigZagApproach2(arr);
+        ArrayQuests.convertToZigZag(arr);
         System.out.println(Arrays.toString(arr));
 
         arr = Utilities.constructArray(1, 4, 3, 2);
         System.out.println(Arrays.toString(arr));
-        ArrayQuests.convertToZigZagApproach2(arr);
+        ArrayQuests.convertToZigZag(arr);
         System.out.println(Arrays.toString(arr));
     }
 

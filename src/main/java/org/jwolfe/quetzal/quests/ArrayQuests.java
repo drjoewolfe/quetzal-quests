@@ -1065,7 +1065,7 @@ public class ArrayQuests {
 		return maxDifference;
 	}
 
-	public static void convertToZigZagApproach2(int[] arr) {
+	public static void convertToZigZag(int[] arr) {
 		boolean greaterThanFlag = false;
 
 		for (int i = 0; i < arr.length - 1; i++) {
