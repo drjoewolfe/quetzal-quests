@@ -281,6 +281,8 @@ public class ArrayQuests {
 	}
 
 	public static List<Integer> getLargestSumContinuousSubArray(int[] arr) {
+	    // Note: The below implementation does not handle the case where all array elements are negative
+
 		if (arr == null || arr.length == 0) {
 			return null;
 		}
@@ -315,6 +317,22 @@ public class ArrayQuests {
 
 		return subArray;
 	}
+
+    public static int smallestSumContinuousSubArray(int[] arr) {
+        if (arr == null || arr.length == 0) {
+            return 0;
+        }
+
+        int currentMin = arr[0];
+        int min = arr[0];
+
+        for (int i = 1; i < arr.length; i++) {
+            currentMin = Math.min(arr[i], currentMin + arr[i]);
+            min = Math.min(currentMin, min);
+        }
+
+        return min;
+    }
 
 	public static int longestCommonSpanWithSameSumInBinaryArrays1(boolean[] arr1, boolean[] arr2) {
 		int n = arr1.length;
