@@ -265,7 +265,7 @@ public class ArrayQuests {
 	}
 
 	public static int largestSumContinuousSubArray(int[] arr) {
-		if (arr.length == 0) {
+		if (arr == null || arr.length == 0) {
 			return 0;
 		}
 
@@ -278,6 +278,42 @@ public class ArrayQuests {
 		}
 
 		return max;
+	}
+
+	public static List<Integer> getLargestSumContinuousSubArray(int[] arr) {
+		if (arr == null || arr.length == 0) {
+			return null;
+		}
+
+		int n = arr.length;
+
+		int startIndex = 0;
+		int endIndex = 0;
+		int startPivot = 0;
+
+		int maxSoFar = Integer.MIN_VALUE;
+		int maxEndingHere = 0;
+
+		for (int i = 0; i < n; i++) {
+			maxEndingHere += arr[i];
+			if (maxSoFar < maxEndingHere) {
+				maxSoFar = maxEndingHere;
+				startIndex = startPivot;
+				endIndex = i;
+			}
+
+			if (maxEndingHere < 0) {
+				maxEndingHere = 0;
+				startPivot = i + 1;
+			}
+		}
+
+		List<Integer> subArray = new ArrayList<>();
+		for (int i = startIndex; i <= endIndex; i++) {
+			subArray.add(arr[i]);
+		}
+
+		return subArray;
 	}
 
 	public static int longestCommonSpanWithSameSumInBinaryArrays1(boolean[] arr1, boolean[] arr2) {

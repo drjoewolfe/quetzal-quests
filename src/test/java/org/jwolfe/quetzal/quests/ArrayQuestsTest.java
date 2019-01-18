@@ -6,6 +6,7 @@ import org.jwolfe.quetzal.library.general.Point;
 import org.jwolfe.quetzal.library.general.Quadruplet;
 import org.jwolfe.quetzal.library.general.Triplet;
 import org.jwolfe.quetzal.library.utilities.Utilities;
+import org.jwolfe.quetzal.test.QuetzalAssertions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -253,6 +254,18 @@ class ArrayQuestsTest {
         int sum1 = ArrayQuests.largestSumContinuousSubArray(arr1);
         System.out.println(sum1);
         assertEquals(7, sum1);
+    }
+
+    @Test
+    void getLargestSumContinuousSubArray() {
+        int[] arr;
+        List<Integer> subArray;
+        List<Integer> expectedSubArray;
+
+        expectedSubArray = Utilities.constructList(4, -1, -2, 1, 5);
+        arr = new int[] {-2, -3, 4, -1, -2, 1, 5, -3};
+        subArray = ArrayQuests.getLargestSumContinuousSubArray(arr);
+        QuetzalAssertions.assertListEquals(expectedSubArray, subArray);
     }
 
     @Test
