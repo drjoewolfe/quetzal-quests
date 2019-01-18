@@ -287,6 +287,28 @@ class ArrayQuestsTest {
     }
 
     @Test
+    void getSmallestSumContinuousSubArray() {
+        int[] arr;
+        List<Integer> subArray;
+        List<Integer> expectedSubArray;
+
+        arr = new int[]{-2, -3, 4, -1, -2, 1, 5, -3};
+        expectedSubArray = Utilities.constructList(-2, -3);
+        subArray = ArrayQuests.getSmallestSumContinuousSubArray(arr);
+        QuetzalAssertions.assertListEquals(expectedSubArray, subArray);
+
+        arr = new int[]{3, -4, 2, -3, -1, 7, -5};
+        expectedSubArray = Utilities.constructList(-4, 2, -3, -1);
+        subArray = ArrayQuests.getSmallestSumContinuousSubArray(arr);
+        QuetzalAssertions.assertListEquals(expectedSubArray, subArray);
+
+        arr = new int[]{2, 6, 8, 1, 4};
+        expectedSubArray = Utilities.constructList(1);
+        subArray = ArrayQuests.getSmallestSumContinuousSubArray(arr);
+        QuetzalAssertions.assertListEquals(expectedSubArray, subArray);
+    }
+
+    @Test
     void longestCommonSpanWithSameSumInBinaryArrays1() {
         boolean[] arr1, arr2;
 

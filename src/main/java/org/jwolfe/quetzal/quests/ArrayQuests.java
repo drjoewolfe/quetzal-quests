@@ -334,7 +334,44 @@ public class ArrayQuests {
         return min;
     }
 
-	public static int longestCommonSpanWithSameSumInBinaryArrays1(boolean[] arr1, boolean[] arr2) {
+    public static List<Integer> getSmallestSumContinuousSubArray(int[] arr) {
+        if (arr == null || arr.length == 0) {
+            return null;
+        }
+
+        int n = arr.length;
+
+        int startIndex = 0;
+        int endIndex = 0;
+        int startPivot = 0;
+
+        int minSoFar = Integer.MAX_VALUE;
+        int minEndingHere = 0;
+
+        for (int i = 0; i < n; i++) {
+            if (minEndingHere > 0) {
+                minEndingHere = arr[i];
+                startPivot = i;
+            } else {
+                minEndingHere += arr[i];
+            }
+
+            if (minSoFar > minEndingHere) {
+                minSoFar = minEndingHere;
+                startIndex = startPivot;
+                endIndex = i;
+            }
+        }
+
+        List<Integer> subArray = new ArrayList<>();
+        for (int i = startIndex; i <= endIndex; i++) {
+            subArray.add(arr[i]);
+        }
+
+        return subArray;
+    }
+
+    public static int longestCommonSpanWithSameSumInBinaryArrays1(boolean[] arr1, boolean[] arr2) {
 		int n = arr1.length;
 		if (n != arr2.length) {
 			return -1;
