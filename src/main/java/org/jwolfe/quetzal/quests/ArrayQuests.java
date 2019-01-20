@@ -5,7 +5,7 @@ import org.jwolfe.quetzal.library.general.Pair;
 import org.jwolfe.quetzal.library.general.Point;
 import org.jwolfe.quetzal.library.general.Quadruplet;
 import org.jwolfe.quetzal.library.general.Triplet;
-import org.jwolfe.quetzal.library.heap.MinHeap;
+import org.jwolfe.quetzal.library.heap.IntMinHeap;
 import org.jwolfe.quetzal.library.tree.AvlTree;
 import org.jwolfe.quetzal.library.utilities.PairFirstSorter;
 import org.jwolfe.quetzal.library.utilities.Utilities;
@@ -1918,7 +1918,7 @@ public class ArrayQuests {
 		// Java's PriorityQueue also will be fine here.
 		int length = arr.length;
 		int sum = 0;
-		MinHeap heap = new MinHeap(length);
+		IntMinHeap heap = new IntMinHeap(length);
 		for (int key : arr) {
 			sum += key;
 			heap.insert(key);
