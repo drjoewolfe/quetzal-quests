@@ -256,29 +256,57 @@ class PuzzlesTest {
 
 	@Test
 	void travellingSalesman() {
-		int[][] citesAndDistances = new int[][]{{0, 10, 15, 20},
+		int[][] citiesAndDistances = new int[][]{{0, 10, 15, 20},
 				{10, 0, 35, 25},
 				{15, 35, 0, 30},
 				{20, 25, 30, 0}};
-		assertEquals(80, Puzzles.travellingSalesman(citesAndDistances, 0));
+		assertEquals(80, Puzzles.travellingSalesman(citiesAndDistances, 0));
 	}
 
 	@Test
 	void travellingSalesmanRecursive() {
-		int[][] citesAndDistances = new int[][]{{0, 10, 15, 20},
+		int[][] citiesAndDistances = new int[][]{{0, 10, 15, 20},
 				{10, 0, 35, 25},
 				{15, 35, 0, 30},
 				{20, 25, 30, 0}};
-		assertEquals(80, Puzzles.travellingSalesmanRecursive(citesAndDistances, 0));
+		assertEquals(80, Puzzles.travellingSalesmanRecursive(citiesAndDistances, 0));
 	}
 
 	@Test
 	void travellingSalesmanNaive() {
-		int[][] citesAndDistances = new int[][]{{0, 10, 15, 20},
+		int[][] citiesAndDistances = new int[][]{{0, 10, 15, 20},
 				{10, 0, 35, 25},
 				{15, 35, 0, 30},
 				{20, 25, 30, 0}};
-		assertEquals(80, Puzzles.travellingSalesmanNaive(citesAndDistances, 0));
+		assertEquals(80, Puzzles.travellingSalesmanNaive(citiesAndDistances, 0));
+	}
+
+	@Test
+	void travellingSalesmanApproximationUsingMST() {
+		int[][] citiesAndDistances;
+		int startCity;
+		List<Integer> route;
+		List<Integer> expectedRoute;
+
+
+		citiesAndDistances = new int[][]{
+				{0, 10, 15, 20},
+				{10, 0, 35, 25},
+				{15, 0, 35, 30},
+				{20, 25, 30, 0}
+		};
+		startCity = 0;
+		expectedRoute = Utilities.constructList(0, 1, 2, 3, 0);
+		route = Puzzles.travellingSalesmanApproximationUsingMST(citiesAndDistances, startCity);
+		assertNotNull(route);
+
+		int cost = 0;
+		for (int i = 0; i < route.size() - 1; i++) {
+			cost += citiesAndDistances[route.get(i)][route.get(i + 1)];
+		}
+		assertEquals(95, cost);
+
+		assertListStrictEquals(expectedRoute, route);
 	}
 
 	@Test

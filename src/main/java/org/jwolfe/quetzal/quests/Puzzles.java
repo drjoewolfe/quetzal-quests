@@ -1,7 +1,9 @@
 package org.jwolfe.quetzal.quests;
 
+import org.jwolfe.quetzal.algorithms.GraphAlgorithms;
 import org.jwolfe.quetzal.algorithms.ListAlgorithms;
 import org.jwolfe.quetzal.library.general.*;
+import org.jwolfe.quetzal.library.tree.TreeNode;
 import org.jwolfe.quetzal.library.trie.Trie;
 import org.jwolfe.quetzal.library.trie.TrieNode;
 import org.jwolfe.quetzal.library.utilities.Utilities;
@@ -598,16 +600,16 @@ public class Puzzles {
         return cost;
     }
 
-    public static int travellingSalesman(int[][] citiesAndDistancesesAndDistances, int startCity) {
+    public static int travellingSalesman(int[][] citiesAndDistances, int startCity) {
         // Dynamic Programming solution
         // Held Karp Algorithm
 
-        if (citiesAndDistancesesAndDistances == null || citiesAndDistancesesAndDistances.length < 2) {
+        if (citiesAndDistances == null || citiesAndDistances.length < 2) {
             return 0;
         }
 
         // Get list of all cities to visit
-        int numCities = citiesAndDistancesesAndDistances.length;
+        int numCities = citiesAndDistances.length;
         if (startCity >= numCities) {
             return 0;
         }
@@ -630,7 +632,7 @@ public class Puzzles {
                 var tour = new Puzzles.CityTour(startCity, intermediateCities, endCity);
                 int minTourCost = Integer.MAX_VALUE;
                 if (intermediateCities.size() == 0) {
-                    minTourCost = citiesAndDistancesesAndDistances[startCity][endCity];
+                    minTourCost = citiesAndDistances[startCity][endCity];
                 } else {
                     for (var city : intermediateCities) {
                         ArrayList<Integer> subIntermediateCities = new ArrayList<>(intermediateCities);
@@ -638,7 +640,7 @@ public class Puzzles {
 
                         var subTour = new Puzzles.CityTour(startCity, subIntermediateCities, city);
                         int subTourCost = tourCosts.get(subTour).intValue()
-                                + citiesAndDistancesesAndDistances[city][endCity];
+                                + citiesAndDistances[city][endCity];
                         minTourCost = Math.min(minTourCost, subTourCost);
                     }
                 }
@@ -654,7 +656,7 @@ public class Puzzles {
             subIntermediateCities.remove(city);
 
             var subTour = new Puzzles.CityTour(startCity, subIntermediateCities, city);
-            int subTourCost = tourCosts.get(subTour).intValue() + citiesAndDistancesesAndDistances[city][startCity];
+            int subTourCost = tourCosts.get(subTour).intValue() + citiesAndDistances[city][startCity];
             minTourCost = Math.min(minTourCost, subTourCost);
         }
 
@@ -711,15 +713,15 @@ public class Puzzles {
         }
     }
 
-    public static int travellingSalesmanRecursive(int[][] citiesAndDistancesesAndDistances, int startCity) {
+    public static int travellingSalesmanRecursive(int[][] citiesAndDistances, int startCity) {
         // Recursive solution
 
-        if (citiesAndDistancesesAndDistances == null || citiesAndDistancesesAndDistances.length < 2) {
+        if (citiesAndDistances == null || citiesAndDistances.length < 2) {
             return 0;
         }
 
         // Get list of all cities to visit
-        int numCities = citiesAndDistancesesAndDistances.length;
+        int numCities = citiesAndDistances.length;
         if (startCity >= numCities) {
             return 0;
         }
@@ -731,18 +733,18 @@ public class Puzzles {
             }
         }
 
-        return travellingSalesmanRecursive(citiesAndDistancesesAndDistances, citiesToVisit, startCity);
+        return travellingSalesmanRecursive(citiesAndDistances, citiesToVisit, startCity);
     }
 
-    private static int travellingSalesmanRecursive(int[][] citiesAndDistancesesAndDistances,
+    private static int travellingSalesmanRecursive(int[][] citiesAndDistances,
                                                    List<Integer> citiesToVisit, int startCity) {
         int minDistance = Integer.MAX_VALUE;
         for (int i = 0; i < citiesToVisit.size(); i++) {
             Integer endCity = citiesToVisit.get(i);
             citiesToVisit.remove(i);
 
-            int tourDistance = getTravelDistanceToCity(citiesAndDistancesesAndDistances, startCity, citiesToVisit,
-                    endCity) + citiesAndDistancesesAndDistances[endCity][startCity];
+            int tourDistance = getTravelDistanceToCity(citiesAndDistances, startCity, citiesToVisit,
+                    endCity) + citiesAndDistances[endCity][startCity];
 
             citiesToVisit.add(i, endCity);
             minDistance = Math.min(minDistance, tourDistance);
@@ -751,10 +753,10 @@ public class Puzzles {
         return minDistance;
     }
 
-    private static int getTravelDistanceToCity(int[][] citiesAndDistancesesAndDistances, int startCity,
+    private static int getTravelDistanceToCity(int[][] citiesAndDistances, int startCity,
                                                List<Integer> intermediateCities, int endCity) {
         if (intermediateCities.size() == 0) {
-            return citiesAndDistancesesAndDistances[startCity][endCity];
+            return citiesAndDistances[startCity][endCity];
         }
 
         int minDistance = Integer.MAX_VALUE;
@@ -762,8 +764,8 @@ public class Puzzles {
             Integer city = intermediateCities.get(i);
             intermediateCities.remove(i);
 
-            int tourDistance = getTravelDistanceToCity(citiesAndDistancesesAndDistances, startCity, intermediateCities,
-                    city) + citiesAndDistancesesAndDistances[city][endCity];
+            int tourDistance = getTravelDistanceToCity(citiesAndDistances, startCity, intermediateCities,
+                    city) + citiesAndDistances[city][endCity];
 
             intermediateCities.add(i, city);
             minDistance = Math.min(minDistance, tourDistance);
@@ -772,16 +774,16 @@ public class Puzzles {
         return minDistance;
     }
 
-    public static int travellingSalesmanNaive(int[][] citiesAndDistancesesAndDistances, int startCity) {
+    public static int travellingSalesmanNaive(int[][] citiesAndDistances, int startCity) {
         // Naive (Brute) solution
         // Time complexity: O(n!)
 
-        if (citiesAndDistancesesAndDistances == null || citiesAndDistancesesAndDistances.length < 2) {
+        if (citiesAndDistances == null || citiesAndDistances.length < 2) {
             return 0;
         }
 
         // Get list of all cities to visit
-        int numCities = citiesAndDistancesesAndDistances.length;
+        int numCities = citiesAndDistances.length;
         if (startCity >= numCities) {
             return 0;
         }
@@ -799,11 +801,11 @@ public class Puzzles {
             int distance = 0;
             int fromCity = startCity;
             for (int city : permutation) {
-                distance += citiesAndDistancesesAndDistances[fromCity][city];
+                distance += citiesAndDistances[fromCity][city];
                 fromCity = city;
             }
 
-            distance += citiesAndDistancesesAndDistances[fromCity][startCity];
+            distance += citiesAndDistances[fromCity][startCity];
 
             if (minDistance > distance) {
                 minDistance = distance;
@@ -811,6 +813,52 @@ public class Puzzles {
         }
 
         return minDistance;
+    }
+
+    public static List<Integer> travellingSalesmanApproximationUsingMST(int[][] citiesAndDistances, int startCity) {
+        // An approximate solution can be obtained only if the graph follows the triangle inequality
+        //  Triangle inequality -> between any 2 vertices i & j, the shortest distance is i->j (rather than through another vertex
+        // The upper bound for the approximation is 2 times the optimal solution for TSP, when implemented using MST
+
+        if (citiesAndDistances == null || citiesAndDistances.length < 2) {
+            return null;
+        }
+
+        int numCities = citiesAndDistances.length;
+        if (startCity >= numCities) {
+            return null;
+        }
+
+        for (var record : citiesAndDistances) {
+            if (record.length != numCities) {
+                // Invalid input
+                return null;
+            }
+        }
+
+        // Get the MST corresponding to the graph
+        var root = GraphAlgorithms.getPrimMST(citiesAndDistances, startCity);
+
+        List<Integer> route = new ArrayList<>();
+
+        // Pre-order traversal of the MST
+        Stack<TreeNode<Integer>> stack = new Stack<>();
+        stack.push(root);
+
+        while (!stack.empty()) {
+            var node = stack.pop();
+            route.add(node.getData());
+
+            var children = node.getChildren();
+            for (int i = children.size() - 1; i >= 0; i--) {
+                stack.push(children.get(i));
+            }
+        }
+
+        // Add the first node again, to complete the tour
+        route.add(root.getData());
+
+        return route;
     }
 
     public static boolean knightsTour(int[][] board) {
