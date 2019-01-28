@@ -627,4 +627,29 @@ public class StringQuests {
 		buffer[b + 1] = str.charAt(i);
 		generateAllStringsObtainedByPlacingSpaces(str, i + 1, n, buffer, b + 2, allStrings);
 	}
+
+	public static List<String> getAllStringsObtainedByPlacingSpacesA2(String str) {
+		if (str == null || str.length() == 0) {
+			return null;
+		}
+
+		int n = str.length();
+		List<String> allStrings = new ArrayList<>();
+
+		int count = (int) Math.pow(2, n - 1);
+		for (int counter = 0; counter < count; counter++) {
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < n; i++) {
+				sb.append(str.charAt(i));
+
+				if ((counter & (1 << i)) > 0) {
+					sb.append(' ');
+				}
+			}
+
+			allStrings.add(sb.toString());
+		}
+
+		return allStrings;
+	}
 }

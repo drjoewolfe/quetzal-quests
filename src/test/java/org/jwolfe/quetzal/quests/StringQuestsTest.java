@@ -391,4 +391,21 @@ class StringQuestsTest {
         result = StringQuests.getAllStringsObtainedByPlacingSpaces(str);
         QuetzalAssertions.assertListEquals(expectedResult, result);
     }
+
+    @Test
+    void getAllStringsObtainedByPlacingSpacesA2() {
+        String str;
+        List<String> result;
+        List<String> expectedResult;
+
+        str = "ABC";
+        expectedResult = Utilities.constructList("ABC", "AB C", "A BC", "A B C");
+        result = StringQuests.getAllStringsObtainedByPlacingSpacesA2(str);
+        QuetzalAssertions.assertListEquals(expectedResult, result);
+
+        str = "ABCD";
+        expectedResult = Utilities.constructList("ABCD", "A BCD", "AB CD", "A B CD", "ABC D", "A BC D", "AB C D", "A B C D");
+        result = StringQuests.getAllStringsObtainedByPlacingSpacesA2(str);
+        QuetzalAssertions.assertListEquals(expectedResult, result);
+    }
 }
