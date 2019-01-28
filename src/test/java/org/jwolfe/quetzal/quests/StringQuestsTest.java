@@ -3,6 +3,8 @@ package org.jwolfe.quetzal.quests;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.jwolfe.quetzal.library.utilities.Utilities;
+import org.jwolfe.quetzal.test.QuetzalAssertions;
 
 import java.util.HashSet;
 import java.util.List;
@@ -331,13 +333,13 @@ class StringQuestsTest {
 
     @Test
     void groupWordsWithSameSetOfCharacters() {
-        String[] words = { "may", "student", "students", "dog",
+        String[] words = {"may", "student", "students", "dog",
                 "studentssess", "god", "cat", "act", "tab",
                 "bat", "flow", "wolf", "lambs", "amy", "yam",
                 "balms", "looped", "poodle"};
         var groups = StringQuests.groupWordsWithSameSetOfCharacters(words);
-        for(var group : groups) {
-            for(var word: group) {
+        for (var group : groups) {
+            for (var word : group) {
                 System.out.print(word + " ");
             }
             System.out.println();
@@ -364,12 +366,29 @@ class StringQuestsTest {
         result = StringQuests.getLexicographicConcatenationOfAllSubStrings("cba");
         assertEquals("abbaccbcba", result);
     }
-    
+
     @Test
     void removeDuplicates() {
         String result;
 
         result = StringQuests.removeDuplicates("abcabcabcabcabcd");
         assertEquals("abcd", result);
+    }
+
+    @Test
+    void getAllStringsObtainedByPlacingSpaces() {
+        String str;
+        List<String> result;
+        List<String> expectedResult;
+
+        str = "ABC";
+        expectedResult = Utilities.constructList("ABC", "AB C", "A BC", "A B C");
+        result = StringQuests.getAllStringsObtainedByPlacingSpaces(str);
+        QuetzalAssertions.assertListEquals(expectedResult, result);
+
+        str = "ABCD";
+        expectedResult = Utilities.constructList("ABCD", "A BCD", "AB CD", "A B CD", "ABC D", "A BC D", "AB C D", "A B C D");
+        result = StringQuests.getAllStringsObtainedByPlacingSpaces(str);
+        QuetzalAssertions.assertListEquals(expectedResult, result);
     }
 }

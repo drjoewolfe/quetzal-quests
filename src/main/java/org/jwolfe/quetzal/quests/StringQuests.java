@@ -595,4 +595,36 @@ public class StringQuests {
 
 		return sb.toString();
 	}
+
+	public static List<String> getAllStringsObtainedByPlacingSpaces(String str) {
+		if (str == null || str.length() == 0) {
+			return null;
+		}
+
+		int n = str.length();
+		List<String> allStrings = new ArrayList<>();
+
+		char[] buffer = new char[2 * n];
+		buffer[0] = str.charAt(0);
+		generateAllStringsObtainedByPlacingSpaces(str, 1, n, buffer, 1, allStrings);
+
+		return allStrings;
+	}
+
+	private static void generateAllStringsObtainedByPlacingSpaces(String str, int i, int n, char[] buffer, int b, List<String> allStrings) {
+		if (i == n) {
+			buffer[b] = '\0';
+			allStrings.add(new String(buffer, 0, b));
+			return;
+		}
+
+		// Add i-th character into buffer
+		buffer[b] = str.charAt(i);
+		generateAllStringsObtainedByPlacingSpaces(str, i + 1, n, buffer, b + 1, allStrings);
+
+		// Add space, and then i-th character into buffer
+		buffer[b] = ' ';
+		buffer[b + 1] = str.charAt(i);
+		generateAllStringsObtainedByPlacingSpaces(str, i + 1, n, buffer, b + 2, allStrings);
+	}
 }
