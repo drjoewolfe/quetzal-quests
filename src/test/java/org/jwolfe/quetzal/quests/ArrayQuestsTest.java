@@ -1063,6 +1063,20 @@ class ArrayQuestsTest {
         assertEquals(expectedSum, sum);
     }
 
+
+    @Test
+    void maxSumIn2xNGridSuchThatNoTwoElementsAreAdjacent() {
+        int[][] arr;
+
+        arr = new int[][]{{1, 4, 5},
+                {2, 0, 0}};
+        assertEquals(7, ArrayQuests.maxSumIn2xNGridSuchThatNoTwoElementsAreAdjacent(arr));
+
+        arr = new int[][]{{1, 2, 3, 4, 5},
+                {6, 7, 8, 9, 10}};
+        assertEquals(24, ArrayQuests.maxSumIn2xNGridSuchThatNoTwoElementsAreAdjacent(arr));
+    }
+
     @Test
     void closestDistanceBetweenTwoPoints() {
         List<Point> points = new ArrayList<>();

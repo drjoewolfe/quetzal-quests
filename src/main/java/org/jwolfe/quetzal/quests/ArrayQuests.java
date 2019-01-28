@@ -1366,6 +1366,28 @@ public class ArrayQuests {
 		return maxSum;
 	}
 
+	public static int maxSumIn2xNGridSuchThatNoTwoElementsAreAdjacent(int[][] arr) {
+		if (arr == null || arr.length != 2 || arr[0].length == 0 || arr[0].length != arr[1].length) {
+			return 0;
+		}
+
+		int n = arr[0].length;
+
+		int inclusiveSum = 0;
+		int exclusiveSum = 0;
+		int maxSum = 0;
+
+		for (int i = 0; i < n; i++) {
+			int temp = inclusiveSum;
+			inclusiveSum = exclusiveSum + Math.max(arr[0][i], arr[1][i]);
+			exclusiveSum = temp;
+
+			maxSum = Utilities.max(maxSum, inclusiveSum, exclusiveSum);
+		}
+
+		return maxSum;
+	}
+
 	public static double closestDistanceBetweenTwoPoints(List<Point> points) {
 		Collections.sort(points, (o1, o2) -> o1.getX() - o2.getX());
 		return closestDistanceBetweenTwoPoints(points, 0, points.size() - 1);
