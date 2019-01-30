@@ -664,9 +664,9 @@ public class StringQuests {
 		int oneCount = 0;
 		for (int i = 0; i < n; i++) {
 			if (binaryString.charAt(i) == '0') {
-				arr[i] = -1;
-			} else {
 				arr[i] = 1;
+			} else {
+				arr[i] = -1;
 				oneCount++;
 			}
 		}
@@ -683,7 +683,8 @@ public class StringQuests {
 			Arrays.fill(row, -1);
 		}
 
-		return getLengthOfSubstringWithMaxDifferenceOfZerosAndOnesInBinaryString(binaryString, arr, 0, false, n, dp);
+		int val = getLengthOfSubstringWithMaxDifferenceOfZerosAndOnesInBinaryString(binaryString, arr, 0, false, n, dp);
+		return val;
 	}
 
 	private static int getLengthOfSubstringWithMaxDifferenceOfZerosAndOnesInBinaryString(String binaryString, int[] arr, int index, boolean inclusive, int size, int[][] dp) {
