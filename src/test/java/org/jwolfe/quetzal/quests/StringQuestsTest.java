@@ -408,4 +408,10 @@ class StringQuestsTest {
         result = StringQuests.getAllStringsObtainedByPlacingSpacesA2(str);
         QuetzalAssertions.assertListEquals(expectedResult, result);
     }
+
+    @Test
+    void getLengthOfSubstringWithMaxDifferenceOfZerosAndOnesInBinaryString() {
+        assertEquals(6, StringQuests.getLengthOfSubstringWithMaxDifferenceOfZerosAndOnesInBinaryString("11000010001"));
+        assertEquals(-1, StringQuests.getLengthOfSubstringWithMaxDifferenceOfZerosAndOnesInBinaryString("1111"));
+    }
 }

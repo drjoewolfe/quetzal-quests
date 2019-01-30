@@ -1,5 +1,6 @@
 package org.jwolfe.quetzal.quests;
 
+import org.jwolfe.quetzal.algorithms.StringAlgorithms;
 import org.jwolfe.quetzal.library.general.Pair;
 import org.jwolfe.quetzal.library.utilities.Utilities;
 
@@ -651,5 +652,61 @@ public class StringQuests {
 		}
 
 		return allStrings;
+	}
+
+	public static int getLengthOfSubstringWithMaxDifferenceOfZerosAndOnesInBinaryString(String binaryString) {
+		if (binaryString == null || binaryString.length() == 0 || !StringAlgorithms.isBinaryString(binaryString)) {
+			return 0;
+		}
+
+		int n = binaryString.length();
+		int[] arr = new int[n];
+		int oneCount = 0;
+		for (int i = 0; i < n; i++) {
+			if (binaryString.charAt(i) == '0') {
+				arr[i] = -1;
+			} else {
+				arr[i] = 1;
+				oneCount++;
+			}
+		}
+
+		if (oneCount == n) {
+			// All 1-s
+			return -1;
+		}
+
+		// dp[i][0] -> denotes the maximum difference till i, exclusive of i
+		// dp[i][1] -> denotes the maximum difference till i, inclusive of i
+		int[][] dp = new int[n][2];
+		for (var row : dp) {
+			Arrays.fill(row, -1);
+		}
+
+		return getLengthOfSubstringWithMaxDifferenceOfZerosAndOnesInBinaryString(binaryString, arr, 0, false, n, dp);
+	}
+
+	private static int getLengthOfSubstringWithMaxDifferenceOfZerosAndOnesInBinaryString(String binaryString, int[] arr, int index, boolean inclusive, int size, int[][] dp) {
+		if (index >= size) {
+			// Outside of the string
+			return 0;
+		}
+
+		int status = inclusive ? 1 : 0;
+
+		if (dp[index][status] != -1) {
+			// Already computed
+			return dp[index][status];
+		}
+
+		if (inclusive) {
+			dp[index][status] = Math.max(0,
+					arr[index] + getLengthOfSubstringWithMaxDifferenceOfZerosAndOnesInBinaryString(binaryString, arr, index + 1, true, size, dp));
+		} else {
+			dp[index][status] = Math.max(getLengthOfSubstringWithMaxDifferenceOfZerosAndOnesInBinaryString(binaryString, arr, index + 1, false, size, dp),
+					arr[index] + getLengthOfSubstringWithMaxDifferenceOfZerosAndOnesInBinaryString(binaryString, arr, index + 1, true, size, dp));
+		}
+
+		return dp[index][status];
 	}
 }
