@@ -654,7 +654,40 @@ public class StringQuests {
 		return allStrings;
 	}
 
-	public static int getLengthOfSubstringWithMaxDifferenceOfZerosAndOnesInBinaryString(String binaryString) {
+	public static int getMaxDifferenceOfZerosFromOnesInBinaryString(String binaryString) {
+		// If Zeros exist, return Max of # Zeros - # Ones from all substrings
+		// If no zeros exist, return -1.
+		// Kadane's implementation
+
+		if (binaryString == null || binaryString.length() == 0 || !StringAlgorithms.isBinaryString(binaryString)) {
+			return 0;
+		}
+
+		int currentSum = 0;
+		int maxEndingHere = 0;
+
+		// Note: Convert Zero to 1, & One to -1 for computation
+		for (int i = 0; i < binaryString.length(); i++) {
+			char c = binaryString.charAt(i);
+			int number = c == '0' ? 1 : -1;
+
+			currentSum = Math.max(0, currentSum + number);
+			maxEndingHere = Math.max(maxEndingHere, currentSum);
+		}
+
+		if (maxEndingHere == 0) {
+			// All 1s.
+			return -1;
+		}
+
+		return maxEndingHere;
+	}
+
+	public static int getMaxDifferenceOfZerosFromOnesInBinaryStringA2(String binaryString) {
+		// If Zeros exist, return Max of # Zeros - # Ones from all substrings
+		// If no zeros exist, return -1.
+		// Dynamic Programming implementation
+
 		if (binaryString == null || binaryString.length() == 0 || !StringAlgorithms.isBinaryString(binaryString)) {
 			return 0;
 		}
@@ -662,6 +695,8 @@ public class StringQuests {
 		int n = binaryString.length();
 		int[] arr = new int[n];
 		int oneCount = 0;
+
+		// Convert Zero to 1, & One to -1 in the array
 		for (int i = 0; i < n; i++) {
 			if (binaryString.charAt(i) == '0') {
 				arr[i] = 1;
@@ -683,11 +718,11 @@ public class StringQuests {
 			Arrays.fill(row, -1);
 		}
 
-		int val = getLengthOfSubstringWithMaxDifferenceOfZerosAndOnesInBinaryString(binaryString, arr, 0, false, n, dp);
+		int val = getMaxDifferenceOfZerosFromOnesInBinaryStringA2(binaryString, arr, 0, false, n, dp);
 		return val;
 	}
 
-	private static int getLengthOfSubstringWithMaxDifferenceOfZerosAndOnesInBinaryString(String binaryString, int[] arr, int index, boolean inclusive, int size, int[][] dp) {
+	private static int getMaxDifferenceOfZerosFromOnesInBinaryStringA2(String binaryString, int[] arr, int index, boolean inclusive, int size, int[][] dp) {
 		if (index >= size) {
 			// Outside of the string
 			return 0;
@@ -702,10 +737,10 @@ public class StringQuests {
 
 		if (inclusive) {
 			dp[index][status] = Math.max(0,
-					arr[index] + getLengthOfSubstringWithMaxDifferenceOfZerosAndOnesInBinaryString(binaryString, arr, index + 1, true, size, dp));
+					arr[index] + getMaxDifferenceOfZerosFromOnesInBinaryStringA2(binaryString, arr, index + 1, true, size, dp));
 		} else {
-			dp[index][status] = Math.max(getLengthOfSubstringWithMaxDifferenceOfZerosAndOnesInBinaryString(binaryString, arr, index + 1, false, size, dp),
-					arr[index] + getLengthOfSubstringWithMaxDifferenceOfZerosAndOnesInBinaryString(binaryString, arr, index + 1, true, size, dp));
+			dp[index][status] = Math.max(getMaxDifferenceOfZerosFromOnesInBinaryStringA2(binaryString, arr, index + 1, false, size, dp),
+					arr[index] + getMaxDifferenceOfZerosFromOnesInBinaryStringA2(binaryString, arr, index + 1, true, size, dp));
 		}
 
 		return dp[index][status];

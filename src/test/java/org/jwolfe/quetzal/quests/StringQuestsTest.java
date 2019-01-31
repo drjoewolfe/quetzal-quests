@@ -410,8 +410,14 @@ class StringQuestsTest {
     }
 
     @Test
-    void getLengthOfSubstringWithMaxDifferenceOfZerosAndOnesInBinaryString() {
-        assertEquals(6, StringQuests.getLengthOfSubstringWithMaxDifferenceOfZerosAndOnesInBinaryString("11000010001"));
-        assertEquals(-1, StringQuests.getLengthOfSubstringWithMaxDifferenceOfZerosAndOnesInBinaryString("1111"));
+    void getMaxDifferenceOfZerosFromOnesInBinaryString() {
+        assertEquals(6, StringQuests.getMaxDifferenceOfZerosFromOnesInBinaryString("11000010001"));
+        assertEquals(-1, StringQuests.getMaxDifferenceOfZerosFromOnesInBinaryString("1111"));
+    }
+
+    @Test
+    void getMaxDifferenceOfZerosFromOnesInBinaryStringA2() {
+        assertEquals(6, StringQuests.getMaxDifferenceOfZerosFromOnesInBinaryStringA2("11000010001"));
+        assertEquals(-1, StringQuests.getMaxDifferenceOfZerosFromOnesInBinaryStringA2("1111"));
     }
 }
