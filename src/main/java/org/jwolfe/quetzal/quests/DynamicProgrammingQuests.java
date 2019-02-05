@@ -33,4 +33,25 @@ public class DynamicProgrammingQuests {
 
         return minimizedList;
     }
+
+    public static int countWaysToConstructBuildingsOnGivenSectionsWherePlotCanBeOnEitherSidesOfRoadAndSpacesRequiredBetweenSections(int numSections) {
+        if (numSections <= 0) {
+            return 0;
+        }
+
+        // We start with considering one side of the road. This squared is the total # of ways
+        // dp[i][0] -> denotes # ways buildings can be constructed for the ith plot ending with a space
+        // dp[i][1] -> denotes # ways buildings can be constructed for the ith plot ending with a building
+        int[][] dp = new int[numSections][2];
+        dp[0][0] = 1;
+        dp[0][1] = 1;
+
+        for (int i = 1; i < numSections; i++) {
+            dp[i][0] = dp[i - 1][0] + dp[i - 1][1];
+            dp[i][1] = dp[i - 1][0];
+        }
+
+        int numWays = dp[numSections - 1][0] + dp[numSections - 1][1];
+        return numWays * numWays;
+    }
 }

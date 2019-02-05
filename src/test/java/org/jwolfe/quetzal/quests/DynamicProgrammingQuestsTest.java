@@ -33,4 +33,11 @@ class DynamicProgrammingQuestsTest {
         minimizedList = DynamicProgrammingQuests.getMinimizedListAfterRepeatedDeletionsOfLongestIncreasingSubsequencesOfSizeMoreThanOne(arr);
         QuetzalAssertions.assertListEquals(expectedMinimizedList, minimizedList);
     }
+
+    @Test
+    void countWaysToConstructBuildingsOnGivenSectionsWherePlotCanBeOnEitherSidesOfRoadAndSpacesRequiredBetweenSections() {
+        assertEquals(4, DynamicProgrammingQuests.countWaysToConstructBuildingsOnGivenSectionsWherePlotCanBeOnEitherSidesOfRoadAndSpacesRequiredBetweenSections(1));
+        assertEquals(25, DynamicProgrammingQuests.countWaysToConstructBuildingsOnGivenSectionsWherePlotCanBeOnEitherSidesOfRoadAndSpacesRequiredBetweenSections(3));
+        assertEquals(64, DynamicProgrammingQuests.countWaysToConstructBuildingsOnGivenSectionsWherePlotCanBeOnEitherSidesOfRoadAndSpacesRequiredBetweenSections(4));
+    }
 }
