@@ -48,4 +48,16 @@ class DynamicProgrammingQuestsTest {
         winePrices = new int[]{2, 4, 6, 2, 5};
         assertEquals(64, DynamicProgrammingQuests.maximumRevenueFromSaleOfWinesGivenOnlyFirstOrLastWineCanBeSoldAndPricesMultiplyByYear(winePrices));
     }
+
+    @Test
+    void getSellOrderForMaximumRevenueFromSaleOfWinesGivenOnlyFirstOrLastWineCanBeSoldAndPricesMultiplyByYear() {
+        int[] winePrices;
+        int[] sellOrder;
+        int[] expectedSellOrder;
+
+        winePrices = new int[]{2, 4, 6, 2, 5};
+        expectedSellOrder = new int[]{0, 4, 3, 1, 2};
+        sellOrder = DynamicProgrammingQuests.getSellOrderForMaximumRevenueFromSaleOfWinesGivenOnlyFirstOrLastWineCanBeSoldAndPricesMultiplyByYear(winePrices);
+        assertArrayEquals(expectedSellOrder, sellOrder);
+    }
 }

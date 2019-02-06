@@ -85,4 +85,53 @@ public class DynamicProgrammingQuests {
 
         return maxRevenues[0][n - 1];
     }
+
+    public static int[] getSellOrderForMaximumRevenueFromSaleOfWinesGivenOnlyFirstOrLastWineCanBeSoldAndPricesMultiplyByYear(int[] winePrices) {
+        if (winePrices == null || winePrices.length == 0) {
+            return null;
+        }
+
+        int n = winePrices.length;
+
+        int[][] maxRevenues = new int[n][n];
+        int[][] sellMatrix = new int[n][n];
+        for (int len = 1; len <= n; len++) {
+            for (int i = 0; i < n - len + 1; i++) {
+                if (len == 1) {
+                    maxRevenues[i][i] = winePrices[i] * n;
+                    sellMatrix[i][i] = i;
+                    continue;
+                }
+
+                int j = i + len - 1;
+                int year = n - (j - i);
+
+                int firstSold = winePrices[i] * year + maxRevenues[i + 1][j];
+                int lastSold = maxRevenues[i][j - 1] + winePrices[j] * year;
+
+                maxRevenues[i][j] = Math.max(firstSold, lastSold);
+                if (firstSold > lastSold) {
+                    sellMatrix[i][j] = 0;
+                } else {
+                    sellMatrix[i][j] = 1;
+                }
+            }
+        }
+
+        int[] sellOrder = new int[n];
+        int i = 0;
+        int j = n - 1;
+        int k = 0;
+        while (i <= j) {
+            if (sellMatrix[i][j] == 0) {
+                // First item sold
+                sellOrder[k++] = i++;
+            } else {
+                // Last item sold
+                sellOrder[k++] = j--;
+            }
+        }
+
+        return sellOrder;
+    }
 }
