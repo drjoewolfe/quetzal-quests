@@ -40,4 +40,12 @@ class DynamicProgrammingQuestsTest {
         assertEquals(25, DynamicProgrammingQuests.countWaysToConstructBuildingsOnGivenSectionsWherePlotCanBeOnEitherSidesOfRoadAndSpacesRequiredBetweenSections(3));
         assertEquals(64, DynamicProgrammingQuests.countWaysToConstructBuildingsOnGivenSectionsWherePlotCanBeOnEitherSidesOfRoadAndSpacesRequiredBetweenSections(4));
     }
+
+    @Test
+    void maximumRevenueFromSaleOfWinesGivenOnlyFirstOrLastWineCanBeSoldAndPricesMultiplyByYear() {
+        int[] winePrices;
+
+        winePrices = new int[]{2, 4, 6, 2, 5};
+        assertEquals(64, DynamicProgrammingQuests.maximumRevenueFromSaleOfWinesGivenOnlyFirstOrLastWineCanBeSoldAndPricesMultiplyByYear(winePrices));
+    }
 }

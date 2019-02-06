@@ -54,4 +54,35 @@ public class DynamicProgrammingQuests {
         int numWays = dp[numSections - 1][0] + dp[numSections - 1][1];
         return numWays * numWays;
     }
+
+    public static int maximumRevenueFromSaleOfWinesGivenOnlyFirstOrLastWineCanBeSoldAndPricesMultiplyByYear(int[] winePrices) {
+        if (winePrices == null || winePrices.length == 0) {
+            return 0;
+        }
+
+        int n = winePrices.length;
+
+        int[][] maxRevenues = new int[n][n];
+        for (var row : maxRevenues) {
+            Arrays.fill(row, Integer.MIN_VALUE);
+        }
+
+        for (int i = 0; i < n; i++) {
+            maxRevenues[i][i] = winePrices[i] * n;
+        }
+
+        for (int len = 2; len <= n; len++) {
+            for (int i = 0; i < n - len + 1; i++) {
+                int j = i + len - 1;
+                int year = n - (j - i);
+
+                int firstSold = winePrices[i] * year + maxRevenues[i + 1][j];
+                int lastSold = maxRevenues[i][j - 1] + winePrices[j] * year;
+
+                maxRevenues[i][j] = Math.max(firstSold, lastSold);
+            }
+        }
+
+        return maxRevenues[0][n - 1];
+    }
 }
