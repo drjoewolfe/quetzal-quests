@@ -144,10 +144,49 @@ public class DynamicProgrammingQuests {
         }
 
         int numBoards = boardLengths.length;
-        return minimumTimeForKPaintersToPaintNBoardsSuchThatAnyPainterOnlyPaintsContinuousSectionsOfBoard(boardLengths, numBoards, numPainters);
+        int numPartitions = numPainters;
+
+        int[][] dp = new int[numPartitions + 1][numBoards + 1];
+
+        // One Partition
+        for (int i = 1; i <= numBoards; i++) {
+            dp[1][i] = ArrayAlgorithms.getSum(boardLengths, 0, i - 1);
+        }
+
+        // One Board
+        for (int i = 1; i <= numPartitions; i++) {
+            dp[i][1] = boardLengths[0];
+        }
+
+        for (int i = 2; i <= numPartitions; i++) {
+            for (int j = 2; j <= numBoards; j++) {
+                int minTime = Integer.MAX_VALUE;
+
+                for (int k = 1; k <= j; k++) {
+                    int time = Math.max(ArrayAlgorithms.getSum(boardLengths, k, j - 1),
+                            dp[i - 1][k]);
+                    minTime = Math.min(minTime, time);
+                }
+
+                dp[i][j] = minTime;
+            }
+        }
+
+        return dp[numPartitions][numBoards];
     }
 
-    private static int minimumTimeForKPaintersToPaintNBoardsSuchThatAnyPainterOnlyPaintsContinuousSectionsOfBoard(int[] boardLengths, int boards, int partitions) {
+    public static int minimumTimeForKPaintersToPaintNBoardsSuchThatAnyPainterOnlyPaintsContinuousSectionsOfBoardRecursive(int[] boardLengths, int numPainters) {
+        // Note: Each painter paints one unit of length in one unit of time
+
+        if (boardLengths == null || boardLengths.length == 0 || numPainters <= 0) {
+            return 0;
+        }
+
+        int numBoards = boardLengths.length;
+        return minimumTimeForKPaintersToPaintNBoardsSuchThatAnyPainterOnlyPaintsContinuousSectionsOfBoardRecursive(boardLengths, numBoards, numPainters);
+    }
+
+    private static int minimumTimeForKPaintersToPaintNBoardsSuchThatAnyPainterOnlyPaintsContinuousSectionsOfBoardRecursive(int[] boardLengths, int boards, int partitions) {
         if (boards == 1) {
             // One board left
             return boardLengths[0];
@@ -162,7 +201,7 @@ public class DynamicProgrammingQuests {
         int minTime = Integer.MAX_VALUE;
         for (int i = 0; i < boards; i++) {
             int time = Math.max(ArrayAlgorithms.getSum(boardLengths, i, boards - 1),
-                    minimumTimeForKPaintersToPaintNBoardsSuchThatAnyPainterOnlyPaintsContinuousSectionsOfBoard(boardLengths, i, partitions - 1));
+                    minimumTimeForKPaintersToPaintNBoardsSuchThatAnyPainterOnlyPaintsContinuousSectionsOfBoardRecursive(boardLengths, i, partitions - 1));
 
             minTime = Math.min(minTime, time);
         }

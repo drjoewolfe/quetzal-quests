@@ -1,7 +1,6 @@
 package org.jwolfe.quetzal.quests;
 
 import org.junit.jupiter.api.Test;
-import org.jwolfe.quetzal.algorithms.DynamicProgramming;
 import org.jwolfe.quetzal.library.utilities.Utilities;
 import org.jwolfe.quetzal.test.QuetzalAssertions;
 
@@ -77,5 +76,23 @@ class DynamicProgrammingQuestsTest {
         boardLengths = new int[]{10, 20, 60, 50, 30, 40};
         numPainters = 3;
         assertEquals(90, DynamicProgrammingQuests.minimumTimeForKPaintersToPaintNBoardsSuchThatAnyPainterOnlyPaintsContinuousSectionsOfBoard(boardLengths, numPainters));
+    }
+
+    @Test
+    void minimumTimeForKPaintersToPaintNBoardsSuchThatAnyPainterOnlyPaintsContinuousSectionsOfBoardRecursive() {
+        int[] boardLengths;
+        int numPainters;
+
+        boardLengths = new int[]{10, 10, 10, 10};
+        numPainters = 2;
+        assertEquals(20, DynamicProgrammingQuests.minimumTimeForKPaintersToPaintNBoardsSuchThatAnyPainterOnlyPaintsContinuousSectionsOfBoardRecursive(boardLengths, numPainters));
+
+        boardLengths = new int[]{10, 20, 30, 40};
+        numPainters = 2;
+        assertEquals(60, DynamicProgrammingQuests.minimumTimeForKPaintersToPaintNBoardsSuchThatAnyPainterOnlyPaintsContinuousSectionsOfBoardRecursive(boardLengths, numPainters));
+
+        boardLengths = new int[]{10, 20, 60, 50, 30, 40};
+        numPainters = 3;
+        assertEquals(90, DynamicProgrammingQuests.minimumTimeForKPaintersToPaintNBoardsSuchThatAnyPainterOnlyPaintsContinuousSectionsOfBoardRecursive(boardLengths, numPainters));
     }
 }
