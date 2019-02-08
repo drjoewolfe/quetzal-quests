@@ -1,5 +1,6 @@
 package org.jwolfe.quetzal.quests;
 
+import org.jwolfe.quetzal.algorithms.ArrayAlgorithms;
 import org.jwolfe.quetzal.algorithms.DynamicProgramming;
 
 import java.util.ArrayList;
@@ -133,5 +134,39 @@ public class DynamicProgrammingQuests {
         }
 
         return sellOrder;
+    }
+
+    public static int minimumTimeForKPaintersToPaintNBoardsSuchThatAnyPainterOnlyPaintsContinuousSectionsOfBoard(int[] boardLengths, int numPainters) {
+        // Note: Each painter paints one unit of length in one unit of time
+
+        if (boardLengths == null || boardLengths.length == 0 || numPainters <= 0) {
+            return 0;
+        }
+
+        int numBoards = boardLengths.length;
+        return minimumTimeForKPaintersToPaintNBoardsSuchThatAnyPainterOnlyPaintsContinuousSectionsOfBoard(boardLengths, numBoards, numPainters);
+    }
+
+    private static int minimumTimeForKPaintersToPaintNBoardsSuchThatAnyPainterOnlyPaintsContinuousSectionsOfBoard(int[] boardLengths, int boards, int partitions) {
+        if (boards == 1) {
+            // One board left
+            return boardLengths[0];
+        }
+
+        if (partitions == 1) {
+            // One partition
+            return ArrayAlgorithms.getSum(boardLengths, 0, boards - 1);
+        }
+
+
+        int minTime = Integer.MAX_VALUE;
+        for (int i = 0; i < boards; i++) {
+            int time = Math.max(ArrayAlgorithms.getSum(boardLengths, i, boards - 1),
+                    minimumTimeForKPaintersToPaintNBoardsSuchThatAnyPainterOnlyPaintsContinuousSectionsOfBoard(boardLengths, i, partitions - 1));
+
+            minTime = Math.min(minTime, time);
+        }
+
+        return minTime;
     }
 }

@@ -60,4 +60,22 @@ class DynamicProgrammingQuestsTest {
         sellOrder = DynamicProgrammingQuests.getSellOrderForMaximumRevenueFromSaleOfWinesGivenOnlyFirstOrLastWineCanBeSoldAndPricesMultiplyByYear(winePrices);
         assertArrayEquals(expectedSellOrder, sellOrder);
     }
+
+    @Test
+    void minimumTimeForKPaintersToPaintNBoardsSuchThatAnyPainterOnlyPaintsContinuousSectionsOfBoard() {
+        int[] boardLengths;
+        int numPainters;
+
+        boardLengths = new int[]{10, 10, 10, 10};
+        numPainters = 2;
+        assertEquals(20, DynamicProgrammingQuests.minimumTimeForKPaintersToPaintNBoardsSuchThatAnyPainterOnlyPaintsContinuousSectionsOfBoard(boardLengths, numPainters));
+
+        boardLengths = new int[]{10, 20, 30, 40};
+        numPainters = 2;
+        assertEquals(60, DynamicProgrammingQuests.minimumTimeForKPaintersToPaintNBoardsSuchThatAnyPainterOnlyPaintsContinuousSectionsOfBoard(boardLengths, numPainters));
+
+        boardLengths = new int[]{10, 20, 60, 50, 30, 40};
+        numPainters = 3;
+        assertEquals(90, DynamicProgrammingQuests.minimumTimeForKPaintersToPaintNBoardsSuchThatAnyPainterOnlyPaintsContinuousSectionsOfBoard(boardLengths, numPainters));
+    }
 }
