@@ -95,4 +95,15 @@ class DynamicProgrammingQuestsTest {
         numPainters = 3;
         assertEquals(90, DynamicProgrammingQuests.minimumTimeForKPaintersToPaintNBoardsSuchThatAnyPainterOnlyPaintsContinuousSectionsOfBoardRecursive(boardLengths, numPainters));
     }
+
+    @Test
+    void minimumStartingPointsToTraverseGridAndReachDestination() {
+        int[][] grid;
+
+        grid = new int[][]{{-2, -3, 3},
+                {-5, -10, 1},
+                {10, 30, -5}
+        };
+        assertEquals(7, DynamicProgrammingQuests.minimumStartingPointsToTraverseGridAndReachDestination(grid));
+    }
 }

@@ -208,4 +208,50 @@ public class DynamicProgrammingQuests {
 
         return minTime;
     }
+
+    public static int minimumStartingPointsToTraverseGridAndReachDestination(int[][] grid) {
+        // Each cell in the grid has a (+)ve, (-)ve or zero value.
+        // We can visit the right, or down cell from any cell.
+        // Visiting each cell increases, decreases or keeps the aggregate points based on the value of the cell.
+        // If at or less than zero, movement to another cell is not possible
+        // Start from (0, 0) & reach the bottom right corner of the grid.
+        // Calculate the minimum points to start with to complete the journey
+
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int m = grid.length;
+        int n = grid[0].length;
+
+        // dp[i][j] -> minimum starting points so that if the player starts from (i, j), he can reach the destination
+        int[][] dp = new int[m][n];
+
+        // Destination cell
+        dp[m - 1][n - 1] = grid[m - 1][n - 1] > 0 ? 1 : Math.abs(grid[m - 1][n - 1]) + 1;
+
+        // Right column
+        for (int i = m - 2; i >= 0; i--) {
+            dp[i][n - 1] = Math.max(dp[i + 1][n - 1] - grid[i][n - 1], 1);
+        }
+
+        // Bottom row
+        for (int j = n - 2; j >= 0; j--) {
+            dp[m - 1][j] = Math.max(dp[m - 1][j + 1] - grid[m - 1][j], 1);
+        }
+
+        // Rest of the grid
+        for (int i = m - 2; i >= 0; i--) {
+            for (int j = n - 2; j >= 0; j--) {
+                int fromRight = dp[i][j + 1];
+                int fromDown = dp[i + 1][j];
+
+                int minEntry = Math.min(fromRight, fromDown);
+
+                dp[i][j] = Math.max(minEntry - grid[i][j], 1);
+            }
+        }
+
+        return dp[0][0];
+    }
 }
