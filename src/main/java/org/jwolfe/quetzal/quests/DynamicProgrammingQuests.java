@@ -254,4 +254,28 @@ public class DynamicProgrammingQuests {
 
         return dp[0][0];
     }
+
+    public static int waysToReachNthStairsUsingOneTwoOrThreeStepsAtATime(int n) {
+        if (n <= 1) {
+            return 1;
+        }
+
+        if (n == 2) {
+            // 2 ways -> 1 Two Step, or 2 One Steps
+            return 2;
+        }
+
+        int ways = 0;
+
+        // One Step
+        ways += waysToReachNthStairsUsingOneTwoOrThreeStepsAtATime(n - 1);
+
+        // Two Steps
+        ways += waysToReachNthStairsUsingOneTwoOrThreeStepsAtATime(n - 2);
+
+        // Three Steps
+        ways += waysToReachNthStairsUsingOneTwoOrThreeStepsAtATime(n - 3);
+
+        return ways;
+    }
 }

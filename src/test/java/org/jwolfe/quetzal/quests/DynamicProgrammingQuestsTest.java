@@ -106,4 +106,10 @@ class DynamicProgrammingQuestsTest {
         };
         assertEquals(7, DynamicProgrammingQuests.minimumStartingPointsToTraverseGridAndReachDestination(grid));
     }
+
+    @Test
+    void waysToReachNthStairsUsingOneTwoOrThreeStepsAtATime() {
+        assertEquals(7, DynamicProgrammingQuests.waysToReachNthStairsUsingOneTwoOrThreeStepsAtATime(4));
+        assertEquals(4, DynamicProgrammingQuests.waysToReachNthStairsUsingOneTwoOrThreeStepsAtATime(3));
+    }
 }
