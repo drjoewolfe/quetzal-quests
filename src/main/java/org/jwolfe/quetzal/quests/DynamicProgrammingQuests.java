@@ -2,6 +2,7 @@ package org.jwolfe.quetzal.quests;
 
 import org.jwolfe.quetzal.algorithms.ArrayAlgorithms;
 import org.jwolfe.quetzal.algorithms.DynamicProgramming;
+import org.jwolfe.quetzal.library.utilities.Utilities;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -299,5 +300,57 @@ public class DynamicProgrammingQuests {
         ways += waysToReachNthStairsUsingOneTwoOrThreeStepsAtATimeRecursive(n - 3);
 
         return ways;
+    }
+
+    public static int minimumCostUsingXorToMakeLongestCommonSubsequenceOfLengthK(String str1, String str2, int k) {
+        // Convert str1 with minimal cost so that the LCS of str1 & str2 is of length k
+        // Cost of changing a character is the XOR of their values. Character value of 'a' is 0 & so on.
+        if (str1 == null || str2 == null || k < 0) {
+            return Integer.MAX_VALUE;
+        }
+
+        int m = str1.length();
+        int n = str2.length();
+
+        int[][][] dp = new int[m + 1][n + 1][k + 1];
+
+        // For k = 0, cost is zero
+        for (int i = 0; i <= m; i++) {
+            for (int j = 0; j <= n; j++) {
+                dp[i][j][0] = 0;
+            }
+        }
+
+        for (int i = 0; i <= m; i++) {
+            for (int j = 0; j <= n; j++) {
+                for (int l = 1; l <= k; l++) {
+                    if (i == 0 || j == 0) {
+                        dp[i][j][l] = Integer.MAX_VALUE;
+                    } else {
+                        char a = str1.charAt(i - 1);
+                        char b = str2.charAt(j - 1);
+
+                        if (a == b) {
+                            dp[i][j][k] = Math.min(
+                                    dp[i - 1][j][l],
+                                    dp[i][j - 1][l]
+                            );
+                        } else {
+                            int changeCost = dp[i - 1][j - 1][l - 1] == Integer.MAX_VALUE ? Integer.MAX_VALUE
+                                    : dp[i - 1][j - 1][l - 1] + ((a - 'a') ^ (b - 'a'));
+
+
+                            dp[i][j][k] = Utilities.min(
+                                    changeCost,
+                                    dp[i - 1][j][l],
+                                    dp[i][j - 1][l]
+                            );
+                        }
+                    }
+                }
+            }
+        }
+
+        return dp[m][n][k];
     }
 }

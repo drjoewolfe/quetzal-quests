@@ -118,4 +118,9 @@ class DynamicProgrammingQuestsTest {
         assertEquals(7, DynamicProgrammingQuests.waysToReachNthStairsUsingOneTwoOrThreeStepsAtATimeRecursive(4));
         assertEquals(4, DynamicProgrammingQuests.waysToReachNthStairsUsingOneTwoOrThreeStepsAtATimeRecursive(3));
     }
+
+    @Test
+    void minimumCostUsingXorToMakeLongestCommonSubsequenceOfLengthK() {
+        assertEquals(3, DynamicProgrammingQuests.minimumCostUsingXorToMakeLongestCommonSubsequenceOfLengthK("abble", "pie", 2));
+    }
 }
