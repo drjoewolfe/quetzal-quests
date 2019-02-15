@@ -265,16 +265,38 @@ public class DynamicProgrammingQuests {
             return 2;
         }
 
+        int[] ways = new int[n + 1];
+        ways[0] = 1;
+        ways[1] = 1;
+        ways[2] = 2;
+
+        for (int i = 3; i <= n; i++) {
+            ways[i] = ways[i - 1] + ways[i - 2] + ways[i - 3];
+        }
+
+        return ways[n];
+    }
+
+    public static int waysToReachNthStairsUsingOneTwoOrThreeStepsAtATimeRecursive(int n) {
+        if (n <= 1) {
+            return 1;
+        }
+
+        if (n == 2) {
+            // 2 ways -> 1 Two Step, or 2 One Steps
+            return 2;
+        }
+
         int ways = 0;
 
         // One Step
-        ways += waysToReachNthStairsUsingOneTwoOrThreeStepsAtATime(n - 1);
+        ways += waysToReachNthStairsUsingOneTwoOrThreeStepsAtATimeRecursive(n - 1);
 
         // Two Steps
-        ways += waysToReachNthStairsUsingOneTwoOrThreeStepsAtATime(n - 2);
+        ways += waysToReachNthStairsUsingOneTwoOrThreeStepsAtATimeRecursive(n - 2);
 
         // Three Steps
-        ways += waysToReachNthStairsUsingOneTwoOrThreeStepsAtATime(n - 3);
+        ways += waysToReachNthStairsUsingOneTwoOrThreeStepsAtATimeRecursive(n - 3);
 
         return ways;
     }

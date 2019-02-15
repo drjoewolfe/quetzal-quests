@@ -112,4 +112,10 @@ class DynamicProgrammingQuestsTest {
         assertEquals(7, DynamicProgrammingQuests.waysToReachNthStairsUsingOneTwoOrThreeStepsAtATime(4));
         assertEquals(4, DynamicProgrammingQuests.waysToReachNthStairsUsingOneTwoOrThreeStepsAtATime(3));
     }
+
+    @Test
+    void waysToReachNthStairsUsingOneTwoOrThreeStepsAtATimeRecursive() {
+        assertEquals(7, DynamicProgrammingQuests.waysToReachNthStairsUsingOneTwoOrThreeStepsAtATimeRecursive(4));
+        assertEquals(4, DynamicProgrammingQuests.waysToReachNthStairsUsingOneTwoOrThreeStepsAtATimeRecursive(3));
+    }
 }
