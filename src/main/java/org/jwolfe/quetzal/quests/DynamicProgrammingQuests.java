@@ -382,6 +382,7 @@ public class DynamicProgrammingQuests {
 
     public static int numberOfPathsWithExactlyKCoinsInGridForTripFromTopLeftToBottomRight(int[][] grid, int k) {
         // From any cell (i, j), travel to (i+1, j) or (i, j + 1) is allowed
+        // Pseudo-polynomial time implementaion using dynamic programming
 
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
             return 0;
@@ -390,10 +391,46 @@ public class DynamicProgrammingQuests {
         int m = grid.length;
         int n = grid[0].length;
 
-        return numberOfPathsWithExactlyKCoinsInGridForTrip(grid, k, m - 1, n - 1);
+        int[][][] dp = new int[m + 1][n + 1][k + 1];
+        for (int i = 0; i <= m; i++) {
+            for (int j = 0; j <= n; j++) {
+                for (int l = 0; l <= k; l++) {
+                    if (i == 0 || j == 0) {
+                        dp[i][j][l] = 0;
+                    } else {
+                        int coins = grid[i - 1][j - 1];
+                        if (i == 1 && j == 1 && l == coins) {
+                            dp[i][j][l] = 1;
+                        } else {
+                            if (l < coins) {
+                                dp[i][j][l] = 0;
+                            } else {
+                                dp[i][j][l] = dp[i - 1][j][l - coins] +
+                                        dp[i][j - 1][l - coins];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return dp[m][n][k];
     }
 
-    private static int numberOfPathsWithExactlyKCoinsInGridForTrip(int[][] grid, int k, int rowIndex, int colIndex) {
+    public static int numberOfPathsWithExactlyKCoinsInGridForTripFromTopLeftToBottomRightRecursive(int[][] grid, int k) {
+        // From any cell (i, j), travel to (i+1, j) or (i, j + 1) is allowed
+
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int m = grid.length;
+        int n = grid[0].length;
+
+        return numberOfPathsWithExactlyKCoinsInGridForTripRecursive(grid, k, m - 1, n - 1);
+    }
+
+    private static int numberOfPathsWithExactlyKCoinsInGridForTripRecursive(int[][] grid, int k, int rowIndex, int colIndex) {
         if (k < 0 || rowIndex < 0 || colIndex < 0) {
             return 0;
         }
@@ -407,7 +444,7 @@ public class DynamicProgrammingQuests {
             }
         }
 
-        return numberOfPathsWithExactlyKCoinsInGridForTrip(grid, k - coins, rowIndex - 1, colIndex) +
-                numberOfPathsWithExactlyKCoinsInGridForTrip(grid, k - coins, rowIndex, colIndex - 1);
+        return numberOfPathsWithExactlyKCoinsInGridForTripRecursive(grid, k - coins, rowIndex - 1, colIndex) +
+                numberOfPathsWithExactlyKCoinsInGridForTripRecursive(grid, k - coins, rowIndex, colIndex - 1);
     }
 }

@@ -142,4 +142,15 @@ class DynamicProgrammingQuestsTest {
         };
         assertEquals(2, DynamicProgrammingQuests.numberOfPathsWithExactlyKCoinsInGridForTripFromTopLeftToBottomRight(grid, 12));
     }
+
+    @Test
+    void numberOfPathsWithExactlyKCoinsInGridForTripFromTopLeftToBottomRightRecursive() {
+        int[][] grid;
+
+        grid = new int[][]{{1, 2, 3},
+                {4, 6, 5},
+                {3, 2, 1}
+        };
+        assertEquals(2, DynamicProgrammingQuests.numberOfPathsWithExactlyKCoinsInGridForTripFromTopLeftToBottomRightRecursive(grid, 12));
+    }
 }
