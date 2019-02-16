@@ -123,4 +123,12 @@ class DynamicProgrammingQuestsTest {
     void minimumCostUsingXorToMakeLongestCommonSubsequenceOfLengthK() {
         assertEquals(3, DynamicProgrammingQuests.minimumCostUsingXorToMakeLongestCommonSubsequenceOfLengthK("abble", "pie", 2));
     }
+
+    @Test
+    void waysToExpressNAsSumOfOneThreeAndFour() {
+        assertEquals(1, DynamicProgrammingQuests.waysToExpressNAsSumOfOneThreeAndFour(1));
+        assertEquals(1, DynamicProgrammingQuests.waysToExpressNAsSumOfOneThreeAndFour(2));
+        assertEquals(4, DynamicProgrammingQuests.waysToExpressNAsSumOfOneThreeAndFour(4));
+        assertEquals(6, DynamicProgrammingQuests.waysToExpressNAsSumOfOneThreeAndFour(5));
+    }
 }
