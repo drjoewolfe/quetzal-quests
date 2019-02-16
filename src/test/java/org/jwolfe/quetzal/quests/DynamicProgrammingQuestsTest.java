@@ -131,4 +131,15 @@ class DynamicProgrammingQuestsTest {
         assertEquals(4, DynamicProgrammingQuests.waysToExpressNAsSumOfOneThreeAndFour(4));
         assertEquals(6, DynamicProgrammingQuests.waysToExpressNAsSumOfOneThreeAndFour(5));
     }
+
+    @Test
+    void numberOfPathsWithExactlyKCoinsInGridForTripFromTopLeftToBottomRight() {
+        int[][] grid;
+
+        grid = new int[][]{{1, 2, 3},
+                {4, 6, 5},
+                {3, 2, 1}
+        };
+        assertEquals(2, DynamicProgrammingQuests.numberOfPathsWithExactlyKCoinsInGridForTripFromTopLeftToBottomRight(grid, 12));
+    }
 }

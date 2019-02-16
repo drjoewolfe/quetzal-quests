@@ -379,4 +379,35 @@ public class DynamicProgrammingQuests {
 
         return dp[n];
     }
+
+    public static int numberOfPathsWithExactlyKCoinsInGridForTripFromTopLeftToBottomRight(int[][] grid, int k) {
+        // From any cell (i, j), travel to (i+1, j) or (i, j + 1) is allowed
+
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+
+        int m = grid.length;
+        int n = grid[0].length;
+
+        return numberOfPathsWithExactlyKCoinsInGridForTrip(grid, k, m - 1, n - 1);
+    }
+
+    private static int numberOfPathsWithExactlyKCoinsInGridForTrip(int[][] grid, int k, int rowIndex, int colIndex) {
+        if (k < 0 || rowIndex < 0 || colIndex < 0) {
+            return 0;
+        }
+
+        int coins = grid[rowIndex][colIndex];
+        if (rowIndex == 0 && colIndex == 0) {
+            if (k == coins) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+
+        return numberOfPathsWithExactlyKCoinsInGridForTrip(grid, k - coins, rowIndex - 1, colIndex) +
+                numberOfPathsWithExactlyKCoinsInGridForTrip(grid, k - coins, rowIndex, colIndex - 1);
+    }
 }
