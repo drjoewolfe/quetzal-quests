@@ -153,4 +153,10 @@ class DynamicProgrammingQuestsTest {
         };
         assertEquals(2, DynamicProgrammingQuests.numberOfPathsWithExactlyKCoinsInGridForTripFromTopLeftToBottomRightRecursive(grid, 12));
     }
+
+    @Test
+    void lengthOfLongestSubsequenceOfStringWhichIsASubstringOfString2() {
+        assertEquals(3, DynamicProgrammingQuests.lengthOfLongestSubsequenceOfStringWhichIsASubstringOfString2("ABCD", "BACDBDCD"));
+        assertEquals(1, DynamicProgrammingQuests.lengthOfLongestSubsequenceOfStringWhichIsASubstringOfString2("A", "A"));
+    }
 }
