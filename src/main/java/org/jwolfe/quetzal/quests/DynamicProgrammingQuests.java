@@ -476,4 +476,50 @@ public class DynamicProgrammingQuests {
 
         return maxLength;
     }
+
+    public static int countTripletsWhichSumtoPerfectCube(int[] arr) {
+        // Assumption: length of array is between 3 & 1000
+        // Assumption: all values in the array are less than 5000
+
+        // Note: Since the max value is 5000, the maximum perfect cube can be 24^3 = 13824
+        //      Thus, there can be utmost 24 cubes (1...24) that can be reached by triplets from the array
+
+        // General implementation: (i, j). For each cube, find occurances of k, where k is cube - a[i] + a[j]
+        // This implementation is based on Dynamic Programming, for max length 1000 & max value 5000
+
+        if (arr == null || arr.length < 3) {
+            return 0;
+        }
+
+        int n = arr.length;
+
+        // dp[i][j] => number of occurances of 'j' in arr[i, i + 1, ... n]
+        int[][] dp = new int[n + 1][15001];
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 1; j <= 15000; j++) {
+                if (i == 0) {
+                    dp[i][j] = (arr[i] == j) ? 1 : 0;
+                } else {
+                    dp[i][j] = dp[i - 1][j] + ((arr[i] == j) ? 1 : 0);
+                }
+            }
+        }
+
+        int count = 0;
+        for (int i = 0; i < n - 2; i++) {
+            for (int j = i + 1; j < n - 1; j++) {
+                for (int cubeFactor = 1; cubeFactor <= 24; cubeFactor++) {
+                    int cube = cubeFactor * cubeFactor * cubeFactor;
+                    int k = cube - (arr[i] + arr[j]);
+
+                    if (k > 0) {
+                        count += dp[n - 1][k] - dp[j][k];
+                    }
+                }
+            }
+        }
+
+        return count;
+    }
 }

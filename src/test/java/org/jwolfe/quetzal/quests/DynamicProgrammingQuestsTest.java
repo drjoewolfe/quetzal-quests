@@ -159,4 +159,12 @@ class DynamicProgrammingQuestsTest {
         assertEquals(3, DynamicProgrammingQuests.lengthOfLongestSubsequenceOfStringWhichIsASubstringOfString2("ABCD", "BACDBDCD"));
         assertEquals(1, DynamicProgrammingQuests.lengthOfLongestSubsequenceOfStringWhichIsASubstringOfString2("A", "A"));
     }
+
+    @Test
+    void countTripletsWhichSumtoPerfectCube() {
+        int[] arr;
+
+        arr = new int[]{2, 5, 1, 20, 6};
+        assertEquals(3, DynamicProgrammingQuests.countTripletsWhichSumtoPerfectCube(arr));
+    }
 }
